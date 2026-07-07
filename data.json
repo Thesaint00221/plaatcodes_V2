@@ -1,80 +1,272 @@
 [
   {
-    "code": "423",
-    "naam": "Black Paint",
-    "leverancier": "Egger",
-    "photos": [
-      "423.jpg"
-    ],
-    "info": {
-      "Referentie": "U999",
-      "Kleur": "Black Paint",
-      "Detremmerie": "423"
-    }
-  },
-  {
-    "code": "424",
-    "naam": "Natural Oak",
-    "leverancier": "Egger",
-    "photos": [
-      "424/1.jpg"
-    ],
-    "info": {
-      "Referentie": "H1385",
-      "Kleur": "Natural Oak",
-      "Detremmerie": "424"
-    }
-  },
-  {
-    "code": "425",
-    "naam": "Brown Oak",
-    "leverancier": "Egger",
-    "photos": [
-      "425/1.jpg"
-    ],
-    "info": {
-      "Referentie": "H1386",
-      "Kleur": "Brown Oak",
-      "Detremmerie": "425"
-    }
-  },
-  {
-    "code": "421",
-    "naam": "Nature Oak",
-    "leverancier": "Egger",
-    "photos": [
-      "421/1.jpg"
-    ],
-    "info": {
-      "Referentie": "H1180",
-      "Kleur": "Nature Oak",
-      "Detremmerie": "421"
-    }
-  },
-  {
-    "code": "422",
-    "naam": "Walnut Dark",
-    "leverancier": "Egger",
-    "photos": [
-      "422/1.jpg"
-    ],
-    "info": {
-      "Referentie": "H1307",
-      "Kleur": "Walnut Dark",
-      "Detremmerie": "422"
-    }
-  },
-  {
-    "code": "225",
-    "naam": "Walnut",
     "leverancier": "Unilin",
-    "photos": [
-      "225/1.jpg"
-    ],
-    "info": {
-      "Referentie": "H251",
-      "Kleur": "Walnut",
-      "Detremmerie": "225"
-    }
+    "referentie": "H161",
+    "kleur": "Structure Oak Light",
+    "kleurnr": 33
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H438",
+    "kleur": "Structure Oak Medium",
+    "kleurnr": 34
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H162",
+    "kleur": "Structure Nature",
+    "kleurnr": 37
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H441",
+    "kleur": "Structure Wengé",
+    "kleurnr": 40
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "F988",
+    "kleur": "Structure Beton Light",
+    "kleurnr": 41
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "113CST",
+    "kleur": "Zwart mat",
+    "kleurnr": 101
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "U146",
+    "kleur": "Cloud Grey",
+    "kleurnr": 102
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "U655",
+    "kleur": "Sand",
+    "kleurnr": 103
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H783",
+    "kleur": "Romantic Oak Fineer",
+    "kleurnr": 220
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "113 W06",
+    "kleur": "Fineer Wengé",
+    "kleurnr": 221
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H265",
+    "kleur": "Café Noir",
+    "kleurnr": 222
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H903",
+    "kleur": "Greige Oak",
+    "kleurnr": 223
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H911",
+    "kleur": "Vintage Oak",
+    "kleurnr": 224
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H251",
+    "kleur": "Walnoot",
+    "kleurnr": 225
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H754",
+    "kleur": "Berk"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "U823",
+    "kleur": "City Grey"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H876",
+    "kleur": "Cottage Oak Dark"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H868",
+    "kleur": "Cottage Oak Light"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H163",
+    "kleur": "Cottage White"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "U115",
+    "kleur": "Dark Ecru"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "UD81",
+    "kleur": "Dark Grey"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H338",
+    "kleur": "Granada Oak"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "F993",
+    "kleur": "Inox Dark"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "760",
+    "kleur": "Inox Light"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "U292",
+    "kleur": "Kiezelgrijs"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H387",
+    "kleur": "Marne Eik"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "00025 MAT",
+    "kleur": "MDF wit"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H336",
+    "kleur": "Negro Oak"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H424",
+    "kleur": "Pine"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "F986",
+    "kleur": "Structure Beton Dark"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H452",
+    "kleur": "Structure Grey"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H439",
+    "kleur": "Structure Oak Dark"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H447",
+    "kleur": "Structure Pine"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "U284",
+    "kleur": "Taupe"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H335",
+    "kleur": "Torino Oak"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H349",
+    "kleur": "Verweerde eik"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "H385",
+    "kleur": "Wengé"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Unilin",
+    "referentie": "WA12",
+    "kleur": "Wit mat"
+    "kleurnr": null
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "W980",
+    "kleur": "Wit",
+    "kleurnr": 100
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "U961",
+    "kleur": "Grafisch zwart",
+    "kleurnr": 104
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "H1180",
+    "kleur": "Nature Oak",
+    "kleurnr": 421
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "H1307",
+    "kleur": "Walnoot Dark",
+    "kleurnr": 422
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "U999",
+    "kleur": "Black Paint",
+    "kleurnr": 423
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "H1385",
+    "kleur": "natural Oak",
+    "kleurnr": 424
+  },
+  {
+    "leverancier": "Egger",
+    "referentie": "H1386",
+    "kleur": "Brown oak",
+    "kleurnr": 425
   }
 ]
