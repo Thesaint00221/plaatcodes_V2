@@ -1,4 +1,3 @@
-alert("app.js werkt");
 
 let platen = [];
 
