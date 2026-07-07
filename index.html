@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>Plaatcodes</title>
+
+    <meta name="theme-color" content="#1d4ed8">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <h1>Plaatcodes</h1>
+
+    <input
+        type="search"
+        id="search"
+        placeholder="🔍 Zoek op naam, code of leverancier..."
+        autocomplete="off">
+
+</header>
+
+<main>
+
+    <section id="cards" class="cards"></section>
+
+</main>
+
+<div id="viewer" class="viewer hidden">
+
+    <button id="closeViewer">✕</button>
+
+    <img id="viewerImage">
+
+</div>
+
+<div id="detail" class="detail hidden">
+
+    <button id="backButton">
+        ← Terug
+    </button>
+
+    <div class="detailHeader">
+
+        <div class="gallery" id="gallery">
+
+        </div>
+
+        <h2 id="detailTitle"></h2>
+
+        <p id="detailCode"></p>
+
+    </div>
+
+    <div class="detailContent">
+
+        <table id="detailTable">
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
