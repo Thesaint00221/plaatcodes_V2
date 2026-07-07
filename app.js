@@ -1,21 +1,3 @@
-console.log("APP START");
-
-async function start(){
-
-    console.log("DATA LADEN");
-
-    const response = await fetch("data.json");
-
-    console.log(response);
-
-    platen = await response.json();
-
-    console.log(platen);
-
-    render(platen);
-
-}
-
 let platen = [];
 
 const basis = "./";
@@ -44,32 +26,21 @@ async function start(){
 
 function render(lijst){
 
-    cards.innerHTML = "";
+card.innerHTML = `
+<div class="cardBody">
 
-    lijst.forEach(plaat => {
+    <h2>${plaat.naam}</h2>
 
-        const card = document.createElement("div");
+    <div class="code">
+        ${plaat.code}
+    </div>
 
-        card.className = "card";
+    <div class="leverancier">
+        ${plaat.leverancier}
+    </div>
 
-
-        card.innerHTML = `
-
-            <div class="cardBody">
-
-                <h2>${plaat.kleur}</h2>
-
-                <div class="code">
-                    ${plaat.referentie}
-                </div>
-
-                <div class="leverancier">
-                    ${plaat.leverancier}
-                </div>
-
-            </div>
-
-        `;
+</div>
+`;
 
 
         card.onclick = () => openDetail(plaat);
@@ -87,39 +58,31 @@ function openDetail(plaat){
     detail.classList.remove("hidden");
 
 
-    detailTitle.textContent = plaat.kleur;
+    detailTitle.textContent = plaat.naam;
 
+detailCode.textContent = "Referentie " + plaat.code;
 
-    detailCode.textContent =
-        "Referentie " + plaat.referentie;
+detailTable.innerHTML = `
+<tr>
+    <td>Leverancier</td>
+    <td>${plaat.leverancier}</td>
+</tr>
 
+<tr>
+    <td>Referentie</td>
+    <td>${plaat.info.Referentie}</td>
+</tr>
 
-    detailTable.innerHTML = "";
+<tr>
+    <td>Kleur</td>
+    <td>${plaat.info.Kleur}</td>
+</tr>
 
-
-    detailTable.innerHTML += `
-
-        <tr>
-            <td>Leverancier</td>
-            <td>${plaat.leverancier}</td>
-        </tr>
-
-        <tr>
-            <td>Referentie</td>
-            <td>${plaat.referentie}</td>
-        </tr>
-
-        <tr>
-            <td>Kleur</td>
-            <td>${plaat.kleur}</td>
-        </tr>
-
-        <tr>
-            <td>Kleurnummer</td>
-            <td>${plaat.kleurnr}</td>
-        </tr>
-
-    `;
+<tr>
+    <td>Kleurnummer</td>
+    <td>${plaat.info.Kleurnummer}</td>
+</tr>
+`;
 
 }
 
@@ -132,22 +95,15 @@ document
     const zoek = this.value.toLowerCase();
 
 
-    const resultaat = platen.filter(plaat => {
+   const resultaat = platen.filter(plaat =>
 
-        return (
+    plaat.naam.toLowerCase().includes(zoek) ||
 
-            plaat.kleur.toLowerCase().includes(zoek)
+    plaat.code.toLowerCase().includes(zoek) ||
 
-            ||
+    plaat.leverancier.toLowerCase().includes(zoek)
 
-            plaat.referentie.toLowerCase().includes(zoek)
-
-            ||
-
-            plaat.leverancier.toLowerCase().includes(zoek)
-
-        );
-
+);
     });
 
 
