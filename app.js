@@ -1,3 +1,20 @@
+console.log("APP START");
+
+async function start(){
+
+    console.log("DATA LADEN");
+
+    const response = await fetch("data.json");
+
+    console.log(response);
+
+    platen = await response.json();
+
+    console.log(platen);
+
+    render(platen);
+
+}
 
 let platen = [];
 
