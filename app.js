@@ -1,5 +1,6 @@
 let platen = [];
 
+const basis = "./";
 const cards = document.getElementById("cards");
 const detail = document.getElementById("detail");
 const gallery = document.getElementById("gallery");
@@ -20,7 +21,7 @@ document
 
 async function start(){
 
-    const response = await fetch("data.json");
+    const response = await fetch(basis+"data.json");
 
     platen = await response.json();
 
@@ -40,7 +41,7 @@ function render(lijst){
 
         const eersteFoto =
             plaat.photos && plaat.photos.length
-            ? "photos/"+plaat.photos[0]
+            ? basis+"photos/"+plaat.photos[0]
             : "photos/no-image.jpg";
 
         card.innerHTML=`
@@ -85,7 +86,7 @@ function openDetail(plaat){
 
             const img=document.createElement("img");
 
-            img.src="photos/"+foto;
+            img.src=basis+"photos/"+foto;
 
             img.loading="lazy";
 
