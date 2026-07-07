@@ -1,27 +1,21 @@
 let platen = [];
 
 const basis = "./";
+
 const cards = document.getElementById("cards");
 const detail = document.getElementById("detail");
-const gallery = document.getElementById("gallery");
 const detailTitle = document.getElementById("detailTitle");
 const detailCode = document.getElementById("detailCode");
 const detailTable = document.getElementById("detailTable");
-
-const viewer = document.getElementById("viewer");
-const viewerImage = document.getElementById("viewerImage");
 
 document
     .getElementById("backButton")
     .onclick = () => detail.classList.add("hidden");
 
-document
-    .getElementById("closeViewer")
-    .onclick = () => viewer.classList.add("hidden");
 
 async function start(){
 
-    const response = await fetch(basis+"data.json");
+    const response = await fetch(basis + "data.json");
 
     platen = await response.json();
 
@@ -29,30 +23,27 @@ async function start(){
 
 }
 
+
 function render(lijst){
 
     cards.innerHTML = "";
 
-    lijst.forEach(plaat=>{
+    lijst.forEach(plaat => {
 
-        const card=document.createElement("div");
+        const card = document.createElement("div");
 
-        card.className="card";
+        card.className = "card";
 
-        const eersteFoto =
-            plaat.photos && plaat.photos.length
-            ? basis+"photos/"+plaat.photos[0]
-            : "photos/no-image.jpg";
 
-        card.innerHTML=`
-
-            <img src="${eersteFoto}" loading="lazy">
+        card.innerHTML = `
 
             <div class="cardBody">
 
-                <h2>${plaat.naam}</h2>
+                <h2>${plaat.kleur}</h2>
 
-                <div class="code">${plaat.code}</div>
+                <div class="code">
+                    ${plaat.referentie}
+                </div>
 
                 <div class="leverancier">
                     ${plaat.leverancier}
@@ -62,7 +53,8 @@ function render(lijst){
 
         `;
 
-        card.onclick=()=>openDetail(plaat);
+
+        card.onclick = () => openDetail(plaat);
 
         cards.appendChild(card);
 
@@ -70,75 +62,67 @@ function render(lijst){
 
 }
 
+
+
 function openDetail(plaat){
 
     detail.classList.remove("hidden");
 
-    detailTitle.textContent=plaat.naam;
 
-    detailCode.textContent="Code "+plaat.code;
+    detailTitle.textContent = plaat.kleur;
 
-    gallery.innerHTML="";
 
-    if(plaat.photos){
+    detailCode.textContent =
+        "Referentie " + plaat.referentie;
 
-        plaat.photos.forEach(foto=>{
 
-            const img=document.createElement("img");
+    detailTable.innerHTML = "";
 
-            img.src=basis+"photos/"+foto;
 
-            img.loading="lazy";
+    detailTable.innerHTML += `
 
-            img.onclick=()=>{
+        <tr>
+            <td>Leverancier</td>
+            <td>${plaat.leverancier}</td>
+        </tr>
 
-                viewer.classList.remove("hidden");
+        <tr>
+            <td>Referentie</td>
+            <td>${plaat.referentie}</td>
+        </tr>
 
-                viewerImage.src=img.src;
+        <tr>
+            <td>Kleur</td>
+            <td>${plaat.kleur}</td>
+        </tr>
 
-            };
+        <tr>
+            <td>Kleurnummer</td>
+            <td>${plaat.kleurnr}</td>
+        </tr>
 
-            gallery.appendChild(img);
-
-        });
-
-    }
-
-    detailTable.innerHTML="";
-
-    for(const sleutel in plaat.info){
-
-        detailTable.innerHTML+=`
-
-            <tr>
-
-                <td>${sleutel}</td>
-
-                <td>${plaat.info[sleutel]}</td>
-
-            </tr>
-
-        `;
-
-    }
+    `;
 
 }
 
+
+
 document
 .getElementById("search")
-.addEventListener("input",function(){
+.addEventListener("input", function(){
 
-    const zoek=this.value.toLowerCase();
+    const zoek = this.value.toLowerCase();
 
-    const resultaat=platen.filter(plaat=>{
+
+    const resultaat = platen.filter(plaat => {
 
         return (
 
-            plaat.naam.toLowerCase().includes(zoek)
+            plaat.kleur.toLowerCase().includes(zoek)
 
             ||
 
-            plaat.code.toString().includes(zoek)
+            plaat.referentie.toLowerCase().includes(zoek)
 
             ||
 
@@ -148,11 +132,11 @@ document
 
     });
 
+
     render(resultaat);
 
 });
 
+
+
 start();
-
-}
-
