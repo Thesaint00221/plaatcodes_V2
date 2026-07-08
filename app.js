@@ -39,8 +39,6 @@ async function uploadFoto() {
     const { error: dbError } =
         await supabaseClient
             .from("eigen_data")
-        const { data: userData } = await supabaseClient.auth.getUser();
-console.log(userData.user);
             .insert({
 
     code: huidigePlaat.code,
