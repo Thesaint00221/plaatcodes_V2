@@ -64,7 +64,7 @@ function toonPlaten(lijst) {
         const kaart = document.createElement("div");
 
         kaart.className = "kaart";
-
+kaart.onclick = () => toonDetail(plaat);
         kaart.innerHTML = `
             <img src="photos/${plaat.photos[0]}" alt="${plaat.naam}">
 
