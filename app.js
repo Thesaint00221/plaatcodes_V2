@@ -38,14 +38,18 @@ async function uploadFoto() {
     // Gegevens opslaan in database
     const { error: dbError } =
         await supabaseClient
-            .from("plaat_fotos")
+            .from("eigen_data")
             .insert({
-                code: huidigePlaat.code,
-                categorie,
-                titel,
-                beschrijving,
-                foto: bestandsNaam
-            });
+
+    code: huidigePlaat.code,
+
+    type: categorie,
+
+    omschrijving: beschrijving,
+
+    foto: bestandsNaam
+
+});
 
     if (dbError) {
         alert(dbError.message);
