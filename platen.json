@@ -1,0 +1,81 @@
+[
+  {
+    "code": "423",
+    "naam": "Black Paint",
+    "leverancier": "Egger",
+    "photos": [
+      "423/1.jpg",
+      "423/2.jpg"
+    ],
+    "info": {
+      "Referentie": "U999",
+      "Kleur": "Black Paint",
+      "Detremmerie": "423"
+    }
+  },
+  {
+    "code": "424",
+    "naam": "Natural Oak",
+    "leverancier": "Egger",
+    "photos": [
+      "424/1.jpg"
+    ],
+    "info": {
+      "Referentie": "H1385",
+      "Kleur": "Natural Oak",
+      "Detremmerie": "424"
+    }
+  },
+  {
+    "code": "425",
+    "naam": "Brown Oak",
+    "leverancier": "Egger",
+    "photos": [
+      "425/1.jpg"
+    ],
+    "info": {
+      "Referentie": "H1386",
+      "Kleur": "Brown Oak",
+      "Detremmerie": "425"
+    }
+  },
+  {
+    "code": "421",
+    "naam": "Nature Oak",
+    "leverancier": "Egger",
+    "photos": [
+      "421/1.jpg"
+    ],
+    "info": {
+      "Referentie": "H1180",
+      "Kleur": "Nature Oak",
+      "Detremmerie": "421"
+    }
+  },
+  {
+    "code": "422",
+    "naam": "Walnut Dark",
+    "leverancier": "Egger",
+    "photos": [
+      "422/1.jpg"
+    ],
+    "info": {
+      "Referentie": "H1307",
+      "Kleur": "Walnut Dark",
+      "Detremmerie": "422"
+    }
+  },
+  {
+    "code": "225",
+    "naam": "Walnut",
+    "leverancier": "Unilin",
+    "photos": [
+      "225/1.jpg"
+    ],
+    "info": {
+      "Referentie": "H251",
+      "Kleur": "Walnut",
+      "Detremmerie": "225"
+    }
+  }
+]
