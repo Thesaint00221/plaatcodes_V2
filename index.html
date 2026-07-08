@@ -28,7 +28,56 @@
     <button id="terug">← Terug</button>
 
     <div id="detailContent"></div>
+<button id="fotoToevoegen">
+    📷 Foto toevoegen
+</button>
+    <div id="fotoFormulier" class="verborgen">
 
+    <h3>Nieuwe foto</h3>
+
+    <label>
+        Categorie
+    </label>
+
+    <select id="categorie">
+        <option>Structuur</option>
+        <option>Herstelling</option>
+        <option>Project</option>
+        <option>Overige</option>
+    </select>
+
+
+    <label>
+        Titel
+    </label>
+
+    <input id="fotoTitel">
+
+
+    <label>
+        Beschrijving
+    </label>
+
+    <textarea id="fotoBeschrijving"></textarea>
+
+
+    <label>
+        Foto
+    </label>
+
+    <input 
+        type="file"
+        id="fotoBestand"
+        accept="image/*"
+        capture="environment"
+    >
+
+
+    <button id="opslaanFoto">
+        Opslaan
+    </button>
+
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
