@@ -256,7 +256,8 @@ async function login(){
     if(error){
 
         alert(error.message);
-
+console.error("Upload fout:", uploadError);
+console.error("Database fout:", dbError);
         return;
 
     }
