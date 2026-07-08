@@ -1,3 +1,73 @@
+let huidigePlaat = null;
+function toonDetail(plaat){
+
+    huidigePlaat = plaat;
+
+   async function uploadFoto() {
+
+    if (!huidigePlaat) {
+        alert("Geen plaat geselecteerd.");
+        return;
+    }
+
+    const bestand = document.getElementById("fotoBestand").files[0];
+
+    if (!bestand) {
+        alert("Kies eerst een foto.");
+        return;
+    }
+
+    const categorie = document.getElementById("categorie").value;
+    const titel = document.getElementById("fotoTitel").value;
+    const beschrijving = document.getElementById("fotoBeschrijving").value;
+
+    const extensie = bestand.name.split(".").pop();
+
+    const bestandsNaam =
+        `${huidigePlaat.code}_${Date.now()}.${extensie}`;
+
+    // upload naar storage
+    const { error: uploadError } =
+        await supabaseClient.storage
+            .from("plaatfotos")
+            .upload(bestandsNaam, bestand);
+
+    if (uploadError) {
+        alert(uploadError.message);
+        console.error(uploadError);
+        return;
+    }
+
+    // gegevens opslaan
+    const { error: dbError } =
+        await supabaseClient
+            .from("plaat_fotos")
+            .insert({
+
+                code: huidigePlaat.code,
+
+                categorie,
+
+                titel,
+
+                beschrijving,
+
+                foto: bestandsNaam
+
+            });
+
+    if (dbError) {
+
+        alert(dbError.message);
+        console.error(dbError);
+        return;
+
+    }
+
+    alert("Foto opgeslagen!");
+
+}
+}
 
 const detail = document.getElementById("detail");
 const detailContent = document.getElementById("detailContent");
@@ -141,7 +211,9 @@ function toonDetail(plaat){
                 <td>Leverancier</td>
                 <td>${plaat.leverancier}</td>
             </tr>
-
+document
+    .getElementById("opslaanFoto")
+    .onclick = uploadFoto;
             ${tabel}
 
         </table>
