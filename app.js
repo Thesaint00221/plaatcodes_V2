@@ -1,9 +1,6 @@
 let huidigePlaat = null;
-function toonDetail(plaat){
 
-    huidigePlaat = plaat;
-
-   async function uploadFoto() {
+async function uploadFoto() {
 
     if (!huidigePlaat) {
         alert("Geen plaat geselecteerd.");
@@ -26,7 +23,7 @@ function toonDetail(plaat){
     const bestandsNaam =
         `${huidigePlaat.code}_${Date.now()}.${extensie}`;
 
-    // upload naar storage
+    // Upload naar Storage
     const { error: uploadError } =
         await supabaseClient.storage
             .from("plaatfotos")
@@ -38,35 +35,25 @@ function toonDetail(plaat){
         return;
     }
 
-    // gegevens opslaan
+    // Gegevens opslaan in database
     const { error: dbError } =
         await supabaseClient
             .from("plaat_fotos")
             .insert({
-
                 code: huidigePlaat.code,
-
                 categorie,
-
                 titel,
-
                 beschrijving,
-
                 foto: bestandsNaam
-
             });
 
     if (dbError) {
-
         alert(dbError.message);
         console.error(dbError);
         return;
-
     }
 
     alert("Foto opgeslagen!");
-
-}
 }
 
 const detail = document.getElementById("detail");
@@ -134,7 +121,9 @@ function toonPlaten(lijst) {
         const kaart = document.createElement("div");
 
         kaart.className = "kaart";
-kaart.onclick = () => toonDetail(plaat);
+
+        kaart.onclick = () => toonDetail(plaat);
+
         kaart.innerHTML = `
             <img src="photos/${plaat.photos[0]}" alt="${plaat.naam}">
 
@@ -152,7 +141,10 @@ kaart.onclick = () => toonDetail(plaat);
     });
 
 }
-function toonDetail(plaat){
+
+function toonDetail(plaat) {
+
+    huidigePlaat = plaat;
 
     resultaten.style.display = "none";
     detail.classList.remove("hidden");
@@ -165,7 +157,7 @@ function toonDetail(plaat){
         </div>
     `;
 
-    if(plaat.photos.length){
+    if (plaat.photos.length) {
 
         foto = `
             <img
@@ -183,7 +175,7 @@ function toonDetail(plaat){
 
     let tabel = "";
 
-    for(const [sleutel, waarde] of Object.entries(plaat.info)){
+    for (const [sleutel, waarde] of Object.entries(plaat.info)) {
 
         tabel += `
             <tr>
@@ -211,13 +203,17 @@ function toonDetail(plaat){
                 <td>Leverancier</td>
                 <td>${plaat.leverancier}</td>
             </tr>
-document
-    .getElementById("opslaanFoto")
-    .onclick = uploadFoto;
+
             ${tabel}
 
         </table>
 
     `;
+
+    const knop = document.getElementById("opslaanFoto");
+
+    if (knop) {
+        knop.onclick = uploadFoto;
+    }
 
 }
