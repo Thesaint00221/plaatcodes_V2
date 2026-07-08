@@ -204,3 +204,27 @@ header h1{
     padding:10px;
 
 }
+#loginBox{
+
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:10px;
+
+    padding:15px;
+
+    background:#f2f2f2;
+
+}
+
+#loginBox input{
+
+    padding:8px 10px;
+
+}
+
+#loginBox button{
+
+    padding:8px 15px;
+
+}
