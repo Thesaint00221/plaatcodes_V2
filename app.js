@@ -1,3 +1,15 @@
+
+const detail = document.getElementById("detail");
+const detailContent = document.getElementById("detailContent");
+const terug = document.getElementById("terug");
+
+terug.onclick = () => {
+
+    detail.classList.add("hidden");
+    resultaten.style.display = "grid";
+
+};
+
 let platen = [];
 
 const resultaten = document.getElementById("resultaten");
