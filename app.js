@@ -139,7 +139,16 @@ function toonPlaten(lijst) {
         resultaten.appendChild(kaart);
 
     });
+const fotoFormulier =
+    document.getElementById("fotoFormulier");
 
+document
+    .getElementById("fotoToevoegen")
+    .onclick = () => {
+
+        fotoFormulier.classList.toggle("verborgen");
+
+    };
 }
 
 function toonDetail(plaat) {
