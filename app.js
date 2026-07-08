@@ -226,3 +226,67 @@ function toonDetail(plaat) {
     }
 
 }
+const email = document.getElementById("email");
+const wachtwoord = document.getElementById("wachtwoord");
+
+const loginButton = document.getElementById("loginButton");
+const logoutButton = document.getElementById("logoutButton");
+
+loginButton.onclick = login;
+
+logoutButton.onclick = logout;
+
+controleerLogin();
+
+async function login(){
+
+    const { error } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: email.value,
+
+            password: wachtwoord.value
+
+        });
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    controleerLogin();
+
+}
+
+async function logout(){
+
+    await supabaseClient.auth.signOut();
+
+    controleerLogin();
+
+}
+
+async function controleerLogin(){
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    const ingelogd =
+        data.session !== null;
+
+    loginButton.style.display =
+        ingelogd ? "none" : "inline-block";
+
+    logoutButton.style.display =
+        ingelogd ? "inline-block" : "none";
+
+    email.style.display =
+        ingelogd ? "none" : "inline-block";
+
+    wachtwoord.style.display =
+        ingelogd ? "none" : "inline-block";
+
+}
