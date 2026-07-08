@@ -182,3 +182,25 @@ header h1{
     width:220px;
 
 }
+.verborgen{
+    display:none;
+}
+
+#fotoFormulier{
+
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+
+}
+
+#fotoFormulier input,
+#fotoFormulier textarea,
+#fotoFormulier select{
+
+    width:100%;
+    margin:8px 0;
+    padding:10px;
+
+}
