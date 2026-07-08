@@ -82,3 +82,70 @@ kaart.onclick = () => toonDetail(plaat);
     });
 
 }
+function toonDetail(plaat){
+
+    resultaten.style.display = "none";
+    detail.classList.remove("hidden");
+
+    let foto = `
+        <div class="placeholder">
+            <div>📷</div>
+            <div>Geen foto</div>
+            <div>${plaat.code}</div>
+        </div>
+    `;
+
+    if(plaat.photos.length){
+
+        foto = `
+            <img
+                class="detailFoto"
+                src="photos/${plaat.photos[0]}"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+
+            <div class="placeholder" style="display:none;">
+                <div>📷</div>
+                <div>Geen foto</div>
+                <div>${plaat.code}</div>
+            </div>
+        `;
+    }
+
+    let tabel = "";
+
+    for(const [sleutel, waarde] of Object.entries(plaat.info)){
+
+        tabel += `
+            <tr>
+                <td>${sleutel}</td>
+                <td>${waarde ?? "-"}</td>
+            </tr>
+        `;
+
+    }
+
+    detailContent.innerHTML = `
+
+        <h1>${plaat.naam}</h1>
+
+        ${foto}
+
+        <table class="infoTable">
+
+            <tr>
+                <td>Code</td>
+                <td>${plaat.code}</td>
+            </tr>
+
+            <tr>
+                <td>Leverancier</td>
+                <td>${plaat.leverancier}</td>
+            </tr>
+
+            ${tabel}
+
+        </table>
+
+    `;
+
+}
