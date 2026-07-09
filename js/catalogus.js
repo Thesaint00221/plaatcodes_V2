@@ -116,4 +116,4 @@ function toonPlaten(lijst) {
 function getPlaat(code) {
     return platen.find(p => p.code === code);
 }
-    };
+
