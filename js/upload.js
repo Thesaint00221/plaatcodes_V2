@@ -264,19 +264,16 @@ document
 
 
 
-    const titel =
-        document
-        .getElementById("fotoTitel")
-        .value
-        .trim();
+const titel =
+    document.getElementById("fotoTitel")
+    ? document.getElementById("fotoTitel").value.trim()
+    : "";
 
 
-
-    const beschrijving =
-        document
-        .getElementById("fotoBeschrijving")
-        .value
-        .trim();
+const beschrijving =
+    document.getElementById("fotoBeschrijving")
+    ? document.getElementById("fotoBeschrijving").value.trim()
+    : "";
 
 
 
