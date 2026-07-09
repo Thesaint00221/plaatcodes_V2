@@ -49,20 +49,32 @@ async function toonFotos(plaat) {
 
     const galerij = document.getElementById("galerij");
 
-    galerij.innerHTML = "";
+    galerij.innerHTML = `
+        <h3>Foto's</h3>
+    `;
 
 
-    // bestaande GitHub foto
+    // ==========================================
+    // Bestaande foto's uit GitHub
+    // ==========================================
 
     if (plaat.photos && plaat.photos.length) {
 
         plaat.photos.forEach(foto => {
 
             galerij.innerHTML += `
-                <img
-                    src="photos/${foto}"
-                    class="detailFoto"
-                    alt="${plaat.naam}">
+                <div class="fotoKaart">
+
+                    <img
+                        src="photos/${foto}"
+                        class="detailFoto"
+                        alt="${plaat.naam}">
+
+                    <p>
+                        Basisfoto
+                    </p>
+
+                </div>
             `;
 
         });
@@ -70,48 +82,82 @@ async function toonFotos(plaat) {
     }
 
 
-    // extra foto's uit Supabase
+
+    // ==========================================
+    // Extra foto's uit Supabase
+    // ==========================================
 
     const { data, error } =
         await supabaseClient
             .from("eigen_data")
             .select("*")
-            .eq("code", plaat.code);
+            .eq("code", plaat.code)
+            .not("foto", "is", null);
+
 
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Fout bij ophalen foto's:",
+            error
+        );
+
         return;
 
     }
 
 
-    if (data) {
 
-        data.forEach(item => {
+    if (!data || data.length === 0) {
 
-            if (item.foto) {
+        galerij.innerHTML += `
+            <p>
+                Nog geen extra foto's toegevoegd.
+            </p>
+        `;
 
-                galerij.innerHTML += `
-                    <div class="extraFoto">
-
-                        <img
-                            src="${item.foto}"
-                            class="detailFoto">
-
-                        <p>
-                            ${item.omschrijving || ""}
-                        </p>
-
-                    </div>
-                `;
-
-            }
-
-        });
+        return;
 
     }
+
+
+
+    data.forEach(item => {
+
+
+        galerij.innerHTML += `
+
+            <div class="fotoKaart">
+
+                <img
+                    src="${item.foto}"
+                    class="detailFoto"
+                    alt="${plaat.code}">
+
+
+                <p>
+                    <strong>${item.type || ""}</strong>
+                </p>
+
+
+                <p>
+                    ${item.omschrijving || ""}
+                </p>
+
+
+                <small>
+                    ${item.datum 
+                        ? new Date(item.datum)
+                            .toLocaleDateString("nl-BE")
+                        : ""}
+                </small>
+
+            </div>
+
+        `;
+
+    });
 
 }
 
