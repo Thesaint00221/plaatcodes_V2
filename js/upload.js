@@ -1,5 +1,7 @@
 // ============================================
 // upload.js
+// Foto optimalisatie versie
+// DEEL 1
 // ============================================
 
 const fotoKnop = document.getElementById("fotoToevoegen");
@@ -14,132 +16,297 @@ fotoKnop?.addEventListener("click", () => {
 
 
 
-document
-    .getElementById("opslaanFoto")
-    ?.addEventListener("click", async () => {
+// ============================================
+// Foto verkleinen
+// maximum 2000px
+// ============================================
+
+function verkleinFoto(bestand) {
+
+    return new Promise((resolve) => {
+
+        const img = new Image();
+
+        const reader = new FileReader();
 
 
-        const plaat = window.geselecteerdePlaat;
+        reader.onload = (e) => {
+
+            img.onload = () => {
 
 
-        if (!plaat) {
-
-            alert("Geen plaat geselecteerd");
-            return;
-
-        }
+                let breedte = img.width;
+                let hoogte = img.height;
 
 
-        const bestand =
-            document.getElementById("fotoBestand").files[0];
+                const maximum = 2000;
 
 
-        if (!bestand) {
-
-            alert("Kies eerst een foto");
-            return;
-
-        }
+                if (breedte > maximum || hoogte > maximum) {
 
 
-        const categorie =
-            document.getElementById("categorie").value;
+                    if (breedte > hoogte) {
 
+                        hoogte =
+                            hoogte *
+                            (maximum / breedte);
 
-        const titel =
-            document.getElementById("fotoTitel").value.trim();
+                        breedte = maximum;
 
+                    } else {
 
-        const beschrijving =
-            document.getElementById("fotoBeschrijving").value.trim();
+                        breedte =
+                            breedte *
+                            (maximum / hoogte);
 
+                        hoogte = maximum;
 
+                    }
 
-        // Bestand opslaan onder:
-        // H161/1750000000000_foto.jpg
-
-        const bestandsnaam =
-            `${plaat.code}/${Date.now()}_${bestand.name}`;
+                }
 
 
 
-        // Upload naar Supabase Storage
+                const canvas =
+                    document.createElement("canvas");
 
-        const { error: uploadError } =
-            await supabaseClient
-                .storage
-                .from("plaatfotos")
-                .upload(
-                    bestandsnaam,
-                    bestand
+
+                canvas.width = breedte;
+                canvas.height = hoogte;
+
+
+                const ctx =
+                    canvas.getContext("2d");
+
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    breedte,
+                    hoogte
                 );
 
 
-        if (uploadError) {
 
-            console.error(uploadError);
+                canvas.toBlob(
+                    (blob) => {
 
-            alert(
-                "Upload mislukt:\n\n" +
-                uploadError.message
-            );
-
-            return;
-
-        }
-
+                        const nieuweNaam =
+                            bestand.name
+                            .replace(
+                                /\.[^/.]+$/,
+                                ""
+                            )
+                            + ".jpg";
 
 
-        // Ingelogde gebruiker ophalen
+                        resolve(
+                            new File(
+                                [blob],
+                                nieuweNaam,
+                                {
+                                    type: "image/jpeg"
+                                }
+                            )
+                        );
 
-        const { data: userData } =
-            await supabaseClient.auth.getUser();
-
-
-        const gebruiker =
-            userData.user
-                ? userData.user.email
-                : "onbekend";
-
-
-
-        // Alleen het opslagpad bewaren
-        // GEEN volledige URL meer!
-
-        const { error } =
-            await supabaseClient
-                .from("eigen_data")
-                .insert({
-
-                    code: plaat.code,
-
-                    type: categorie,
-
-                    omschrijving:
-                        `${titel}\n${beschrijving}`,
-
-                    foto: bestandsnaam,
-
-                    toegevoegd_door: gebruiker
-
-                });
+                    },
+                    "image/jpeg",
+                    0.8
+                );
 
 
-
-        if (error) {
-
-            console.error(error);
-
-            alert("Opslaan mislukt");
-
-            return;
-
-        }
+            };
 
 
+            img.src = e.target.result;
 
-        alert("Foto toegevoegd!");
+        };
 
-        location.reload();
+
+        reader.readAsDataURL(bestand);
+
 
     });
+
+}
+// ============================================
+// Upload en opslaan
+// DEEL 2
+// ============================================
+
+
+document
+.getElementById("opslaanFoto")
+?.addEventListener("click", async () => {
+
+
+    const plaat = window.geselecteerdePlaat;
+
+
+    if (!plaat) {
+
+        alert("Geen plaat geselecteerd");
+        return;
+
+    }
+
+
+
+    const origineleFoto =
+        document
+        .getElementById("fotoBestand")
+        .files[0];
+
+
+
+    if (!origineleFoto) {
+
+        alert("Kies eerst een foto");
+        return;
+
+    }
+
+
+
+    // Foto verkleinen
+
+    const bestand =
+        await verkleinFoto(
+            origineleFoto
+        );
+
+
+
+    const categorie =
+        document
+        .getElementById("categorie")
+        .value;
+
+
+
+    const titel =
+        document
+        .getElementById("fotoTitel")
+        .value
+        .trim();
+
+
+
+    const beschrijving =
+        document
+        .getElementById("fotoBeschrijving")
+        .value
+        .trim();
+
+
+
+
+    const bestandsnaam =
+        `${plaat.code}/${Date.now()}_${bestand.name}`;
+
+
+
+    // Upload naar Storage
+
+    const { error: uploadError } =
+        await supabaseClient
+        .storage
+        .from("plaatfotos")
+        .upload(
+            bestandsnaam,
+            bestand
+        );
+
+
+
+    if (uploadError) {
+
+
+        console.error(
+            "UPLOAD ERROR:",
+            uploadError
+        );
+
+
+        alert(
+            "Upload mislukt:\n\n" +
+            uploadError.message
+        );
+
+
+        return;
+
+    }
+
+
+
+
+    // gebruiker ophalen
+
+    const { data: userData } =
+        await supabaseClient.auth.getUser();
+
+
+
+    const gebruiker =
+        userData.user
+        ? userData.user.email
+        : "onbekend";
+
+
+
+
+    // Database record
+
+    const { error } =
+        await supabaseClient
+        .from("eigen_data")
+        .insert({
+
+            code: plaat.code,
+
+            type: categorie,
+
+            omschrijving:
+                `${titel}\n${beschrijving}`,
+
+            foto: bestandsnaam,
+
+            toegevoegd_door: gebruiker
+
+        });
+
+
+
+
+    if (error) {
+
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "Opslaan mislukt"
+        );
+
+
+        return;
+
+    }
+
+
+
+
+    alert(
+        "Foto toegevoegd!"
+    );
+
+
+    location.reload();
+
+
+});
