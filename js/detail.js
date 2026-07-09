@@ -2,6 +2,7 @@
 // detail.js
 // ============================================
 
+
 window.geselecteerdePlaat = null;
 
 const detail = document.getElementById("detail");
