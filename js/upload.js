@@ -66,13 +66,18 @@ document
             );
 
 
-    if (uploadError) {
+if (uploadError) {
 
-        console.error(uploadError);
-        alert("Upload mislukt");
-        return;
+    console.error("UPLOAD ERROR:", uploadError);
 
-    }
+    alert(
+        "Upload mislukt:\n\n" +
+        uploadError.message
+    );
+
+    return;
+
+}
 
 
 
