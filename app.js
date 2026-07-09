@@ -153,7 +153,6 @@ document
         fotoFormulier.classList.toggle("verborgen");
 
     };
-}
 
 function toonDetail(plaat) {
 
@@ -253,14 +252,11 @@ async function login(){
 
         });
 
-    if(error){
-
-        alert(error.message);
-console.error("Upload fout:", uploadError);
-console.error("Database fout:", dbError);
-        return;
-
-    }
+if (error) {
+    console.error(error);
+    alert(error.message);
+    return;
+}
 
     controleerLogin();
 
