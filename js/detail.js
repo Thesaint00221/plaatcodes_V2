@@ -2,7 +2,7 @@
 // detail.js
 // ============================================
 
-let geselecteerdePlaat = null;
+window.geselecteerdePlaat = null;
 
 const detail = document.getElementById("detail");
 const detailContent = document.getElementById("detailContent");
@@ -11,7 +11,7 @@ const terug = document.getElementById("terug");
 
 function toonDetail(plaat) {
 
-    geselecteerdePlaat = plaat;
+   window.geselecteerdePlaat = plaat;
 
     // zoekpagina verbergen
     document.getElementById("resultaten").style.display = "none";
