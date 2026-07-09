@@ -10,9 +10,11 @@ const detailContent = document.getElementById("detailContent");
 const terug = document.getElementById("terug");
 
 
+
 function toonDetail(plaat) {
 
-   window.geselecteerdePlaat = plaat;
+    window.geselecteerdePlaat = plaat;
+
 
     // zoekpagina verbergen
     document.getElementById("resultaten").style.display = "none";
@@ -22,7 +24,9 @@ function toonDetail(plaat) {
     // detail tonen
     detail.classList.remove("hidden");
 
+
     detailContent.innerHTML = `
+
         <h2>${plaat.naam}</h2>
 
         <p>
@@ -34,36 +38,48 @@ function toonDetail(plaat) {
         </p>
 
         <div id="galerij"></div>
+
     `;
+
 
     toonFotos(plaat);
 
-    // naar boven scrollen
+
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
+
 }
+
+
 
 
 async function toonFotos(plaat) {
 
-    const galerij = document.getElementById("galerij");
+    const galerij =
+        document.getElementById("galerij");
+
 
     galerij.innerHTML = `
         <h3>Foto's</h3>
     `;
 
 
+
     // ==========================================
-    // Bestaande foto's uit GitHub
+    // Basisfoto's uit GitHub
     // ==========================================
+
 
     if (plaat.photos && plaat.photos.length) {
 
+
         plaat.photos.forEach(foto => {
 
+
             galerij.innerHTML += `
+
                 <div class="fotoKaart">
 
                     <img
@@ -76,6 +92,7 @@ async function toonFotos(plaat) {
                     </p>
 
                 </div>
+
             `;
 
         });
@@ -84,9 +101,21 @@ async function toonFotos(plaat) {
 
 
 
+
     // ==========================================
-    // Extra foto's uit Supabase
+    // Gebruiker ophalen
     // ==========================================
+
+    const gebruiker =
+        await laadGebruikersRol();
+
+
+
+
+    // ==========================================
+    // Extra foto's Supabase
+    // ==========================================
+
 
     const { data, error } =
         await supabaseClient
@@ -110,13 +139,18 @@ async function toonFotos(plaat) {
 
 
 
+
     if (!data || data.length === 0) {
 
+
         galerij.innerHTML += `
+
             <p>
                 Nog geen extra foto's toegevoegd.
             </p>
+
         `;
+
 
         return;
 
@@ -124,12 +158,24 @@ async function toonFotos(plaat) {
 
 
 
+
     data.forEach(item => {
+
+
+
+        const verwijderen =
+            magVerwijderen(
+                item,
+                gebruiker
+            );
+
 
 
         galerij.innerHTML += `
 
+
             <div class="fotoKaart">
+
 
                 <img
                     src="${item.foto}"
@@ -137,9 +183,13 @@ async function toonFotos(plaat) {
                     alt="${plaat.code}">
 
 
+
                 <p>
-                    <strong>${item.type || ""}</strong>
+                    <strong>
+                        ${item.type || ""}
+                    </strong>
                 </p>
+
 
 
                 <p>
@@ -147,39 +197,123 @@ async function toonFotos(plaat) {
                 </p>
 
 
-<small>
 
-    ${item.datum 
-        ? new Date(item.datum)
-            .toLocaleDateString("nl-BE")
-        : ""}
+                <small>
 
-    <br>
+                    ${item.datum
+                        ? new Date(item.datum)
+                            .toLocaleDateString("nl-BE")
+                        : ""}
 
-    Toegevoegd door:
-    ${item.toegevoegd_door || "onbekend"}
 
-</small>
+                    <br>
+
+
+                    Toegevoegd door:
+                    ${item.toegevoegd_door || "onbekend"}
+
+                </small>
+
+
+
+                ${
+                    verwijderen
+                    ?
+                    `
+
+                    <br>
+
+                    <button
+                        class="verwijderFoto"
+                        data-id="${item.id}"
+                        data-foto="${item.foto}">
+
+                        🗑 Verwijderen
+
+                    </button>
+
+                    `
+                    :
+                    ""
+                }
+
+
 
             </div>
 
+
         `;
 
+
     });
+
 
 }
 
 
+
+
+// ==========================================
+// Controle verwijderrechten
+// ==========================================
+
+
+function magVerwijderen(item, gebruiker) {
+
+
+    if (!gebruiker) {
+
+        return false;
+
+    }
+
+
+
+    // beheerder mag alles
+
+    if (gebruiker.rol === "beheerder") {
+
+        return true;
+
+    }
+
+
+
+    // gewone gebruiker alleen eigen foto's
+
+    return item.toegevoegd_door === gebruiker.email;
+
+
+}
+
+
+
+
+
+// ==========================================
+// Terug knop
+// ==========================================
+
+
 terug.addEventListener("click", () => {
+
 
     detail.classList.add("hidden");
 
+
     document.getElementById("resultaten").style.display = "grid";
+
     document.querySelector(".search").style.display = "block";
 
+
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
 
+
+});
 });
