@@ -187,7 +187,7 @@ async function toonFotos(plaat) {
             );
 
 
-
+console.log("FOTO URL:", fotoUrl);
         galerij.innerHTML += `
 
             <div class="fotoKaart">
