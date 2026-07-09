@@ -1,7 +1,7 @@
 // ============================================
 // detail.js
+// DEEL 1
 // ============================================
-
 
 window.geselecteerdePlaat = null;
 
@@ -15,35 +15,24 @@ function toonDetail(plaat) {
 
     window.geselecteerdePlaat = plaat;
 
-
-    // zoekpagina verbergen
     document.getElementById("resultaten").style.display = "none";
     document.querySelector(".search").style.display = "none";
 
-
-    // detail tonen
     detail.classList.remove("hidden");
-
 
     detailContent.innerHTML = `
 
         <h2>${plaat.naam}</h2>
 
-        <p>
-            <strong>Code:</strong> ${plaat.code}
-        </p>
+        <p><strong>Code:</strong> ${plaat.code}</p>
 
-        <p>
-            <strong>Leverancier:</strong> ${plaat.leverancier}
-        </p>
+        <p><strong>Leverancier:</strong> ${plaat.leverancier}</p>
 
         <div id="galerij"></div>
 
     `;
 
-
     toonFotos(plaat);
-
 
     window.scrollTo({
         top: 0,
@@ -55,11 +44,11 @@ function toonDetail(plaat) {
 
 
 
+
 async function toonFotos(plaat) {
 
     const galerij =
         document.getElementById("galerij");
-
 
     galerij.innerHTML = `
         <h3>Foto's</h3>
@@ -68,15 +57,12 @@ async function toonFotos(plaat) {
 
 
     // ==========================================
-    // Basisfoto's uit GitHub
+    // GitHub foto's
     // ==========================================
-
 
     if (plaat.photos && plaat.photos.length) {
 
-
         plaat.photos.forEach(foto => {
-
 
             galerij.innerHTML += `
 
@@ -85,11 +71,13 @@ async function toonFotos(plaat) {
                     <img
                         src="photos/${foto}"
                         class="detailFoto"
-                        alt="${plaat.naam}">
+                        alt="${plaat.naam}"
 
-                    <p>
-                        Basisfoto
-                    </p>
+                        onerror="
+                            this.style.display='none';
+                        ">
+
+                    <p>Basisfoto</p>
 
                 </div>
 
@@ -101,9 +89,8 @@ async function toonFotos(plaat) {
 
 
 
-
     // ==========================================
-    // Gebruiker ophalen
+    // gebruiker ophalen
     // ==========================================
 
     const gebruiker =
@@ -113,44 +100,39 @@ async function toonFotos(plaat) {
 
 
     // ==========================================
-    // Extra foto's Supabase
+    // Supabase foto's ophalen
     // ==========================================
-
 
     const { data, error } =
         await supabaseClient
             .from("eigen_data")
             .select("*")
             .eq("code", plaat.code)
-            .not("foto", "is", null);
+            .order("datum", {
+                ascending: false
+            });
 
 
 
     if (error) {
 
-        console.error(
-            "Fout bij ophalen foto's:",
-            error
-        );
+        console.error(error);
+
+        galerij.innerHTML += `
+            <p>Fout bij ophalen foto's.</p>
+        `;
 
         return;
 
     }
-
 
 
 
     if (!data || data.length === 0) {
 
-
         galerij.innerHTML += `
-
-            <p>
-                Nog geen extra foto's toegevoegd.
-            </p>
-
+            <p>Nog geen extra foto's.</p>
         `;
-
 
         return;
 
@@ -158,8 +140,43 @@ async function toonFotos(plaat) {
 
 
 
+    for (const item of data) {
 
-    data.forEach(item => {
+        let fotoUrl = "";
+
+
+
+        // ======================================
+        // Oude records (volledige URL)
+        // ======================================
+
+        if (
+            item.foto &&
+            item.foto.startsWith("http")
+        ) {
+
+            fotoUrl = item.foto;
+
+        }
+
+        // ======================================
+        // Nieuwe records (opslagpad)
+        // ======================================
+
+        else {
+
+            const { data: urlData } =
+                supabaseClient
+                    .storage
+                    .from("plaatfotos")
+                    .getPublicUrl(
+                        item.foto
+                    );
+
+            fotoUrl =
+                urlData.publicUrl;
+
+        }
 
 
 
@@ -173,30 +190,27 @@ async function toonFotos(plaat) {
 
         galerij.innerHTML += `
 
-
             <div class="fotoKaart">
 
-
                 <img
-                    src="${item.foto}"
-                    class="detailFoto"
-                    alt="${plaat.code}">
-
-
+                    src="${fotoUrl}"
+                    class="detailFoto">
 
                 <p>
+
                     <strong>
+
                         ${item.type || ""}
+
                     </strong>
+
                 </p>
-
-
 
                 <p>
+
                     ${item.omschrijving || ""}
+
                 </p>
-
-
 
                 <small>
 
@@ -205,60 +219,55 @@ async function toonFotos(plaat) {
                             .toLocaleDateString("nl-BE")
                         : ""}
 
-
                     <br>
 
-
                     Toegevoegd door:
-                    ${item.toegevoegd_door || "onbekend"}
+
+                    ${item.toegevoegd_door || ""}
 
                 </small>
-
-
 
                 ${
                     verwijderen
                     ?
+
                     `
 
                     <br>
 
-<button
-    class="verwijderFoto"
-    onclick="verwijderFoto('${item.id}', '${item.foto}')">
+                    <button
+                        class="verwijderFoto"
 
-    🗑 Verwijderen
+                        onclick="verwijderFoto(
+                            '${item.id}',
+                            '${item.foto}'
+                        )">
 
-</button>
+                        🗑 Verwijderen
+
+                    </button>
 
                     `
+
                     :
+
                     ""
+
                 }
-
-
 
             </div>
 
-
         `;
 
-
-    });
-
+    }
 
 }
 
 
 
 
-// ==========================================
-// Controle verwijderrechten
-// ==========================================
-
 
 function magVerwijderen(item, gebruiker) {
-
 
     if (!gebruiker) {
 
@@ -266,90 +275,72 @@ function magVerwijderen(item, gebruiker) {
 
     }
 
-
-
-    // beheerder mag alles
-
     if (gebruiker.rol === "beheerder") {
 
         return true;
 
     }
 
-
-
-    // gewone gebruiker alleen eigen foto's
-
-    return item.toegevoegd_door === gebruiker.email;
-
+    return (
+        item.toegevoegd_door ===
+        gebruiker.email
+    );
 
 }
-
-
 // ==========================================
 // Foto verwijderen
 // ==========================================
 
-async function verwijderFoto(id, fotoUrl) {
-
+async function verwijderFoto(id, opslagPad) {
 
     if (!confirm("Deze foto verwijderen?")) {
         return;
     }
 
 
+    // Oude records (volledige URL) omzetten
+    // naar opslagpad
 
-    // bestandspad uit Supabase URL halen
+    if (
+        opslagPad &&
+        opslagPad.startsWith("http")
+    ) {
 
-    const marker = "/plaatfotos/";
+        const marker = "/plaatfotos/";
 
-    const positie =
-        fotoUrl.indexOf(marker);
+        const positie =
+            opslagPad.indexOf(marker);
 
+        if (positie !== -1) {
 
+            opslagPad =
+                opslagPad.substring(
+                    positie +
+                    marker.length
+                );
 
-    if (positie === -1) {
-
-        alert("Kan opslagpad niet vinden");
-
-        return;
+        }
 
     }
 
 
+    // Bestand verwijderen uit Storage
 
-    const pad =
-        fotoUrl.substring(
-            positie + marker.length
-        );
-
-
-
-    console.log("Verwijder uit storage:", pad);
-
-
-
-    // verwijderen uit Storage
-
-const resultaat =
-    await supabaseClient
-        .storage
-        .from("plaatfotos")
-        .remove([pad]);
-
-console.log(resultaat);
-
+    const { error: storageError } =
+        await supabaseClient
+            .storage
+            .from("plaatfotos")
+            .remove([
+                opslagPad
+            ]);
 
 
     if (storageError) {
 
-        console.error(
-            "Storage fout:",
-            storageError
-        );
+        console.error(storageError);
 
         alert(
-            "Foto uit opslag verwijderen mislukt"
+            "Foto uit opslag verwijderen mislukt."
         );
 
         return;
@@ -357,8 +348,7 @@ console.log(resultaat);
     }
 
 
-
-    // verwijderen uit database
+    // Record verwijderen uit database
 
     const { error: databaseError } =
         await supabaseClient
@@ -367,16 +357,12 @@ console.log(resultaat);
             .eq("id", id);
 
 
-
     if (databaseError) {
 
-        console.error(
-            "Database fout:",
-            databaseError
-        );
+        console.error(databaseError);
 
         alert(
-            "Gegevens verwijderen mislukt"
+            "Database-record verwijderen mislukt."
         );
 
         return;
@@ -384,9 +370,7 @@ console.log(resultaat);
     }
 
 
-
-    alert("Foto volledig verwijderd");
-
+    alert("Foto verwijderd.");
 
     toonFotos(
         window.geselecteerdePlaat
@@ -394,21 +378,19 @@ console.log(resultaat);
 
 }
 
+
+
 // ==========================================
 // Terug knop
 // ==========================================
 
-
 terug.addEventListener("click", () => {
 
-
     detail.classList.add("hidden");
-
 
     document.getElementById("resultaten").style.display = "grid";
 
     document.querySelector(".search").style.display = "block";
-
 
     window.scrollTo({
 
@@ -418,6 +400,4 @@ terug.addEventListener("click", () => {
 
     });
 
-
 });
-
