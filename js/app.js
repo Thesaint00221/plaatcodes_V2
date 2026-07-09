@@ -1,1 +1,3 @@
-console.log("Nieuwe structuur actief");
+document.addEventListener("DOMContentLoaded", async () => {
+    await initCatalogus();
+});
