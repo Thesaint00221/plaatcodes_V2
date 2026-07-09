@@ -103,3 +103,49 @@ async function updateLoginStatus() {
 // starten
 
 updateLoginStatus();
+// ============================================
+// gebruikersrol ophalen
+// ============================================
+
+window.huidigeGebruiker = null;
+
+
+async function laadGebruikersRol() {
+
+    const { data: userData } =
+        await supabaseClient.auth.getUser();
+
+
+    if (!userData.user) {
+        return null;
+    }
+
+
+    const email =
+        userData.user.email;
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("gebruikers")
+            .select("*")
+            .eq("email", email)
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "Rol ophalen mislukt:",
+            error
+        );
+
+        return null;
+    }
+
+
+    window.huidigeGebruiker = data;
+
+    return data;
+
+}
