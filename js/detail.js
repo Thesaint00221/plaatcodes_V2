@@ -223,14 +223,13 @@ async function toonFotos(plaat) {
 
                     <br>
 
-                    <button
-                        class="verwijderFoto"
-                        data-id="${item.id}"
-                        data-foto="${item.foto}">
+<button
+    class="verwijderFoto"
+    onclick="verwijderFoto('${item.id}', '${item.foto}')">
 
-                        🗑 Verwijderen
+    🗑 Verwijderen
 
-                    </button>
+</button>
 
                     `
                     :
@@ -287,7 +286,91 @@ function magVerwijderen(item, gebruiker) {
 }
 
 
+// ==========================================
+// Foto verwijderen
+// ==========================================
 
+async function verwijderFoto(id, fotoUrl) {
+
+
+    if (!confirm("Deze foto verwijderen?")) {
+        return;
+    }
+
+
+    // bestandsnaam uit URL halen
+
+    const pad =
+        fotoUrl.split("/plaatfotos/")[1];
+
+
+    if (!pad) {
+
+        alert("Kan bestandslocatie niet vinden");
+        return;
+
+    }
+
+
+
+    // verwijderen uit Storage
+
+    const { error: storageError } =
+        await supabaseClient
+            .storage
+            .from("plaatfotos")
+            .remove([
+                pad
+            ]);
+
+
+
+    if (storageError) {
+
+        console.error(storageError);
+
+        alert(
+            "Foto verwijderen mislukt"
+        );
+
+        return;
+
+    }
+
+
+
+    // verwijderen uit database
+
+    const { error: databaseError } =
+        await supabaseClient
+            .from("eigen_data")
+            .delete()
+            .eq("id", id);
+
+
+
+    if (databaseError) {
+
+        console.error(databaseError);
+
+        alert(
+            "Gegevens verwijderen mislukt"
+        );
+
+        return;
+
+    }
+
+
+
+    alert("Foto verwijderd");
+
+
+    toonFotos(
+        window.geselecteerdePlaat
+    );
+
+}
 
 
 // ==========================================
