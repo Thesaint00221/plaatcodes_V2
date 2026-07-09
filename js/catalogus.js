@@ -91,8 +91,8 @@ function toonPlaten(lijst) {
                     eersteFoto
                         ? `
                     <img src="${eersteFoto}"
-                         alt="${plaat.naam}"
-                         onerror="this.remove();this.parentElement.innerHTML='📷';">
+     alt="${plaat.naam}"
+     onerror="this.parentElement.innerHTML='📷';">
                     `
                         : "📷"
                 }
