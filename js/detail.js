@@ -13,6 +13,12 @@ function toonDetail(plaat) {
 
     geselecteerdePlaat = plaat;
 
+    // zoekpagina verbergen
+    document.getElementById("resultaten").style.display = "none";
+    document.querySelector(".search").style.display = "none";
+
+
+    // detail tonen
     detail.classList.remove("hidden");
 
     detailContent.innerHTML = `
@@ -30,6 +36,12 @@ function toonDetail(plaat) {
     `;
 
     toonFotos(plaat);
+
+    // naar boven scrollen
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 
@@ -107,5 +119,13 @@ async function toonFotos(plaat) {
 terug.addEventListener("click", () => {
 
     detail.classList.add("hidden");
+
+    document.getElementById("resultaten").style.display = "grid";
+    document.querySelector(".search").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 });
