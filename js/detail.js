@@ -298,18 +298,34 @@ async function verwijderFoto(id, fotoUrl) {
     }
 
 
-    // bestandsnaam uit URL halen
 
-    const pad =
-        fotoUrl.split("/plaatfotos/")[1];
+    // bestandspad uit Supabase URL halen
+
+    const marker = "/plaatfotos/";
+
+    const positie =
+        fotoUrl.indexOf(marker);
 
 
-    if (!pad) {
 
-        alert("Kan bestandslocatie niet vinden");
+    if (positie === -1) {
+
+        alert("Kan opslagpad niet vinden");
+
         return;
 
     }
+
+
+
+    const pad =
+        fotoUrl.substring(
+            positie + marker.length
+        );
+
+
+
+    console.log("Verwijder uit storage:", pad);
 
 
 
@@ -327,10 +343,13 @@ async function verwijderFoto(id, fotoUrl) {
 
     if (storageError) {
 
-        console.error(storageError);
+        console.error(
+            "Storage fout:",
+            storageError
+        );
 
         alert(
-            "Foto verwijderen mislukt"
+            "Foto uit opslag verwijderen mislukt"
         );
 
         return;
@@ -351,7 +370,10 @@ async function verwijderFoto(id, fotoUrl) {
 
     if (databaseError) {
 
-        console.error(databaseError);
+        console.error(
+            "Database fout:",
+            databaseError
+        );
 
         alert(
             "Gegevens verwijderen mislukt"
@@ -363,7 +385,7 @@ async function verwijderFoto(id, fotoUrl) {
 
 
 
-    alert("Foto verwijderd");
+    alert("Foto volledig verwijderd");
 
 
     toonFotos(
@@ -371,7 +393,6 @@ async function verwijderFoto(id, fotoUrl) {
     );
 
 }
-
 
 // ==========================================
 // Terug knop
