@@ -331,13 +331,13 @@ async function verwijderFoto(id, fotoUrl) {
 
     // verwijderen uit Storage
 
-    const { error: storageError } =
-        await supabaseClient
-            .storage
-            .from("plaatfotos")
-            .remove([
-                pad
-            ]);
+const resultaat =
+    await supabaseClient
+        .storage
+        .from("plaatfotos")
+        .remove([pad]);
+
+console.log(resultaat);
 
 
 
