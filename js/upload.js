@@ -15,123 +15,131 @@ fotoKnop?.addEventListener("click", () => {
 
 
 document
-.getElementById("opslaanFoto")
-?.addEventListener("click", async () => {
+    .getElementById("opslaanFoto")
+    ?.addEventListener("click", async () => {
 
 
-    const plaat = window.geselecteerdePlaat;
+        const plaat = window.geselecteerdePlaat;
 
 
-    if (!plaat) {
-        alert("Geen plaat geselecteerd");
-        return;
-    }
+        if (!plaat) {
+
+            alert("Geen plaat geselecteerd");
+            return;
+
+        }
 
 
-    const bestand =
-        document.getElementById("fotoBestand").files[0];
+        const bestand =
+            document.getElementById("fotoBestand").files[0];
 
 
-    if (!bestand) {
-        alert("Kies eerst een foto");
-        return;
-    }
+        if (!bestand) {
+
+            alert("Kies eerst een foto");
+            return;
+
+        }
 
 
-    const categorie =
-        document.getElementById("categorie").value;
+        const categorie =
+            document.getElementById("categorie").value;
 
 
-    const titel =
-        document.getElementById("fotoTitel").value;
+        const titel =
+            document.getElementById("fotoTitel").value.trim();
 
 
-    const beschrijving =
-        document.getElementById("fotoBeschrijving").value;
-
-
-
-    const bestandsnaam =
-        `${plaat.code}/${Date.now()}_${bestand.name}`;
+        const beschrijving =
+            document.getElementById("fotoBeschrijving").value.trim();
 
 
 
-    const { error: uploadError } =
-        await supabaseClient
-            .storage
-            .from("plaatfotos")
-            .upload(
-                bestandsnaam,
-                bestand
+        // Bestand opslaan onder:
+        // H161/1750000000000_foto.jpg
+
+        const bestandsnaam =
+            `${plaat.code}/${Date.now()}_${bestand.name}`;
+
+
+
+        // Upload naar Supabase Storage
+
+        const { error: uploadError } =
+            await supabaseClient
+                .storage
+                .from("plaatfotos")
+                .upload(
+                    bestandsnaam,
+                    bestand
+                );
+
+
+        if (uploadError) {
+
+            console.error(uploadError);
+
+            alert(
+                "Upload mislukt:\n\n" +
+                uploadError.message
             );
 
+            return;
 
-if (uploadError) {
-
-    console.error("UPLOAD ERROR:", uploadError);
-
-    alert(
-        "Upload mislukt:\n\n" +
-        uploadError.message
-    );
-
-    return;
-
-}
+        }
 
 
 
-    const { data:urlData } =
-        supabaseClient
-            .storage
-            .from("plaatfotos")
-            .getPublicUrl(bestandsnaam);
+        // Ingelogde gebruiker ophalen
+
+        const { data: userData } =
+            await supabaseClient.auth.getUser();
+
+
+        const gebruiker =
+            userData.user
+                ? userData.user.email
+                : "onbekend";
 
 
 
-    const fotoUrl = urlData.publicUrl;
+        // Alleen het opslagpad bewaren
+        // GEEN volledige URL meer!
+
+        const { error } =
+            await supabaseClient
+                .from("eigen_data")
+                .insert({
+
+                    code: plaat.code,
+
+                    type: categorie,
+
+                    omschrijving:
+                        `${titel}\n${beschrijving}`,
+
+                    foto: bestandsnaam,
+
+                    toegevoegd_door: gebruiker
+
+                });
 
 
 
-// huidige gebruiker ophalen
+        if (error) {
 
-const { data: userData } =
-    await supabaseClient.auth.getUser();
+            console.error(error);
 
+            alert("Opslaan mislukt");
 
-const gebruiker =
-    userData.user
-        ? userData.user.email
-        : "onbekend";
+            return;
 
-
-// record opslaan
-
-const { error } =
-    await supabaseClient
-        .from("eigen_data")
-        .insert({
-
-            code: plaat.code,
-            type: categorie,
-            omschrijving:
-                `${titel}\n${beschrijving}`,
-            foto: fotoUrl,
-            toegevoegd_door: gebruiker
-
-        });
-
-    if (error) {
-
-        console.error(error);
-        alert("Opslaan mislukt");
-        return;
-
-    }
+        }
 
 
-    alert("Foto toegevoegd!");
 
-    location.reload();
+        alert("Foto toegevoegd!");
 
-});
+        location.reload();
+
+    });
