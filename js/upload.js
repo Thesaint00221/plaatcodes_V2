@@ -93,20 +93,33 @@ if (uploadError) {
 
 
 
-    const { error } =
-        await supabaseClient
-            .from("eigen_data")
-            .insert({
+// huidige gebruiker ophalen
 
-                code: plaat.code,
-                type: categorie,
-                omschrijving:
-                    `${titel}\n${beschrijving}`,
-                foto: fotoUrl
-
-            });
+const { data: userData } =
+    await supabaseClient.auth.getUser();
 
 
+const gebruiker =
+    userData.user
+        ? userData.user.email
+        : "onbekend";
+
+
+// record opslaan
+
+const { error } =
+    await supabaseClient
+        .from("eigen_data")
+        .insert({
+
+            code: plaat.code,
+            type: categorie,
+            omschrijving:
+                `${titel}\n${beschrijving}`,
+            foto: fotoUrl,
+            toegevoegd_door: gebruiker
+
+        });
 
     if (error) {
 
