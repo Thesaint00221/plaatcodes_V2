@@ -1,151 +1,110 @@
 // ============================================
 // catalogus.js
-// Plaatcatalogus
 // ============================================
 
 let platen = [];
-let huidigePlaat = null;
 
 const resultaten = document.getElementById("resultaten");
 const zoekveld = document.getElementById("search");
 
-const detail = document.getElementById("detail");
-const detailContent = document.getElementById("detailContent");
+async function initCatalogus() {
+    try {
+        const response = await fetch("data.json");
 
-const terug = document.getElementById("terug");
+        if (!response.ok) {
+            throw new Error(`Kan data.json niet laden (${response.status})`);
+        }
 
-terug.onclick = () => {
+        platen = await response.json();
 
-    detail.classList.add("hidden");
-    resultaten.style.display = "grid";
+        toonPlaten(platen);
 
-};
+    } catch (err) {
+        console.error(err);
 
-async function laadPlaten() {
-
-    const response = await fetch("platen.json");
-
-    platen = await response.json();
-
-    toonPlaten(platen);
-
+        resultaten.innerHTML = `
+            <p class="geenResultaat">
+                Fout bij het laden van de catalogus.
+            </p>
+        `;
+    }
 }
 
 zoekveld.addEventListener("input", zoeken);
 
 function zoeken() {
 
-    const zoekterm =
-        zoekveld.value
-            .toLowerCase()
-            .trim();
+    const zoekterm = zoekveld.value.toLowerCase().trim();
+
+    if (!zoekterm) {
+        toonPlaten(platen);
+        return;
+    }
 
     const gevonden = platen.filter(plaat => {
 
+        const info = plaat.info || {};
+
         return (
-
-            plaat.naam
-                .toLowerCase()
-                .includes(zoekterm)
-
-            ||
-
-            plaat.code
-                .toLowerCase()
-                .includes(zoekterm)
-
-            ||
-
-            plaat.leverancier
-                .toLowerCase()
-                .includes(zoekterm)
-
-            ||
-
-            plaat.info.Referentie
-                .toLowerCase()
-                .includes(zoekterm)
-
-            ||
-
-            plaat.info.Kleur
-                .toLowerCase()
-                .includes(zoekterm)
-
-            ||
-
-            String(
-                plaat.info.Kleurnummer ?? ""
-            ).includes(zoekterm);
+            (plaat.naam || "").toLowerCase().includes(zoekterm) ||
+            (plaat.code || "").toLowerCase().includes(zoekterm) ||
+            (plaat.leverancier || "").toLowerCase().includes(zoekterm) ||
+            (info.Referentie || "").toLowerCase().includes(zoekterm) ||
+            (info.Kleur || "").toLowerCase().includes(zoekterm) ||
+            String(info.Kleurnummer || "").includes(zoekterm)
+        );
 
     });
 
     toonPlaten(gevonden);
-
 }
+
 function toonPlaten(lijst) {
 
     resultaten.innerHTML = "";
 
     if (lijst.length === 0) {
-
         resultaten.innerHTML =
             "<p class='geenResultaat'>Geen platen gevonden.</p>";
-
         return;
     }
 
     lijst.forEach(plaat => {
 
         const kaart = document.createElement("div");
-
         kaart.className = "kaart";
 
-        kaart.onclick = () => toonDetail(plaat);
+        kaart.addEventListener("click", () => {
+            if (typeof toonDetail === "function") {
+                toonDetail(plaat);
+            }
+        });
 
-        let foto = `
-            <div class="kaartPlaceholder">
-                📷
-            </div>
-        `;
-
-        if (plaat.photos &&
-            plaat.photos.length > 0) {
-
-            foto = `
-                <img
-                    src="photos/${plaat.photos[0]}"
-                    alt="${plaat.naam}"
-                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-
-                <div
-                    class="kaartPlaceholder"
-                    style="display:none;">
-                    📷
-                </div>
-            `;
-        }
+        const eersteFoto =
+            plaat.photos && plaat.photos.length
+                ? `photos/${plaat.photos[0]}`
+                : "";
 
         kaart.innerHTML = `
-
-            ${foto}
-
-            <div class="inhoud">
-
-                <h2>${plaat.naam}</h2>
-
-                <p>
-                    <strong>Code:</strong>
-                    ${plaat.code}
-                </p>
-
-                <p>
-                    <strong>Leverancier:</strong>
-                    ${plaat.leverancier}
-                </p>
-
+            <div class="kaartFoto">
+                ${
+                    eersteFoto
+                        ? `
+                    <img src="${eersteFoto}"
+                         alt="${plaat.naam}"
+                         onerror="this.remove();this.parentElement.innerHTML='📷';">
+                    `
+                        : "📷"
+                }
             </div>
 
+            <div class="inhoud">
+                <h2>${plaat.naam}</h2>
+
+                <p><strong>Code:</strong> ${plaat.code}</p>
+
+                <p><strong>Leverancier:</strong> ${plaat.leverancier}</p>
+            </div>
         `;
 
         resultaten.appendChild(kaart);
@@ -154,12 +113,7 @@ function toonPlaten(lijst) {
 
 }
 
-document
-    .getElementById("fotoToevoegen")
-    .onclick = () => {
-
-        document
-            .getElementById("fotoFormulier")
-            .classList.toggle("verborgen");
-
+function getPlaat(code) {
+    return platen.find(p => p.code === code);
+}
     };
