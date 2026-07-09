@@ -146,12 +146,19 @@ async function toonFotos(plaat) {
                 </p>
 
 
-                <small>
-                    ${item.datum 
-                        ? new Date(item.datum)
-                            .toLocaleDateString("nl-BE")
-                        : ""}
-                </small>
+<small>
+
+    ${item.datum 
+        ? new Date(item.datum)
+            .toLocaleDateString("nl-BE")
+        : ""}
+
+    <br>
+
+    Toegevoegd door:
+    ${item.toegevoegd_door || "onbekend"}
+
+</small>
 
             </div>
 
