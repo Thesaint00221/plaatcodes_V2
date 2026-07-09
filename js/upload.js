@@ -2,6 +2,17 @@
 // upload.js
 // ============================================
 
+const fotoKnop = document.getElementById("fotoToevoegen");
+const fotoFormulier = document.getElementById("fotoFormulier");
+
+
+fotoKnop?.addEventListener("click", () => {
+
+    fotoFormulier.classList.toggle("verborgen");
+
+});
+
+
 
 document
 .getElementById("opslaanFoto")
@@ -45,8 +56,6 @@ document
 
 
 
-    // upload naar Supabase Storage
-
     const { error: uploadError } =
         await supabaseClient
             .storage
@@ -78,8 +87,6 @@ document
     const fotoUrl = urlData.publicUrl;
 
 
-
-    // record opslaan
 
     const { error } =
         await supabaseClient
