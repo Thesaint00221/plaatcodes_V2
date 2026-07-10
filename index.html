@@ -50,21 +50,36 @@
     <button id="terug">← Terug</button>
 
     <div id="detailContent"></div>
-<button id="fotoToevoegen">
-    📷 Foto toevoegen
-</button>
-    <div id="fotoFormulier" class="verborgen">
+<div id="uploadKaart">
 
-    <h3>Nieuwe foto</h3>
+    <button id="detailKnop" class="uploadKnop detail">
 
-    <label>
-        Categorie
-    </label>
+        🔍 DETAILFOTO
 
-<p>
-    Foto 1 wordt automatisch Detail.<br>
-    Foto 2 wordt automatisch Overzicht.
-</p>
+        <span>
+            Beschadiging - structuur - fout
+        </span>
+
+    </button>
+
+
+    <button id="overzichtKnop" class="uploadKnop overzicht">
+
+        🖼 OVERZICHTSFOTO
+
+        <span>
+            Volledige plaat of project
+        </span>
+
+    </button>
+
+
+    <input
+        type="file"
+        id="fotoBestand"
+        accept="image/*"
+        capture="environment"
+        hidden>
 
 
     <label>
@@ -75,26 +90,16 @@
 
 
     <label>
-        Beschrijving
+        Opmerking
     </label>
 
     <textarea id="fotoBeschrijving"></textarea>
 
 
-    <label>
-        Foto
-    </label>
-
-<input 
-    type="file"
-    id="fotoBestand"
-    accept="image/*"
-    multiple
->
-
-
     <button id="opslaanFoto">
-        Opslaan
+
+        ✔ Opslaan
+
     </button>
 
 </div>
