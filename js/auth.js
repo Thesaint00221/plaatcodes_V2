@@ -170,8 +170,14 @@ if(ingelogd){
 
 
 
-const user =
-data.session.user.email;
+const gebruiker =
+    await laadGebruikersRol();
+
+const naam =
+    gebruiker?.naam || data.session.user.email;
+
+const rol =
+    gebruiker?.rol || "";
 
 
 
