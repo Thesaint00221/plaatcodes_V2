@@ -491,28 +491,39 @@ console.log(
     bestanden
 );
 
-    if(bestanden.length){
+if(bestanden.length){
 
-        const {error:storageError} =
-            await supabaseClient
-            .storage
-            .from("plaatfotos")
-            .remove(bestanden);
+    const {data:removeData,error:storageError} =
+        await supabaseClient
+        .storage
+        .from("plaatfotos")
+        .remove(bestanden);
 
 
-        if(storageError){
+    console.log(
+        "Storage delete resultaat:",
+        removeData
+    );
 
-            console.error(storageError);
+    console.log(
+        "Storage delete fout:",
+        storageError
+    );
 
-            alert(
-                "Foto verwijderen mislukt"
-            );
 
-            return;
+    if(storageError){
 
-        }
+        console.error(storageError);
+
+        alert(
+            "Foto verwijderen mislukt"
+        );
+
+        return;
 
     }
+
+}
 
 
 
