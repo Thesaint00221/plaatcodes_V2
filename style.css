@@ -486,5 +486,142 @@ header h1{
     padding:20px;
 
 }
+/* ==========================================
+   Upload formulier mooier maken
+   ========================================== */
 
+
+#uploadKaart {
+
+    background:white;
+
+    padding:25px;
+
+    margin-top:25px;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+
+}
+
+
+
+#uploadKaart label {
+
+    display:block;
+
+    margin-top:20px;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    color:#333;
+
+}
+
+
+
+#uploadKaart input[type="text"],
+#uploadKaart input:not([type]),
+#uploadKaart textarea {
+
+
+    width:100%;
+
+    padding:15px;
+
+
+    border:2px solid #ddd;
+
+    border-radius:12px;
+
+
+    font-size:16px;
+
+
+    background:#fafafa;
+
+
+    transition:.2s;
+
+
+}
+
+
+
+#uploadKaart textarea {
+
+
+    min-height:120px;
+
+    resize:vertical;
+
+
+}
+
+
+
+#uploadKaart input:focus,
+#uploadKaart textarea:focus {
+
+
+    outline:none;
+
+    border-color:#1d4ed8;
+
+    background:white;
+
+    box-shadow:0 0 0 3px rgba(29,78,216,.15);
+
+
+}
+
+
+
+
+#opslaanFoto {
+
+
+    width:100%;
+
+    margin-top:25px;
+
+
+    padding:18px;
+
+
+    border:none;
+
+    border-radius:12px;
+
+
+    background:#1d4ed8;
+
+
+    color:white;
+
+
+    font-size:20px;
+
+    font-weight:bold;
+
+
+    cursor:pointer;
+
+
+}
+
+
+
+#opslaanFoto:hover {
+
+
+    opacity:.9;
+
+
+}
 }
