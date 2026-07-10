@@ -815,3 +815,187 @@ button:hover {
 
 }
 }
+/* ============================================
+   MODERNE LOGIN
+============================================ */
+
+
+#loginBox {
+
+    max-width:420px;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 8px 30px rgba(0,0,0,.15);
+
+    text-align:center;
+
+}
+
+
+/* Titel */
+
+.loginTitel {
+
+    margin-bottom:25px;
+
+}
+
+
+.loginTitel h2 {
+
+    margin-top:10px;
+
+    color:var(--blauw);
+
+    font-size:26px;
+
+}
+
+
+.loginTitel p {
+
+    color:#666;
+
+    margin-top:8px;
+
+}
+
+
+/* Invoervelden */
+
+
+#loginBox input {
+
+    width:100%;
+
+    padding:15px 18px;
+
+    margin-bottom:15px;
+
+    border:2px solid #ddd;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    background:#fafafa;
+
+    outline:none;
+
+    transition:.2s;
+
+}
+
+
+
+#loginBox input:focus {
+
+    border-color:var(--blauw);
+
+    background:white;
+
+    box-shadow:
+    0 0 0 4px rgba(29,78,216,.15);
+
+}
+
+
+
+/* Login knop */
+
+
+#loginButton {
+
+    width:100%;
+
+    padding:15px;
+
+    background:var(--blauw);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border-radius:12px;
+
+    margin-top:5px;
+
+}
+
+
+
+#loginButton:hover {
+
+    transform:translateY(-2px);
+
+    opacity:.9;
+
+}
+
+
+
+/* Logout */
+
+#logoutButton {
+
+    width:100%;
+
+    margin-top:15px;
+
+    background:#dc2626;
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+
+
+/* Desktop */
+
+@media(min-width:900px){
+
+
+#loginBox {
+
+    position:absolute;
+
+    right:30px;
+
+    top:20px;
+
+    width:320px;
+
+    margin:0;
+
+    padding:20px;
+
+}
+
+
+.loginTitel h2 {
+
+    font-size:20px;
+
+}
+
+
+.loginTitel p {
+
+    font-size:14px;
+
+}
+
+
+}
