@@ -1322,5 +1322,34 @@ button:hover {
     font-weight:bold;
 
 }
+/* ==========================================
+   LOGIN GEBRUIKER
+========================================== */
 
+.loginGebruiker{
+
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+
+    padding:12px;
+    margin-bottom:15px;
+
+}
+
+.gebruikerNaam{
+
+    font-size:17px;
+    font-weight:600;
+
+}
+
+.gebruikerRol{
+
+    margin-top:4px;
+    font-size:13px;
+    color:#6b7280;
+    text-transform:capitalize;
+
+}
 }
