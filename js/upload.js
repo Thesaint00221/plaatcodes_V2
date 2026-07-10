@@ -1,3 +1,15 @@
+console.log("UPLOAD.JS GELADEN");
+
+console.log(
+    "detailKnop:",
+    document.getElementById("detailKnop")
+);
+
+console.log(
+    "detailBestand:",
+    document.getElementById("detailBestand")
+);
+
 // ============================================
 // upload.js
 // Detail + Overzicht foto's
