@@ -78,7 +78,37 @@ detailContent.innerHTML = `
 
 `;
 
+// ==========================================
+// Naam gebruiker ophalen
+// ==========================================
 
+const gebruikersCache = {};
+
+async function haalGebruikersNaam(email) {
+
+    if (!email) {
+        return "";
+    }
+
+    if (gebruikersCache[email]) {
+        return gebruikersCache[email];
+    }
+
+    const { data } =
+        await supabaseClient
+            .from("gebruikers")
+            .select("naam")
+            .eq("email", email)
+            .single();
+
+    const naam =
+        data?.naam || email;
+
+    gebruikersCache[email] = naam;
+
+    return naam;
+
+}
 
 toonFotos(plaat);
 
@@ -304,7 +334,10 @@ item,
 gebruiker
 );
 
-
+const naam =
+    await haalGebruikersNaam(
+        item.toegevoegd_door
+    );
 
 
 // ======================================
@@ -381,13 +414,16 @@ ${
 
 <small class="fotoInfo">
 
-    👤 ${item.toegevoegd_door || ""}
+    👤 ${naam}
 
     <br>
 
-    📅 ${item.datum
-        ? new Date(item.datum).toLocaleDateString("nl-BE")
-        : ""}
+    📅 ${
+        item.datum
+            ? new Date(item.datum)
+                .toLocaleDateString("nl-BE")
+            : ""
+    }
 
 </small>
 
