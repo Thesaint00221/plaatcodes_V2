@@ -624,4 +624,305 @@ header h1{
 
 
 }
+    /* ==========================================
+   Detailpagina + upload professioneel maken
+   Desktop en mobiel
+   ========================================== */
+
+
+/* Detailpagina kaart */
+
+#detail {
+
+    background:white;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+
+    max-width:900px;
+
+    margin:30px auto;
+
+    padding:25px;
+
+}
+
+
+
+/* Terug knop */
+
+#terug {
+
+    font-size:18px;
+
+    padding:14px 25px;
+
+    border-radius:10px;
+
+}
+
+
+
+/* Titel detail */
+
+#detailContent h2 {
+
+    font-size:28px;
+
+    margin-top:10px;
+
+    color:#1d4ed8;
+
+}
+
+
+
+#detailContent p {
+
+    font-size:17px;
+
+}
+
+
+
+/* Foto galerij */
+
+#galerij {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:20px;
+
+    margin-top:25px;
+
+}
+
+
+
+/* Fotokaarten */
+
+.fotoKaart {
+
+    background:#f8f8f8;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.10);
+
+}
+
+
+
+.fotoKaart img {
+
+    border-radius:12px;
+
+}
+
+
+
+/* Labels bij foto's */
+
+.fotoKaart p strong {
+
+    color:#1d4ed8;
+
+}
+
+
+
+/* Upload gedeelte */
+
+#uploadKaart {
+
+    background:#f8fafc;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-top:30px;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.10);
+
+}
+
+
+
+#uploadKaart h3 {
+
+    margin-top:0;
+
+    color:#1d4ed8;
+
+}
+
+
+
+/* Grote knoppen */
+
+.uploadKnop {
+
+    width:100%;
+
+    max-width:600px;
+
+    margin:10px auto;
+
+    display:block;
+
+    padding:22px;
+
+    border:none;
+
+    border-radius:15px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    color:white;
+
+}
+
+
+
+.uploadKnop.detail {
+
+    background:#f59e0b;
+
+}
+
+
+
+.uploadKnop.overzicht {
+
+    background:#16a34a;
+
+}
+
+
+
+/* Input velden */
+
+#uploadKaart input,
+#uploadKaart textarea {
+
+    width:100%;
+
+    max-width:600px;
+
+    display:block;
+
+    margin:10px auto;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    border:2px solid #ddd;
+
+    font-size:16px;
+
+}
+
+
+
+#uploadKaart textarea {
+
+    min-height:120px;
+
+}
+
+
+
+/* Opslaan knop */
+
+#opslaanFoto {
+
+    width:100%;
+
+    max-width:600px;
+
+    display:block;
+
+    margin:25px auto 0;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#1d4ed8;
+
+    color:white;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+
+
+/* Desktop extra */
+
+@media(min-width:900px){
+
+
+    #detail {
+
+        padding:40px;
+
+    }
+
+
+    #galerij {
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+
+}
+
+
+
+/* Kleine schermen */
+
+@media(max-width:600px){
+
+
+    #detail {
+
+        margin:10px;
+
+        padding:15px;
+
+    }
+
+
+    #detailContent h2 {
+
+        font-size:24px;
+
+    }
+
+
+    .uploadKnop {
+
+        font-size:19px;
+
+    }
+
+
+}
 }
