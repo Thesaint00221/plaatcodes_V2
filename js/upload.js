@@ -1,28 +1,127 @@
-
 // ============================================
 // upload.js
-// Meerdere foto's versie
-// Foto 1 = Detail
-// Foto 2 = Overzicht
+// Detail + Overzicht foto's
 // Automatisch verkleinen
-// DEEL 1
 // ============================================
 
 
-const fotoKnop =
-    document.getElementById("fotoToevoegen");
+
+// ============================================
+// Foto formulier openen
+// ============================================
 
 
 const fotoFormulier =
-    document.getElementById("fotoFormulier");
+    document.getElementById("uploadKaart");
 
 
 
-fotoKnop?.addEventListener("click", () => {
+// ============================================
+// Geselecteerde foto's
+// ============================================
 
-    fotoFormulier.classList.toggle("verborgen");
 
-});
+let geselecteerdeDetailFoto = null;
+
+let geselecteerdeOverzichtFoto = null;
+
+
+
+const detailKnop =
+    document.getElementById("detailKnop");
+
+
+const overzichtKnop =
+    document.getElementById("overzichtKnop");
+
+
+
+const detailBestand =
+    document.getElementById("detailBestand");
+
+
+const overzichtBestand =
+    document.getElementById("overzichtBestand");
+
+
+
+
+// ============================================
+// Detailfoto kiezen
+// ============================================
+
+
+detailKnop?.addEventListener(
+    "click",
+    () => {
+
+        detailBestand.click();
+
+    }
+);
+
+
+
+detailBestand?.addEventListener(
+    "change",
+    () => {
+
+
+        geselecteerdeDetailFoto =
+            detailBestand.files[0];
+
+
+        if (geselecteerdeDetailFoto) {
+
+
+            detailKnop.innerHTML =
+            "✅ DETAILFOTO GEKOZEN";
+
+
+        }
+
+    }
+);
+
+
+
+
+// ============================================
+// Overzichtfoto kiezen
+// ============================================
+
+
+overzichtKnop?.addEventListener(
+    "click",
+    () => {
+
+        overzichtBestand.click();
+
+    }
+);
+
+
+
+overzichtBestand?.addEventListener(
+    "change",
+    () => {
+
+
+        geselecteerdeOverzichtFoto =
+            overzichtBestand.files[0];
+
+
+        if (geselecteerdeOverzichtFoto) {
+
+
+            overzichtKnop.innerHTML =
+            "✅ OVERZICHTSFOTO GEKOZEN";
+
+
+        }
+
+    }
+);
 
 
 
@@ -34,6 +133,7 @@ fotoKnop?.addEventListener("click", () => {
 
 
 function verkleinFoto(bestand) {
+
 
     return new Promise((resolve) => {
 
@@ -105,9 +205,7 @@ function verkleinFoto(bestand) {
 
 
                 const canvas =
-                    document.createElement(
-                        "canvas"
-                    );
+                    document.createElement("canvas");
 
 
                 canvas.width =
@@ -119,11 +217,8 @@ function verkleinFoto(bestand) {
 
 
 
-
                 const ctx =
-                    canvas.getContext(
-                        "2d"
-                    );
+                    canvas.getContext("2d");
 
 
 
@@ -137,9 +232,7 @@ function verkleinFoto(bestand) {
 
 
 
-
                 canvas.toBlob(
-
                     (blob) => {
 
 
@@ -156,16 +249,12 @@ function verkleinFoto(bestand) {
                         resolve(
 
                             new File(
-
                                 [blob],
-
                                 nieuweNaam,
-
                                 {
                                     type:
                                     "image/jpeg"
                                 }
-
                             )
 
                         );
@@ -173,9 +262,7 @@ function verkleinFoto(bestand) {
 
                     },
 
-
                     "image/jpeg",
-
 
                     0.8
 
@@ -186,33 +273,34 @@ function verkleinFoto(bestand) {
             };
 
 
-
             img.src =
                 e.target.result;
-
 
 
         };
 
 
-
         reader.readAsDataURL(bestand);
-
 
 
     });
 
+
 }
+
+
+
+
 // ============================================
-// Upload foto's
-// Foto 1 = Detail
-// Foto 2 = Overzicht
+// Opslaan foto's
 // ============================================
 
 
 document
 .getElementById("opslaanFoto")
-?.addEventListener("click", async () => {
+?.addEventListener(
+"click",
+async () => {
 
 
 
@@ -223,68 +311,64 @@ document
 
     if (!plaat) {
 
-        alert("Geen plaat geselecteerd");
-
-        return;
-
-    }
-
-
-
-    const bestanden =
-        document
-        .getElementById("fotoBestand")
-        .files;
-
-
-
-    if (!bestanden.length) {
-
-        alert("Kies eerst een foto");
-
-        return;
-
-    }
-
-
-
-
-    if (bestanden.length > 2) {
-
 
         alert(
-            "Je mag maximaal 2 foto's toevoegen.\n\nFoto 1 = Detail\nFoto 2 = Overzicht"
+            "Geen plaat geselecteerd"
         );
 
 
         return;
 
+
     }
 
 
 
 
-const titel =
-    document.getElementById("fotoTitel")
-    ? document.getElementById("fotoTitel").value.trim()
-    : "";
+    if (
+        !geselecteerdeDetailFoto &&
+        !geselecteerdeOverzichtFoto
+    ) {
 
 
-const beschrijving =
-    document.getElementById("fotoBeschrijving")
-    ? document.getElementById("fotoBeschrijving").value.trim()
-    : "";
+        alert(
+            "Kies eerst een foto"
+        );
+
+
+        return;
+
+
+    }
 
 
 
 
 
-    // gebruiker ophalen
+    const titel =
+        document.getElementById("fotoTitel")
+        ?.value
+        .trim()
+        || "";
 
-    const { data: userData } =
+
+
+    const beschrijving =
+        document.getElementById("fotoBeschrijving")
+        ?.value
+        .trim()
+        || "";
+
+
+
+
+
+
+    const { data:userData } =
         await supabaseClient
         .auth
         .getUser();
+
 
 
 
@@ -298,40 +382,76 @@ const beschrijving =
 
 
 
-    for (
-        let i = 0;
-        i < bestanden.length;
-        i++
-    ) {
+    const foto's = [];
 
 
 
-        // Foto verkleinen
+    if (geselecteerdeDetailFoto) {
 
-        const bestand =
+
+        foto's.push({
+
+            bestand:
+                geselecteerdeDetailFoto,
+
+            type:
+                "Detail"
+
+        });
+
+
+    }
+
+
+
+    if (geselecteerdeOverzichtFoto) {
+
+
+        foto's.push({
+
+            bestand:
+                geselecteerdeOverzichtFoto,
+
+            type:
+                "Overzicht"
+
+        });
+
+
+    }
+
+
+
+
+
+
+
+    for (const foto of foto's) {
+
+
+
+        const verkleindeFoto =
             await verkleinFoto(
-                bestanden[i]
+                foto.bestand
             );
 
 
 
 
         const bestandsnaam =
-            `${plaat.code}/${Date.now()}_${bestand.name}`;
+            `${plaat.code}/${Date.now()}_${verkleindeFoto.name}`;
 
 
 
 
 
-        // Upload naar Storage
-
-        const { error: uploadError } =
+        const { error:uploadError } =
             await supabaseClient
             .storage
             .from("plaatfotos")
             .upload(
                 bestandsnaam,
-                bestand
+                verkleindeFoto
             );
 
 
@@ -353,25 +473,13 @@ const beschrijving =
 
             return;
 
+
         }
 
 
 
 
 
-        // Automatisch type bepalen
-
-        const type =
-            i === 0
-            ? "Detail"
-            : "Overzicht";
-
-
-
-
-
-
-        // Opslaan database
 
         const { error } =
             await supabaseClient
@@ -384,17 +492,15 @@ const beschrijving =
 
 
                 type:
-                    type,
+                    foto.type,
 
 
                 omschrijving:
                     `${titel}\n${beschrijving}`,
 
 
-
                 foto:
                     bestandsnaam,
-
 
 
                 toegevoegd_door:
@@ -406,14 +512,10 @@ const beschrijving =
 
 
 
-
-
         if (error) {
 
 
-            console.error(
-                error
-            );
+            console.error(error);
 
 
             alert(
@@ -422,6 +524,7 @@ const beschrijving =
 
 
             return;
+
 
         }
 
