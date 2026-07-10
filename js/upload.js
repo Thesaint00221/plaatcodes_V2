@@ -1,40 +1,14 @@
-console.log("UPLOAD.JS GELADEN");
-
-console.log(
-    "detailKnop:",
-    document.getElementById("detailKnop")
-);
-
-console.log(
-    "detailBestand:",
-    document.getElementById("detailBestand")
-);
-
 // ============================================
 // upload.js
 // Detail + Overzicht foto's
-// Automatisch verkleinen
 // ============================================
 
 
-
 // ============================================
-// Foto formulier openen
+// Foto selectie
 // ============================================
-
-
-const fotoFormulier =
-    document.getElementById("uploadKaart");
-
-
-
-// ============================================
-// Geselecteerde foto's
-// ============================================
-
 
 let geselecteerdeDetailFoto = null;
-
 let geselecteerdeOverzichtFoto = null;
 
 
@@ -45,7 +19,6 @@ const detailKnop =
 
 const overzichtKnop =
     document.getElementById("overzichtKnop");
-
 
 
 const detailBestand =
@@ -61,7 +34,6 @@ const overzichtBestand =
 // ============================================
 // Detailfoto kiezen
 // ============================================
-
 
 detailKnop?.addEventListener(
     "click",
@@ -87,7 +59,7 @@ detailBestand?.addEventListener(
 
 
             detailKnop.innerHTML =
-            "✅ DETAILFOTO GEKOZEN";
+                "✅ DETAILFOTO GEKOZEN";
 
 
         }
@@ -101,7 +73,6 @@ detailBestand?.addEventListener(
 // ============================================
 // Overzichtfoto kiezen
 // ============================================
-
 
 overzichtKnop?.addEventListener(
     "click",
@@ -127,7 +98,7 @@ overzichtBestand?.addEventListener(
 
 
             overzichtKnop.innerHTML =
-            "✅ OVERZICHTSFOTO GEKOZEN";
+                "✅ OVERZICHTSFOTO GEKOZEN";
 
 
         }
@@ -140,7 +111,6 @@ overzichtBestand?.addEventListener(
 
 // ============================================
 // Foto verkleinen
-// Maximum 2000 pixels
 // ============================================
 
 
@@ -171,7 +141,6 @@ function verkleinFoto(bestand) {
 
                 let hoogte =
                     img.height;
-
 
 
                 const maximum =
@@ -217,7 +186,10 @@ function verkleinFoto(bestand) {
 
 
                 const canvas =
-                    document.createElement("canvas");
+                    document.createElement(
+                        "canvas"
+                    );
+
 
 
                 canvas.width =
@@ -229,8 +201,11 @@ function verkleinFoto(bestand) {
 
 
 
+
                 const ctx =
-                    canvas.getContext("2d");
+                    canvas.getContext(
+                        "2d"
+                    );
 
 
 
@@ -244,11 +219,13 @@ function verkleinFoto(bestand) {
 
 
 
+
                 canvas.toBlob(
+
                     (blob) => {
 
 
-                        const nieuweNaam =
+                        const naam =
                             bestand.name
                             .replace(
                                 /\.[^/.]+$/,
@@ -262,7 +239,7 @@ function verkleinFoto(bestand) {
 
                             new File(
                                 [blob],
-                                nieuweNaam,
+                                naam,
                                 {
                                     type:
                                     "image/jpeg"
@@ -274,12 +251,13 @@ function verkleinFoto(bestand) {
 
                     },
 
+
                     "image/jpeg",
+
 
                     0.8
 
                 );
-
 
 
             };
@@ -304,7 +282,7 @@ function verkleinFoto(bestand) {
 
 
 // ============================================
-// Opslaan foto's
+// Foto's opslaan
 // ============================================
 
 
@@ -331,8 +309,8 @@ async () => {
 
         return;
 
-
     }
+
 
 
 
@@ -350,7 +328,6 @@ async () => {
 
         return;
 
-
     }
 
 
@@ -362,199 +339,86 @@ async () => {
         ?.value
         .trim()
         || "";
-
-
-
     const beschrijving =
         document.getElementById("fotoBeschrijving")
         ?.value
         .trim()
         || "";
-
-
-
-
-
-
     const { data:userData } =
         await supabaseClient
         .auth
         .getUser();
-
-
-
-
     const gebruiker =
         userData.user
         ? userData.user.email
         : "onbekend";
-
-
-
-
-
-
-    const foto's = [];
-
-
-
+    const uploadLijst = [];
     if (geselecteerdeDetailFoto) {
-
-
-        foto's.push({
-
+        uploadLijst.push({
             bestand:
                 geselecteerdeDetailFoto,
-
             type:
                 "Detail"
-
         });
-
-
     }
-
-
-
     if (geselecteerdeOverzichtFoto) {
-
-
-        foto's.push({
-
+        uploadLijst.push({
             bestand:
                 geselecteerdeOverzichtFoto,
-
             type:
                 "Overzicht"
-
         });
-
-
     }
-
-
-
-
-
-
-
-    for (const foto of foto's) {
-
-
-
-        const verkleindeFoto =
+    for (const foto of uploadLijst) {
+        const verkleind =
             await verkleinFoto(
                 foto.bestand
             );
-
-
-
-
         const bestandsnaam =
-            `${plaat.code}/${Date.now()}_${verkleindeFoto.name}`;
-
-
-
-
-
+            `${plaat.code}/${Date.now()}_${verkleind.name}`;
         const { error:uploadError } =
             await supabaseClient
             .storage
             .from("plaatfotos")
             .upload(
                 bestandsnaam,
-                verkleindeFoto
+                verkleind
             );
-
-
-
-
         if (uploadError) {
-
-
             console.error(
                 uploadError
             );
-
-
             alert(
                 "Upload mislukt:\n\n" +
                 uploadError.message
             );
-
-
             return;
-
-
         }
-
-
-
-
-
-
         const { error } =
             await supabaseClient
             .from("eigen_data")
             .insert({
-
-
                 code:
                     plaat.code,
-
-
                 type:
                     foto.type,
-
-
                 omschrijving:
                     `${titel}\n${beschrijving}`,
-
-
                 foto:
                     bestandsnaam,
-
-
                 toegevoegd_door:
                     gebruiker
-
-
             });
-
-
-
-
         if (error) {
-
-
             console.error(error);
-
-
             alert(
                 "Opslaan mislukt"
             );
-
-
             return;
-
-
         }
-
-
-
     }
-
-
-
-
     alert(
         "Foto('s) toegevoegd!"
     );
-
-
-
     location.reload();
-
-
-
 });
