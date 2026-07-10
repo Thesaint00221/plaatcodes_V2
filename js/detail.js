@@ -20,17 +20,47 @@ function toonDetail(plaat) {
 
     detail.classList.remove("hidden");
 
-    detailContent.innerHTML = `
+detailContent.innerHTML = `
 
-        <h2>${plaat.naam}</h2>
+<div class="detail-header">
 
-        <p><strong>Code:</strong> ${plaat.code}</p>
+    <h2>${plaat.naam}</h2>
 
-        <p><strong>Leverancier:</strong> ${plaat.leverancier}</p>
+    <div class="detail-info">
+
+        <p>
+            <strong>Code:</strong> ${plaat.code}
+        </p>
+
+        <p>
+            <strong>Leverancier:</strong> ${plaat.leverancier}
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="detail-layout">
+
+
+    <div class="detail-fotos">
 
         <div id="galerij"></div>
 
-    `;
+    </div>
+
+
+    <div class="detail-upload">
+
+        <!-- bestaande uploadkaart komt hier automatisch -->
+
+    </div>
+
+
+</div>
+
+`;
 
     toonFotos(plaat);
 
