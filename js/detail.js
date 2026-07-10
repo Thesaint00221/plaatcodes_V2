@@ -3,39 +3,45 @@
 // CASE weergave met detail + overzichtsfoto
 // ============================================
 
-
 window.geselecteerdePlaat = null;
-// ==========================================
+
+
+// ============================================
 // Naam gebruiker ophalen
-// ==========================================
+// ============================================
 
 const gebruikersCache = {};
 
-async function haalGebruikersNaam(email) {
+async function haalGebruikersNaam(email){
 
-    if (!email) {
+    if(!email){
         return "";
     }
 
-    if (gebruikersCache[email]) {
+    if(gebruikersCache[email]){
         return gebruikersCache[email];
     }
 
-    const { data } =
+
+    const {data} =
         await supabaseClient
-            .from("gebruikers")
-            .select("naam")
-            .eq("email", email)
-            .single();
+        .from("gebruikers")
+        .select("naam")
+        .eq("email",email)
+        .single();
+
 
     const naam =
         data?.naam || email;
 
+
     gebruikersCache[email] = naam;
+
 
     return naam;
 
 }
+
 
 
 const detail =
@@ -52,213 +58,180 @@ const terug =
 
 
 
+// ============================================
+// Detail tonen
+// ============================================
 
 function toonDetail(plaat){
 
-
-window.geselecteerdePlaat =
-    plaat;
-
-
-document.getElementById("resultaten")
-.style.display="none";
+    window.geselecteerdePlaat =
+        plaat;
 
 
-document.querySelector(".search")
-.style.display="none";
+    document.getElementById(
+        "resultaten"
+    ).style.display="none";
 
 
-detail.classList.remove("hidden");
+    document.querySelector(
+        ".search"
+    ).style.display="none";
 
 
-
-detailContent.innerHTML = `
-
-
-<div class="detail-container">
-
-
-<h2>${plaat.naam}</h2>
-
-
-<table class="detail-table">
-
-
-<tr>
-<td>Code</td>
-<td>${plaat.code}</td>
-</tr>
-
-
-<tr>
-<td>Leverancier</td>
-<td>${plaat.leverancier}</td>
-</tr>
-
-
-</table>
+    detail.classList.remove(
+        "hidden"
+    );
 
 
 
-<div id="galerij"></div>
+    detailContent.innerHTML = `
+
+    <div class="detail-container">
+
+        <h2>${plaat.naam}</h2>
+
+        <table class="detail-table">
+
+            <tr>
+                <td>Code</td>
+                <td>${plaat.code}</td>
+            </tr>
+
+            <tr>
+                <td>Leverancier</td>
+                <td>${plaat.leverancier}</td>
+            </tr>
+
+        </table>
+
+        <div id="galerij"></div>
+
+    </div>
+
+    `;
 
 
-
-</div>
-
-
-`;
+    toonFotos(plaat);
 
 
-toonFotos(plaat);
-
-
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 }
 
 
 
-
-
+// ============================================
+// Foto's en cases laden
+// ============================================
 
 async function toonFotos(plaat){
 
 
-
 const galerij =
-document.getElementById("galerij");
+    document.getElementById(
+        "galerij"
+    );
 
 
-
-galerij.innerHTML =
-`
+galerij.innerHTML = `
 <h3>Cases & foto's</h3>
 `;
 
 
 
-
-// ======================================
+// ============================================
 // Basisfoto's GitHub
-// ======================================
-
+// ============================================
 
 if(
-plaat.photos &&
-plaat.photos.length
+    plaat.photos &&
+    plaat.photos.length
 ){
 
+    plaat.photos.forEach(foto=>{
 
-plaat.photos.forEach(foto=>{
+        galerij.innerHTML += `
 
+        <div class="fotoKaart">
 
-galerij.innerHTML += `
+            <img
+            src="photos/${foto}"
+            class="detailFoto">
 
+            <p>Basisfoto</p>
 
-<div class="fotoKaart">
+        </div>
 
+        `;
 
-<img
-src="photos/${foto}"
-class="detailFoto">
-
-
-<p>Basisfoto</p>
-
-
-</div>
-
-
-`;
-
-
-});
-
+    });
 
 }
 
 
 
 
-
-// ======================================
+// ============================================
 // Cases ophalen
-// ======================================
-
+// ============================================
 
 const gebruiker =
-await laadGebruikersRol();
-
+    await laadGebruikersRol();
 
 
 
 const {data,error} =
-await supabaseClient
-.from("eigen_data")
-.select("*")
-.eq(
-"code",
-plaat.code
-)
-.order(
-"datum",
-{
-ascending:false
-}
-);
-
+    await supabaseClient
+    .from("eigen_data")
+    .select("*")
+    .eq(
+        "code",
+        plaat.code
+    )
+    .order(
+        "datum",
+        {
+            ascending:false
+        }
+    );
 
 
 
 if(error){
 
-console.error(error);
+    console.error(error);
 
-galerij.innerHTML +=
-"<p>Fout bij laden.</p>";
+    galerij.innerHTML +=
+    "<p>Fout bij laden.</p>";
 
-return;
+    return;
 
 }
-
 
 
 
 if(
-!data ||
-data.length===0
+    !data ||
+    data.length===0
 ){
 
+    galerij.innerHTML +=
+    "<p>Nog geen meldingen.</p>";
 
-galerij.innerHTML +=
-"<p>Nog geen meldingen.</p>";
-
-
-return;
-
+    return;
 
 }
 
 
 
-
-
-// ======================================
+// ============================================
 // Cases tonen
-// ======================================
-
+// ============================================
 
 for(const item of data){
-
 
 
 let detailUrl="";
@@ -266,475 +239,389 @@ let overzichtUrl="";
 
 
 
-
-// detailfoto
+// Detailfoto
 
 if(item.foto){
 
+    if(
+        item.foto.startsWith("http")
+    ){
 
-if(
-item.foto.startsWith("http")
-){
+        detailUrl =
+            item.foto;
 
-detailUrl=item.foto;
+    }
+    else{
 
-}
-else{
-
-
-const {data:urlData} =
-supabaseClient
-.storage
-.from("plaatfotos")
-.getPublicUrl(
-item.foto
-);
-
-
-detailUrl =
-urlData.publicUrl;
+        const {data:urlData} =
+            supabaseClient
+            .storage
+            .from("plaatfotos")
+            .getPublicUrl(
+                item.foto
+            );
 
 
-}
+        detailUrl =
+            urlData.publicUrl;
 
+    }
 
 }
 
 
 
-
-
-// overzichtsfoto
-
+// Overzichtsfoto
 
 if(item.overzicht_foto){
 
+    const {data:urlData} =
+        supabaseClient
+        .storage
+        .from("plaatfotos")
+        .getPublicUrl(
+            item.overzicht_foto
+        );
 
-const {data:urlData} =
-supabaseClient
-.storage
-.from("plaatfotos")
-.getPublicUrl(
-item.overzicht_foto
-);
 
-
-overzichtUrl =
-urlData.publicUrl;
-
+    overzichtUrl =
+        urlData.publicUrl;
 
 }
-
 
 
 
 const verwijderen =
-magVerwijderen(
-item,
-gebruiker
-);
-
-const naam =
-    await haalGebruikersNaam(
-        item.toegevoegd_door
+    magVerwijderen(
+        item,
+        gebruiker
     );
+    const naam =
+        await haalGebruikersNaam(
+            item.toegevoegd_door
+        );
 
+    galerij.innerHTML += `
+    <div class="caseKaart">
 
-// ======================================
-// CASE KAART
-// ======================================
+        <div class="caseFotos">
 
+            ${
+            detailUrl
+            ?
+            `
+            <img
+            src="${detailUrl}"
+            class="detailFoto">
+            `
+            :
+            ""
+            }
 
-galerij.innerHTML += `
+            ${
+            overzichtUrl
+            ?
+            `
+            <img
+            src="${overzichtUrl}"
+            class="detailFoto">
+            `
+            :
+            ""
+            }
 
+        </div>
 
-<div class="caseKaart">
+        <h3>${item.type || "Case"}</h3>
 
+        <p class="omschrijving">
+            ${(item.omschrijving || "").replace(/\n/g,"<br>")}
+        </p>
 
-
-<div class="caseFotos">
-
-
-${
-detailUrl
-?
-`
-<img
-src="${detailUrl}"
-class="detailFoto">
-
-`
-:""
-}
-
-
-
-${
-overzichtUrl
-?
-`
-<img
-src="${overzichtUrl}"
-class="detailFoto">
-
-`
-:""
-}
-
-
-
-</div>
-
-
-
-
-<h3>
-${item.type || "Case"}
-</h3>
-
-
-
-
-<p class="omschrijving">
-
-${
-
-(item.omschrijving || "")
-.replace(
-/\n/g,
-"<br>"
-)
-
-}
-
-</p>
-
-
-
-
-<small class="fotoInfo">
-
-    👤 ${naam}
-
-    <br>
-
-    📅 ${
-        item.datum
-            ? new Date(item.datum)
+        <small class="fotoInfo">
+            👤 ${naam}
+            <br>
+            📅 ${
+                item.datum
+                ?
+                new Date(item.datum)
                 .toLocaleDateString("nl-BE")
-            : ""
-    }
+                :
+                ""
+            }
+        </small>
 
-</small>
+        ${
+        verwijderen
+        ?
+        `
+        <br>
+        <button
+        class="verwijderFoto"
+        onclick="verwijderCase('${item.id}')">
 
+        🗑 Verwijderen
 
+        </button>
+        `
+        :
+        ""
+        }
 
+    </div>
+    `;
 
-${
-verwijderen
-
-?
-
-`
-
-<br>
-
-
-<button
-
-class="verwijderFoto"
-
-onclick="
-verwijderFoto(
-'${item.id}',
-'${item.foto}'
-)
-">
-
-
-🗑 Verwijderen
-
-
-</button>
-
-
-`
-
-:""
+}
 
 }
 
 
-
-</div>
-
-
-`;
-
-
-
-}
-
-
-}
-
-
-
-
-
-
+// ============================================
+// Mag verwijderen
+// ============================================
 
 function magVerwijderen(item, gebruiker){
 
+    if(!gebruiker){
+        return false;
+    }
 
-if(!gebruiker){
+    if(gebruiker.rol==="beheerder"){
+        return true;
+    }
 
-return false;
-
-}
-
-
-if(
-gebruiker.rol==="beheerder"
-){
-
-return true;
-
-}
-
-
-return (
-item.toegevoegd_door ===
-gebruiker.email
-);
-
-
-}
-
-
-
-
-
-
-async function verwijderFoto(id, opslagPad){
-
-
-if(
-!confirm(
-"Deze case en foto's verwijderen?"
-)
-){
-    return;
-}
-
-
-// ==========================================
-// Case ophalen
-// ==========================================
-
-const {data:item,error:zoekError} =
-await supabaseClient
-.from("eigen_data")
-.select("foto, overzicht_foto")
-.eq("id", id)
-.single();
-
-
-
-if(zoekError){
-
-    console.error(zoekError);
-
-    alert(
-        "Case ophalen mislukt"
+    return (
+        item.toegevoegd_door ===
+        gebruiker.email
     );
 
-    return;
+}
+
+
+// ============================================
+// Opslagpad controleren
+// ============================================
+
+function haalOpslagPad(pad){
+
+    if(!pad){
+        return null;
+    }
+
+    if(pad.startsWith("http")){
+
+        const marker="/plaatfotos/";
+
+        const positie =
+            pad.indexOf(marker);
+
+        if(positie!==-1){
+
+            return pad.substring(
+                positie + marker.length
+            );
+
+        }
+
+    }
+
+    return pad;
 
 }
 
 
+// ============================================
+// CASE verwijderen
+// ============================================
 
-// ==========================================
-// Foto's verwijderen uit Storage
-// ==========================================
+async function verwijderCase(id){
 
-const bestanden = [];
-
-
-if(item.foto){
-
-    bestanden.push(item.foto);
-
-}
+    if(!confirm(
+        "Deze case en foto's verwijderen?"
+    )){
+        return;
+    }
 
 
-if(item.overzicht_foto){
-
-    bestanden.push(item.overzicht_foto);
-
-}
-
-
-
-if(bestanden.length){
-
-
-const {error:storageError} =
-await supabaseClient
-.storage
-.from("plaatfotos")
-.remove(bestanden);
+    const {data:item,error:zoekError} =
+        await supabaseClient
+        .from("eigen_data")
+        .select(
+            "foto, overzicht_foto"
+        )
+        .eq("id",id)
+        .single();
 
 
+    if(zoekError){
 
-if(storageError){
+        console.error(zoekError);
 
-    console.error(storageError);
+        alert(
+            "Case ophalen mislukt"
+        );
+
+        return;
+
+    }
+
+
+    const bestanden=[];
+
+
+    if(item.foto){
+
+        bestanden.push(
+            haalOpslagPad(item.foto)
+        );
+
+    }
+
+
+    if(item.overzicht_foto){
+
+        bestanden.push(
+            haalOpslagPad(item.overzicht_foto)
+        );
+
+    }
+
+
+
+    if(bestanden.length){
+
+        const {error:storageError} =
+            await supabaseClient
+            .storage
+            .from("plaatfotos")
+            .remove(bestanden);
+
+
+        if(storageError){
+
+            console.error(storageError);
+
+            alert(
+                "Foto verwijderen mislukt"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+
+    const {error} =
+        await supabaseClient
+        .from("eigen_data")
+        .delete()
+        .eq("id",id);
+
+
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Case verwijderen mislukt"
+        );
+
+        return;
+
+    }
+
 
     alert(
-        "Foto's verwijderen mislukt"
+        "Case en foto's verwijderd"
     );
 
-    return;
 
-}
-
-}
-
-
-
-// ==========================================
-// Case verwijderen
-// ==========================================
-
-const {error} =
-await supabaseClient
-.from("eigen_data")
-.delete()
-.eq(
-"id",
-id
-);
-
-
-
-if(error){
-
-console.error(error);
-
-alert(
-"Case verwijderen mislukt"
-);
-
-return;
+    toonFotos(
+        window.geselecteerdePlaat
+    );
 
 }
 
 
 
-alert(
-"Case en foto's verwijderd"
-);
-
-
-
-toonFotos(
-window.geselecteerdePlaat
-);
-
-
-}
-
-
-
-
-
-
+// ============================================
+// Terug knop
+// ============================================
 
 terug.addEventListener(
 "click",
 ()=>{
 
+    detail.classList.add(
+        "hidden"
+    );
 
-detail.classList.add(
-"hidden"
-);
+    document.getElementById(
+        "resultaten"
+    ).style.display="grid";
 
-
-document.getElementById("resultaten")
-.style.display="grid";
-
-
-document.querySelector(".search")
-.style.display="block";
-
+    document.querySelector(
+        ".search"
+    ).style.display="block";
 
 
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 });
-// ============================================
-// FOTO VERGROTEN (LIGHTBOX)
-// ============================================
 
+
+
+// ============================================
+// FOTO VERGROTEN
+// ============================================
 
 document.addEventListener(
 "click",
 (e)=>{
 
+    if(
+        e.target.classList.contains(
+            "detailFoto"
+        )
+    ){
 
-if(
-e.target.classList.contains(
-"detailFoto"
-)
-){
+        const lightbox =
+            document.createElement(
+                "div"
+            );
 
-
-const lightbox =
-document.createElement(
-"div"
-);
-
-
-lightbox.className =
-"lightbox";
+        lightbox.className =
+            "lightbox";
 
 
+        lightbox.innerHTML=`
 
-lightbox.innerHTML = `
+        <img
+        src="${e.target.src}">
 
-<img
-src="${e.target.src}">
-
-`;
-
+        `;
 
 
-document.body.appendChild(
-lightbox
-);
+        document.body.appendChild(
+            lightbox
+        );
 
 
+        lightbox.addEventListener(
+        "click",
+        ()=>{
 
-lightbox.addEventListener(
-"click",
-()=>{
+            lightbox.remove();
 
-
-lightbox.remove();
-
-
-});
+        });
 
 
-}
-
-
-});
+    }
 
 });
