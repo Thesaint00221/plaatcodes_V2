@@ -291,7 +291,13 @@ document
 ?.addEventListener(
 "click",
 async () => {
+const knop =
+    document.getElementById("opslaanFoto");
 
+knop.disabled = true;
+
+knop.innerHTML =
+    "⏳ Bezig met uploaden...";
 
 
     const plaat =
@@ -388,11 +394,17 @@ async () => {
             console.error(
                 uploadError
             );
-            alert(
-                "Upload mislukt:\n\n" +
-                uploadError.message
-            );
-            return;
+alert(
+    "Upload mislukt:\n\n" +
+    uploadError.message
+);
+
+knop.disabled = false;
+
+knop.innerHTML =
+    "✔ Opslaan";
+
+return;
         }
         const { error } =
             await supabaseClient
@@ -411,14 +423,27 @@ async () => {
             });
         if (error) {
             console.error(error);
-            alert(
-                "Opslaan mislukt"
-            );
-            return;
+alert(
+    "Opslaan mislukt"
+);
+
+knop.disabled = false;
+
+knop.innerHTML =
+    "✔ Opslaan";
+
+return;
         }
     }
-    alert(
-        "Foto('s) toegevoegd!"
-    );
+knop.disabled = true;
+
+knop.innerHTML =
+    "✅ Opgeslagen";
+
+
+setTimeout(() => {
+
     location.reload();
+
+}, 1200);
 });
