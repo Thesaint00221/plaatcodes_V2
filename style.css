@@ -1352,4 +1352,17 @@ button:hover {
     text-transform:capitalize;
 
 }
+   .fotoInfo{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:#666;
+
+    line-height:1.6;
+
+    font-size:14px;
+
+}
 }
