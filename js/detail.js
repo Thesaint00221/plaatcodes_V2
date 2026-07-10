@@ -580,6 +580,63 @@ top:0,
 behavior:"smooth"
 
 });
+// ============================================
+// FOTO VERGROTEN (LIGHTBOX)
+// ============================================
 
+
+document.addEventListener(
+"click",
+(e)=>{
+
+
+if(
+e.target.classList.contains(
+"detailFoto"
+)
+){
+
+
+const lightbox =
+document.createElement(
+"div"
+);
+
+
+lightbox.className =
+"lightbox";
+
+
+
+lightbox.innerHTML = `
+
+<img
+src="${e.target.src}">
+
+`;
+
+
+
+document.body.appendChild(
+lightbox
+);
+
+
+
+lightbox.addEventListener(
+"click",
+()=>{
+
+
+lightbox.remove();
+
+
+});
+
+
+}
+
+
+});
 
 });
