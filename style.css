@@ -228,3 +228,263 @@ header h1{
     padding:8px 15px;
 
 }
+/* ===========================================
+   Detailkaart
+=========================================== */
+
+#detailContent{
+
+    background:white;
+    border-radius:18px;
+    padding:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+}
+
+#detailContent h2{
+
+    margin-top:0;
+    color:#1d4ed8;
+    font-size:30px;
+
+}
+
+#detailContent p{
+
+    font-size:18px;
+    margin:10px 0;
+
+}
+
+
+/* ===========================================
+   Mooie knoppen
+=========================================== */
+
+button{
+
+    transition:.2s;
+    font-size:18px;
+
+}
+
+button:hover{
+
+    transform:scale(1.03);
+
+}
+
+button:active{
+
+    transform:scale(.98);
+
+}
+
+
+/* Terug */
+
+#terug{
+
+    width:100%;
+    padding:18px;
+
+    font-size:20px;
+    font-weight:bold;
+
+    border-radius:14px;
+
+}
+
+
+/* Foto toevoegen */
+
+#fotoToevoegen{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:22px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:22px;
+    font-weight:bold;
+
+}
+
+
+/* Opslaan */
+
+#opslaanFoto{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#16a34a;
+
+    color:white;
+
+    font-size:20px;
+    font-weight:bold;
+
+}
+
+
+/* ===========================================
+   Fotoformulier
+=========================================== */
+
+#fotoFormulier{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-top:20px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+}
+
+#fotoFormulier label{
+
+    font-weight:bold;
+
+}
+
+#fotoFormulier input,
+#fotoFormulier textarea{
+
+    font-size:18px;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border:1px solid #ccc;
+
+}
+
+
+/* ===========================================
+   Galerij
+=========================================== */
+
+#galerij{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
+    gap:20px;
+
+    margin-top:25px;
+
+}
+
+.fotoKaart{
+
+    background:white;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.fotoKaart img{
+
+    width:100%;
+
+    height:260px;
+
+    object-fit:cover;
+
+}
+
+.fotoKaart p,
+.fotoKaart small{
+
+    padding:0 15px;
+
+}
+
+.fotoKaart p{
+
+    font-size:17px;
+
+}
+
+
+/* ===========================================
+   GSM
+=========================================== */
+
+@media(max-width:700px){
+
+header{
+
+    padding:18px;
+
+}
+
+header h1{
+
+    font-size:28px;
+
+}
+
+#search{
+
+    font-size:20px;
+
+    padding:18px;
+
+}
+
+.kaart{
+
+    border-radius:16px;
+
+}
+
+.inhoud h2{
+
+    font-size:24px;
+
+}
+
+#detail{
+
+    padding:12px;
+
+}
+
+#detailContent{
+
+    padding:20px;
+
+}
+
+}
