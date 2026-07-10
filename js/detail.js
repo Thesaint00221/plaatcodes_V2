@@ -379,30 +379,15 @@ ${
 
 
 
-<small>
+<small class="fotoInfo">
 
+    👤 ${item.toegevoegd_door || ""}
 
-${
+    <br>
 
-item.datum
-
-?
-
-new Date(item.datum)
-.toLocaleDateString("nl-BE")
-
-:""
-
-}
-
-
-<br>
-
-
-Toegevoegd door:
-
-${item.toegevoegd_door || ""}
-
+    📅 ${item.datum
+        ? new Date(item.datum).toLocaleDateString("nl-BE")
+        : ""}
 
 </small>
 
