@@ -1,12 +1,8 @@
 // ============================================
 // upload.js
-// Detail + Overzicht foto's
+// Eén case met detail + overzichtsfoto
 // ============================================
 
-
-// ============================================
-// Foto selectie
-// ============================================
 
 let geselecteerdeDetailFoto = null;
 let geselecteerdeOverzichtFoto = null;
@@ -32,79 +28,66 @@ const overzichtBestand =
 
 
 // ============================================
-// Detailfoto kiezen
+// Foto selectie
 // ============================================
 
+
 detailKnop?.addEventListener(
-    "click",
-    () => {
+"click",
+() => {
 
-        detailBestand.click();
+    detailBestand.click();
 
-    }
-);
+});
 
 
 
 detailBestand?.addEventListener(
-    "change",
-    () => {
+"change",
+() => {
+
+    geselecteerdeDetailFoto =
+        detailBestand.files[0];
 
 
-        geselecteerdeDetailFoto =
-            detailBestand.files[0];
+    if(geselecteerdeDetailFoto){
 
-
-        if (geselecteerdeDetailFoto) {
-
-
-            detailKnop.innerHTML =
-                "✅ DETAILFOTO GEKOZEN";
-
-
-        }
+        detailKnop.innerHTML =
+            "✅ DETAILFOTO GEKOZEN";
 
     }
-);
+
+});
 
 
 
-
-// ============================================
-// Overzichtfoto kiezen
-// ============================================
 
 overzichtKnop?.addEventListener(
-    "click",
-    () => {
+"click",
+() => {
 
-        overzichtBestand.click();
+    overzichtBestand.click();
 
-    }
-);
+});
 
 
 
 overzichtBestand?.addEventListener(
-    "change",
-    () => {
+"change",
+() => {
+
+    geselecteerdeOverzichtFoto =
+        overzichtBestand.files[0];
 
 
-        geselecteerdeOverzichtFoto =
-            overzichtBestand.files[0];
+    if(geselecteerdeOverzichtFoto){
 
-
-        if (geselecteerdeOverzichtFoto) {
-
-
-            overzichtKnop.innerHTML =
-                "✅ OVERZICHTSFOTO GEKOZEN";
-
-
-        }
+        overzichtKnop.innerHTML =
+            "✅ OVERZICHTSFOTO GEKOZEN";
 
     }
-);
+
+});
 
 
 
@@ -114,166 +97,160 @@ overzichtBestand?.addEventListener(
 // ============================================
 
 
-function verkleinFoto(bestand) {
+function verkleinFoto(bestand){
 
 
-    return new Promise((resolve) => {
+return new Promise((resolve)=>{
 
 
-        const img =
-            new Image();
+const img =
+    new Image();
 
 
-        const reader =
-            new FileReader();
+const reader =
+    new FileReader();
 
 
 
-        reader.onload = (e) => {
+reader.onload = (e)=>{
 
 
-            img.onload = () => {
+img.onload = ()=>{
 
 
-                let breedte =
-                    img.width;
+let breedte =
+    img.width;
 
 
-                let hoogte =
-                    img.height;
+let hoogte =
+    img.height;
 
 
-                const maximum =
-                    2000;
+const maximum =
+    2000;
 
 
 
-                if (
-                    breedte > maximum ||
-                    hoogte > maximum
-                ) {
+if(
+    breedte > maximum ||
+    hoogte > maximum
+){
 
 
-                    if (breedte > hoogte) {
+if(breedte > hoogte){
 
 
-                        hoogte =
-                            hoogte *
-                            (maximum / breedte);
+hoogte =
+    hoogte *
+    (maximum / breedte);
 
 
-                        breedte =
-                            maximum;
+breedte =
+    maximum;
 
 
-                    } else {
+}
+else{
 
 
-                        breedte =
-                            breedte *
-                            (maximum / hoogte);
+breedte =
+    breedte *
+    (maximum / hoogte);
 
 
-                        hoogte =
-                            maximum;
+hoogte =
+    maximum;
 
 
-                    }
+}
 
-                }
 
+}
 
 
 
-                const canvas =
-                    document.createElement(
-                        "canvas"
-                    );
+const canvas =
+    document.createElement(
+        "canvas"
+    );
 
 
+canvas.width =
+    breedte;
 
-                canvas.width =
-                    breedte;
 
+canvas.height =
+    hoogte;
 
-                canvas.height =
-                    hoogte;
 
 
+const ctx =
+    canvas.getContext(
+        "2d"
+    );
 
 
-                const ctx =
-                    canvas.getContext(
-                        "2d"
-                    );
+ctx.drawImage(
+    img,
+    0,
+    0,
+    breedte,
+    hoogte
+);
 
 
 
-                ctx.drawImage(
-                    img,
-                    0,
-                    0,
-                    breedte,
-                    hoogte
-                );
+canvas.toBlob(
+(blob)=>{
 
 
+const naam =
+    bestand.name
+    .replace(
+        /\.[^/.]+$/,
+        ""
+    )
+    + ".jpg";
 
 
-                canvas.toBlob(
 
-                    (blob) => {
+resolve(
 
+new File(
+    [blob],
+    naam,
+    {
+        type:"image/jpeg"
+    }
+)
 
-                        const naam =
-                            bestand.name
-                            .replace(
-                                /\.[^/.]+$/,
-                                ""
-                            )
-                            + ".jpg";
+);
 
 
 
-                        resolve(
+},
+"image/jpeg",
+0.8
+);
 
-                            new File(
-                                [blob],
-                                naam,
-                                {
-                                    type:
-                                    "image/jpeg"
-                                }
-                            )
 
-                        );
 
+};
 
-                    },
 
 
-                    "image/jpeg",
+img.src =
+    e.target.result;
 
 
-                    0.8
+};
 
-                );
 
 
-            };
+reader.readAsDataURL(bestand);
 
 
-            img.src =
-                e.target.result;
-
-
-        };
-
-
-        reader.readAsDataURL(bestand);
-
-
-    });
+});
 
 
 }
@@ -281,8 +258,9 @@ function verkleinFoto(bestand) {
 
 
 
+
 // ============================================
-// Foto's opslaan
+// CASE OPSLAAN
 // ============================================
 
 
@@ -290,160 +268,296 @@ document
 .getElementById("opslaanFoto")
 ?.addEventListener(
 "click",
-async () => {
+async()=>{
+
+
 const knop =
-    document.getElementById("opslaanFoto");
+    document.getElementById(
+        "opslaanFoto"
+    );
+
 
 knop.disabled = true;
+
 
 knop.innerHTML =
     "⏳ Bezig met uploaden...";
 
 
-    const plaat =
-        window.geselecteerdePlaat;
+
+const plaat =
+    window.geselecteerdePlaat;
 
 
 
-    if (!plaat) {
+if(!plaat){
 
 
-        alert(
-            "Geen plaat geselecteerd"
-        );
-
-
-        return;
-
-    }
-
-
-
-
-
-    if (
-        !geselecteerdeDetailFoto &&
-        !geselecteerdeOverzichtFoto
-    ) {
-
-
-        alert(
-            "Kies eerst een foto"
-        );
-
-
-        return;
-
-    }
-
-
-
-
-
-    const titel =
-        document.getElementById("fotoTitel")
-        ?.value
-        .trim()
-        || "";
-    const beschrijving =
-        document.getElementById("fotoBeschrijving")
-        ?.value
-        .trim()
-        || "";
-    const { data:userData } =
-        await supabaseClient
-        .auth
-        .getUser();
-    const gebruiker =
-        userData.user
-        ? userData.user.email
-        : "onbekend";
-    const uploadLijst = [];
-    if (geselecteerdeDetailFoto) {
-        uploadLijst.push({
-            bestand:
-                geselecteerdeDetailFoto,
-            type:
-                "Detail"
-        });
-    }
-    if (geselecteerdeOverzichtFoto) {
-        uploadLijst.push({
-            bestand:
-                geselecteerdeOverzichtFoto,
-            type:
-                "Overzicht"
-        });
-    }
-    for (const foto of uploadLijst) {
-        const verkleind =
-            await verkleinFoto(
-                foto.bestand
-            );
-        const bestandsnaam =
-            `${plaat.code}/${Date.now()}_${verkleind.name}`;
-        const { error:uploadError } =
-            await supabaseClient
-            .storage
-            .from("plaatfotos")
-            .upload(
-                bestandsnaam,
-                verkleind
-            );
-        if (uploadError) {
-            console.error(
-                uploadError
-            );
 alert(
-    "Upload mislukt:\n\n" +
-    uploadError.message
+"Geen plaat geselecteerd"
 );
 
-knop.disabled = false;
 
-knop.innerHTML =
-    "✔ Opslaan";
+knop.disabled=false;
+
+knop.innerHTML="✔ Opslaan";
+
 
 return;
-        }
-        const { error } =
-            await supabaseClient
-            .from("eigen_data")
-            .insert({
-                code:
-                    plaat.code,
-                type:
-                    foto.type,
-                omschrijving:
-                    `${titel}\n${beschrijving}`,
-                foto:
-                    bestandsnaam,
-                toegevoegd_door:
-                    gebruiker
-            });
-        if (error) {
-            console.error(error);
+
+
+}
+
+
+
+if(
+!geselecteerdeDetailFoto &&
+!geselecteerdeOverzichtFoto
+){
+
+
 alert(
-    "Opslaan mislukt"
+"Kies eerst een foto"
 );
 
-knop.disabled = false;
 
-knop.innerHTML =
-    "✔ Opslaan";
+knop.disabled=false;
+
+knop.innerHTML="✔ Opslaan";
+
 
 return;
-        }
-    }
-knop.disabled = true;
+
+
+}
+
+
+
+
+const titel =
+document
+.getElementById("fotoTitel")
+.value
+.trim()
+|| "Geen titel";
+
+
+
+const beschrijving =
+document
+.getElementById("fotoBeschrijving")
+.value
+.trim()
+|| "Geen opmerking";
+
+
+
+
+
+const {data:userData} =
+await supabaseClient
+.auth
+.getUser();
+
+
+
+const gebruiker =
+userData.user
+?
+userData.user.email
+:
+"onbekend";
+
+
+
+
+
+let detailPad = null;
+
+let overzichtPad = null;
+
+
+
+
+// ============================================
+// Detail upload
+// ============================================
+
+
+if(geselecteerdeDetailFoto){
+
+
+const foto =
+await verkleinFoto(
+    geselecteerdeDetailFoto
+);
+
+
+
+detailPad =
+`${plaat.code}/${Date.now()}_detail_${foto.name}`;
+
+
+
+const {error} =
+await supabaseClient
+.storage
+.from("plaatfotos")
+.upload(
+detailPad,
+foto
+);
+
+
+
+if(error){
+
+alert(
+"Detailfoto upload mislukt"
+);
+
+console.error(error);
+
+return;
+
+}
+
+
+}
+
+
+
+
+
+// ============================================
+// Overzicht upload
+// ============================================
+
+
+if(geselecteerdeOverzichtFoto){
+
+
+const foto =
+await verkleinFoto(
+    geselecteerdeOverzichtFoto
+);
+
+
+
+overzichtPad =
+`${plaat.code}/${Date.now()}_overzicht_${foto.name}`;
+
+
+
+const {error} =
+await supabaseClient
+.storage
+.from("plaatfotos")
+.upload(
+overzichtPad,
+foto
+);
+
+
+
+if(error){
+
+alert(
+"Overzichtsfoto upload mislukt"
+);
+
+console.error(error);
+
+return;
+
+}
+
+
+}
+
+
+
+
+
+// ============================================
+// Eén CASE opslaan
+// ============================================
+
+
+const {error} =
+await supabaseClient
+.from("eigen_data")
+.insert({
+
+code:
+plaat.code,
+
+
+type:
+"Case",
+
+
+omschrijving:
+`Titel: ${titel}
+
+Opmerking:
+${beschrijving}`,
+
+
+foto:
+detailPad,
+
+
+overzicht_foto:
+overzichtPad,
+
+
+toegevoegd_door:
+gebruiker
+
+});
+
+
+
+
+if(error){
+
+
+console.error(error);
+
+
+alert(
+"Case opslaan mislukt"
+);
+
+
+knop.disabled=false;
+
+knop.innerHTML="✔ Opslaan";
+
+
+return;
+
+
+}
+
+
+
+
 
 knop.innerHTML =
-    "✅ Opgeslagen";
+"✅ Opgeslagen";
 
 
-setTimeout(() => {
 
-    location.reload();
+setTimeout(()=>{
 
-}, 1200);
+
+location.reload();
+
+
+},1200);
+
+
+
 });
