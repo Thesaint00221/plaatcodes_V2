@@ -1,18 +1,21 @@
 /* ==========================================================
    PLAATCATALOGUS
    STYLE.CSS
-   Deel 1 - Basis
+
+   DEEL 1 - BASIS / KAARTEN / DETAIL
 ========================================================== */
+
 
 /* ==========================================================
-   Variabelen
+   VARIABELEN
 ========================================================== */
 
-:root{
+:root {
 
     --blauw:#1d4ed8;
     --groen:#16a34a;
     --oranje:#f59e0b;
+    --rood:#dc2626;
 
     --achtergrond:#f4f4f4;
     --wit:#ffffff;
@@ -27,21 +30,23 @@
 
 
 /* ==========================================================
-   Reset
+   RESET
 ========================================================== */
 
-*{
+* {
+
     margin:0;
     padding:0;
     box-sizing:border-box;
+
 }
 
 
 /* ==========================================================
-   Body
+   BODY
 ========================================================== */
 
-body{
+body {
 
     font-family:Arial, Helvetica, sans-serif;
 
@@ -52,11 +57,12 @@ body{
 }
 
 
+
 /* ==========================================================
-   Header
+   HEADER
 ========================================================== */
 
-header{
+header {
 
     background:var(--blauw);
 
@@ -68,18 +74,20 @@ header{
 
 }
 
-header h1{
+
+header h1 {
 
     margin-bottom:8px;
 
 }
 
 
+
 /* ==========================================================
-   Zoekveld
+   ZOEKVELD
 ========================================================== */
 
-.search{
+.search {
 
     max-width:700px;
 
@@ -89,7 +97,8 @@ header h1{
 
 }
 
-#search{
+
+#search {
 
     width:100%;
 
@@ -107,20 +116,23 @@ header h1{
 
 }
 
-#search:focus{
+
+#search:focus {
 
     border-color:var(--blauw);
 
-    box-shadow:0 0 0 3px rgba(29,78,216,.15);
+    box-shadow:
+    0 0 0 3px rgba(29,78,216,.15);
 
 }
 
 
+
 /* ==========================================================
-   Resultaten
+   RESULTATEN
 ========================================================== */
 
-#resultaten{
+#resultaten {
 
     max-width:1200px;
 
@@ -130,18 +142,20 @@ header h1{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    grid-template-columns:
+    repeat(auto-fill,minmax(250px,1fr));
 
     gap:20px;
 
 }
 
 
+
 /* ==========================================================
-   Kaarten
+   KAARTEN
 ========================================================== */
 
-.kaart{
+.kaart {
 
     background:var(--wit);
 
@@ -155,7 +169,8 @@ header h1{
 
 }
 
-.kaart:hover{
+
+.kaart:hover {
 
     transform:translateY(-4px);
 
@@ -163,7 +178,8 @@ header h1{
 
 }
 
-.kaart img{
+
+.kaart img {
 
     width:100%;
 
@@ -175,13 +191,15 @@ header h1{
 
 }
 
-.inhoud{
+
+.inhoud {
 
     padding:15px;
 
 }
 
-.inhoud h2{
+
+.inhoud h2 {
 
     margin-bottom:10px;
 
@@ -189,18 +207,20 @@ header h1{
 
 }
 
-.inhoud p{
+
+.inhoud p {
 
     margin:5px 0;
 
 }
 
 
+
 /* ==========================================================
-   Geen resultaten
+   GEEN RESULTATEN
 ========================================================== */
 
-.geenResultaat{
+.geenResultaat {
 
     grid-column:1/-1;
 
@@ -213,464 +233,318 @@ header h1{
 }
 
 
+
 /* ==========================================================
-   Utilities
+   UTILITIES
 ========================================================== */
 
-.hidden{
+.hidden {
 
     display:none;
 
 }
-/* ============================================
+
+
+
+/* ==========================================================
    DETAIL PAGINA
-   ============================================ */
+========================================================== */
 
 #detail {
-    position: fixed;
-    inset: 0;
-    background: #f4f4f4;
-    z-index: 100;
-    overflow-y: auto;
-    padding: 20px;
+
+    position:fixed;
+
+    inset:0;
+
+    background:var(--achtergrond);
+
+    z-index:100;
+
+    overflow-y:auto;
+
+    padding:20px;
+
 }
+
+
 
 .detail-container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+
+    max-width:900px;
+
+    margin:0 auto;
+
+    background:var(--wit);
+
+    border-radius:var(--radius);
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+
 }
+
+
 
 #detail h2 {
-    margin-top: 0;
-    color: #222;
+
+    margin-top:0;
+
+    color:#222;
+
 }
+
+
 
 #detail img {
-    width: 100%;
-    max-height: 450px;
-    object-fit: contain;
-    border-radius: 10px;
-    background: #eee;
-    margin-bottom: 20px;
+
+    width:100%;
+
+    max-height:450px;
+
+    object-fit:contain;
+
+    border-radius:10px;
+
+    background:#eee;
+
+    margin-bottom:20px;
+
 }
 
 
-/* ============================================
+
+/* ==========================================================
    DETAIL TABEL
-   ============================================ */
+========================================================== */
 
 .detail-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
 }
+
+
 
 .detail-table tr {
-    border-bottom: 1px solid #ddd;
+
+    border-bottom:1px solid var(--grijs);
+
 }
+
+
 
 .detail-table td {
-    padding: 12px 10px;
+
+    padding:12px 10px;
+
 }
+
+
 
 .detail-table td:first-child {
-    font-weight: bold;
-    width: 35%;
-    color: #555;
+
+    font-weight:bold;
+
+    width:35%;
+
+    color:#555;
+
 }
+/* ==========================================================
+   DEEL 2 - KNOPPEN / FOTO'S / UPLOAD / LIGHTBOX
+========================================================== */
 
 
-/* ============================================
-   KNOPPEN
-   ============================================ */
-/* ==========================================
+/* ==========================================================
    BASIS KNOPPEN
-========================================== */
+========================================================== */
 
 button {
+
     border:none;
+
     padding:12px 18px;
+
     border-radius:10px;
+
     cursor:pointer;
+
     font-size:16px;
+
     transition:.2s;
+
 }
 
-/* ==========================================
-   UPLOAD KNOPPEN
-========================================== */
+
+button:hover {
+
+    opacity:.85;
+
+}
+
+
+
+/* ==========================================================
+   KNOP KLEUREN
+========================================================== */
 
 #detailKnop {
+
     background:var(--oranje);
+
     color:white;
-}
-#overzichtKnop {
-    background:var(--groen);
-    color:white;
-}
-#opslaanFoto {
-    background:var(--blauw);
-    color:white;
-}
-#terug {
-    background:#555;
-    color:white;
-}
-#loginButton {
-    background:var(--blauw);
-    color:white;
-}
-#logoutButton {
-    background:#dc2626;
-    color:white;
-}
-button:hover {
-    opacity:.85;
+
 }
 
-/* ============================================
-   FOTO'S
-   ============================================ */
+
+#overzichtKnop {
+
+    background:var(--groen);
+
+    color:white;
+
+}
+
+
+#opslaanFoto {
+
+    background:var(--blauw);
+
+    color:white;
+
+}
+
+
+#terug {
+
+    background:#555;
+
+    color:white;
+
+}
+
+
+#loginButton {
+
+    background:var(--blauw);
+
+    color:white;
+
+}
+
+
+#logoutButton {
+
+    background:var(--rood);
+
+    color:white;
+
+}
+
+
+
+/* ==========================================================
+   FOTO GALERIJ
+========================================================== */
 
 .foto-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-    gap: 15px;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+
+    gap:15px;
+
 }
+
 
 .foto-container img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform .2s;
+
+    width:100%;
+
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:transform .2s;
+
 }
+
 
 .foto-container img:hover {
-    transform: scale(1.03);
+
+    transform:scale(1.03);
+
 }
 
 
-/* ============================================
-   LOGIN
-   ============================================ */
 
-.login-box {
-    max-width: 400px;
-    margin: 50px auto;
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,.15);
-}
-
-.login-box input {
-    width:100%;
-    padding:12px;
-    margin-bottom:15px;
-    border:1px solid #ccc;
-    border-radius:8px;
-}
-
-.login-box button {
-    width:100%;
-}
-/* ============================================
-   UPLOAD FOTO'S
-   ============================================ */
-
-.upload-box {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-top: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-}
-
-.upload-box h3 {
-    margin-top: 0;
-}
-
-.upload-box input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px dashed #aaa;
-    border-radius: 8px;
-    background: #fafafa;
-}
-
-.upload-box button {
-    margin-top: 15px;
-}
-
-
-/* ============================================
-   FOTO ACTIES
-   ============================================ */
+/* ==========================================================
+   FOTO KAARTEN
+========================================================== */
 
 .foto-item {
-    position: relative;
+
+    position:relative;
+
 }
+
 
 .foto-item button {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    background: rgba(0,0,0,0.7);
-    padding: 8px 10px;
-    font-size: 14px;
+
+    position:absolute;
+
+    right:8px;
+
+    top:8px;
+
+    background:rgba(0,0,0,.7);
+
+    color:white;
+
+    padding:8px 10px;
+
+    font-size:14px;
+
 }
+
 
 .foto-item button:hover {
-    background: #d9534f;
+
+    background:#d9534f;
+
 }
 
 
-/* ============================================
-   GROTE FOTO WEERGAVE
-   ============================================ */
 
-.lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.85);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:200;
-}
+/* ==========================================================
+   UPLOAD KAART
+========================================================== */
 
-.lightbox img {
-    max-width:95%;
-    max-height:90%;
-    border-radius:10px;
-}
-/* ============================================
-   LAAD ANIMATIE
-   ============================================ */
-.laden {
-    text-align:center;
-    padding:30px;
-    font-size:18px;
-    color:#666;
-}
-.spinner {
-    width:40px;
-    height:40px;
-    border:4px solid #ddd;
-    border-top-color:#333;
-    border-radius:50%;
-    margin:15px auto;
-    animation:draaien 1s linear infinite;
-}
-
-@keyframes draaien {
-    from {
-        transform:rotate(0deg);
-    }
-    to {
-        transform:rotate(360deg);
-    }
-}
-/* ============================================
-   MOBIEL OPTIMALISATIE
-   ============================================ */
-
-@media (max-width:700px) {
-    body {
-        font-size:16px;
-    }
-    header {
-        padding:15px;
-    }
-    header h1 {
-        font-size:24px;
-    }
-    header p {
-        font-size:14px;
-    }
-    #search {
-        font-size:16px;
-        padding:14px;
-    }
-    .kaart {
-        border-radius:10px;
-    }
-    .kaart img {
-        height:180px;
-    }
-    .kaart-info {
-        padding:12px;
-    }
-    #detail {
-        padding:10px;
-    }
-    .detail-container {
-        padding:15px;
-        border-radius:10px;
-    }
-    .detail-table td {
-        padding:10px 5px;
-    }
-    .detail-table td:first-child {
-        width:40%;
-    }
-    button {
-        width:100%;
-        padding:14px;
-    }
-    .foto-container {
-        grid-template-columns:repeat(2,1fr);
-        gap:10px;
-    }
-    .foto-container img {
-        height:140px;
-    }
-}
-/* ============================================
-   IPHONE SAFE AREA
-   ============================================ */
-@supports(padding: env(safe-area-inset-bottom)) {
-    body {
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-}
-/* ============================================
-   FOUTMELDINGEN
-   ============================================ */
-.error {
-    background:#ffe5e5;
-    color:#a00;
-    padding:15px;
-    border-radius:8px;
-    margin:15px 0;
-}
-.success {
-    background:#e6ffe6;
-    color:#176b17;
-    padding:15px;
-    border-radius:8px;
-    margin:15px 0;
-}
-/* ============================================
-   FOTO TITEL & OPMERKING VELDEN
-   ============================================ */
 #uploadKaart {
-    background:white;
-    padding:25px;
+
+    background:var(--wit);
+
+    padding:30px;
+
     margin-top:25px;
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-}
-#uploadKaart label {
-    display:block;
-    margin-top:20px;
-    margin-bottom:8px;
-    font-weight:bold;
-    color:#444;
-    font-size:16px;
-}
-/* Titel invoer */
-#fotoTitel {
-    width:100%;
-    padding:15px 18px;
-    border:2px solid #ddd;
-    border-radius:12px;
-    font-size:17px;
-    background:#fafafa;
-    transition:.2s;
-    outline:none;
-}
-#fotoTitel:focus {
-    border-color:var(--blauw);
-    background:white;
-    box-shadow:0 0 0 4px rgba(29,78,216,.15);
-}
-/* Opmerking */
-#fotoBeschrijving {
-    width:100%;
-    min-height:140px;
-    padding:15px 18px;
-    border:2px solid #ddd;
-    border-radius:12px;
-    font-size:16px;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#fafafa;
-    resize:vertical;
-    transition:.2s;
-    outline:none;
-}
-#fotoBeschrijving:focus {
-    border-color:var(--blauw);
-    background:white;
-    box-shadow:0 0 0 4px rgba(29,78,216,.15);
-}
-/* Placeholder */
-#fotoTitel::placeholder,
-#fotoBeschrijving::placeholder {
-    color:#999;
-}
-/* ============================================
-   DESKTOP DETAIL LAYOUT
-============================================ */
-@media (min-width:900px){
-#detailContent {
-    max-width:1200px;
-    margin:auto;
-}
-.detail-header {
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:var(--shadow);
-    margin-bottom:20px;
-}
-.detail-header h2 {
-    font-size:30px;
-    margin-bottom:15px;
-}
-#uploadKaart {
-    max-width:500px;
-    margin:30px auto;
-}
-#galerij {
-    display:grid;
-    grid-template-columns:
-    repeat(auto-fill,minmax(220px,1fr));
-    gap:20px;
-}
-.fotoKaart {
-    background:white;
-    padding:15px;
-    border-radius:15px;
-    box-shadow:var(--shadow);
-}
-.detailFoto {
-    border-radius:12px;
-}
-   /* ============================================
-   PROFESSIONELE UPLOAD KAART
-============================================ */
-
-
-#uploadKaart {
-
-    background:white;
-
-    padding:30px;
 
     border-radius:20px;
 
     box-shadow:var(--shadow);
 
-    margin-top:25px;
-
 }
+
 
 
 .uploadVeld {
@@ -678,6 +552,7 @@ button:hover {
     margin-top:20px;
 
 }
+
 
 
 .uploadVeld label {
@@ -695,7 +570,54 @@ button:hover {
 }
 
 
-/* Titel */
+
+/* ==========================================================
+   BESTAND UPLOAD
+========================================================== */
+
+.upload-box {
+
+    background:var(--wit);
+
+    padding:25px;
+
+    border-radius:12px;
+
+    margin-top:20px;
+
+    box-shadow:var(--shadow);
+
+}
+
+
+
+.upload-box input[type="file"] {
+
+    width:100%;
+
+    padding:10px;
+
+    border:1px dashed #aaa;
+
+    border-radius:8px;
+
+    background:#fafafa;
+
+}
+
+
+
+.upload-box button {
+
+    margin-top:15px;
+
+}
+
+
+
+/* ==========================================================
+   FOTO TITEL
+========================================================== */
 
 #fotoTitel {
 
@@ -718,6 +640,7 @@ button:hover {
 }
 
 
+
 #fotoTitel:focus {
 
     border-color:var(--blauw);
@@ -730,7 +653,10 @@ button:hover {
 }
 
 
-/* Opmerking */
+
+/* ==========================================================
+   FOTO BESCHRIJVING
+========================================================== */
 
 #fotoBeschrijving {
 
@@ -743,6 +669,8 @@ button:hover {
     font-size:16px;
 
     line-height:1.5;
+
+    font-family:Arial, Helvetica, sans-serif;
 
     border:2px solid #ddd;
 
@@ -759,6 +687,7 @@ button:hover {
 }
 
 
+
 #fotoBeschrijving:focus {
 
     border-color:var(--blauw);
@@ -772,61 +701,155 @@ button:hover {
 
 
 
-/* Opslaan knop groter */
+#fotoTitel::placeholder,
+#fotoBeschrijving::placeholder {
 
-#opslaanFoto {
+    color:#999;
 
-    width:100%;
+}
 
-    margin-top:25px;
+
+
+/* ==========================================================
+   LIGHTBOX GROTE FOTO
+========================================================== */
+
+.lightbox {
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.85);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:200;
+
+    animation:verschijnen .2s ease;
+
+}
+
+
+
+.lightbox img {
+
+    max-width:95%;
+
+    max-height:90%;
+
+    object-fit:contain;
+
+    border-radius:15px;
+
+    cursor:zoom-out;
+
+}
+
+
+
+/* ==========================================================
+   LIGHTBOX ANIMATIE
+========================================================== */
+
+@keyframes verschijnen {
+
+    from {
+
+        opacity:0;
+
+        transform:scale(.95);
+
+    }
+
+
+    to {
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   LADEN ANIMATIE
+========================================================== */
+
+.laden {
+
+    text-align:center;
+
+    padding:30px;
 
     font-size:18px;
 
-    font-weight:bold;
-
-}
-   @media (min-width:1000px){
-
-
-#detail {
-
-    padding:40px;
+    color:#666;
 
 }
 
 
-#detailContent {
 
-    max-width:1200px;
+.spinner {
 
-    margin:auto;
+    width:40px;
+
+    height:40px;
+
+    border:4px solid #ddd;
+
+    border-top-color:#333;
+
+    border-radius:50%;
+
+    margin:15px auto;
+
+    animation:draaien 1s linear infinite;
 
 }
 
 
-#uploadKaart {
 
-    max-width:600px;
+@keyframes draaien {
 
-    margin:30px auto;
+    from {
+
+        transform:rotate(0deg);
+
+    }
+
+
+    to {
+
+        transform:rotate(360deg);
+
+    }
 
 }
+/* ==========================================================
+   DEEL 3 - LOGIN / RESPONSIVE / FOUTMELDINGEN
+========================================================== */
 
 
-}
-}
-/* ============================================
-   MODERNE LOGIN
-============================================ */
+/* ==========================================================
+   LOGIN
+========================================================== */
 
-
+.login-box,
 #loginBox {
 
     max-width:420px;
 
     margin:40px auto;
 
-    background:white;
+    background:var(--wit);
 
     padding:35px;
 
@@ -840,13 +863,13 @@ button:hover {
 }
 
 
-/* Titel */
 
 .loginTitel {
 
     margin-bottom:25px;
 
 }
+
 
 
 .loginTitel h2 {
@@ -860,6 +883,7 @@ button:hover {
 }
 
 
+
 .loginTitel p {
 
     color:#666;
@@ -869,9 +893,12 @@ button:hover {
 }
 
 
-/* Invoervelden */
 
+/* ==========================================================
+   LOGIN VELDEN
+========================================================== */
 
+.login-box input,
 #loginBox input {
 
     width:100%;
@@ -896,6 +923,7 @@ button:hover {
 
 
 
+.login-box input:focus,
 #loginBox input:focus {
 
     border-color:var(--blauw);
@@ -909,8 +937,9 @@ button:hover {
 
 
 
-/* Login knop */
-
+/* ==========================================================
+   LOGIN KNOP
+========================================================== */
 
 #loginButton {
 
@@ -918,17 +947,11 @@ button:hover {
 
     padding:15px;
 
-    background:var(--blauw);
-
-    color:white;
-
     font-size:18px;
 
     font-weight:bold;
 
     border-radius:12px;
-
-    margin-top:5px;
 
 }
 
@@ -938,13 +961,13 @@ button:hover {
 
     transform:translateY(-2px);
 
-    opacity:.9;
-
 }
 
 
 
-/* Logout */
+/* ==========================================================
+   LOGOUT
+========================================================== */
 
 #logoutButton {
 
@@ -952,50 +975,322 @@ button:hover {
 
     margin-top:15px;
 
-    background:#dc2626;
-
-    color:white;
-
     font-weight:bold;
 
 }
 
 
 
-/* Desktop */
+/* ==========================================================
+   FOUTMELDINGEN
+========================================================== */
 
-@media(min-width:900px){
+.error {
 
+    background:#ffe5e5;
 
-#loginBox {
+    color:#a00;
 
-    position:absolute;
+    padding:15px;
 
-    right:30px;
+    border-radius:8px;
 
-    top:20px;
-
-    width:320px;
-
-    margin:0;
-
-    padding:20px;
+    margin:15px 0;
 
 }
 
 
-.loginTitel h2 {
 
-    font-size:20px;
+.success {
+
+    background:#e6ffe6;
+
+    color:#176b17;
+
+    padding:15px;
+
+    border-radius:8px;
+
+    margin:15px 0;
 
 }
 
 
-.loginTitel p {
 
-    font-size:14px;
+/* ==========================================================
+   DESKTOP DETAIL LAYOUT
+========================================================== */
+
+@media (min-width:900px) {
+
+
+    #detail {
+
+        padding:40px;
+
+    }
+
+
+    #detailContent {
+
+        max-width:1200px;
+
+        margin:auto;
+
+    }
+
+
+    .detail-header {
+
+        background:var(--wit);
+
+        padding:25px;
+
+        border-radius:15px;
+
+        box-shadow:var(--shadow);
+
+        margin-bottom:20px;
+
+    }
+
+
+    .detail-header h2 {
+
+        font-size:30px;
+
+        margin-bottom:15px;
+
+    }
+
+
+    #uploadKaart {
+
+        max-width:600px;
+
+        margin:30px auto;
+
+    }
+
+
+    #galerij {
+
+        display:grid;
+
+        grid-template-columns:
+        repeat(auto-fill,minmax(220px,1fr));
+
+        gap:20px;
+
+    }
+
+
+    .fotoKaart {
+
+        background:var(--wit);
+
+        padding:15px;
+
+        border-radius:15px;
+
+        box-shadow:var(--shadow);
+
+    }
+
 
 }
+
+
+
+/* ==========================================================
+   GROTE DESKTOP LOGIN
+========================================================== */
+
+@media (min-width:1000px) {
+
+
+    #loginBox {
+
+        position:absolute;
+
+        right:30px;
+
+        top:20px;
+
+        width:320px;
+
+        margin:0;
+
+        padding:20px;
+
+    }
+
+
+    .loginTitel h2 {
+
+        font-size:20px;
+
+    }
+
+
+    .loginTitel p {
+
+        font-size:14px;
+
+    }
+
+
+}
+
+
+
+/* ==========================================================
+   MOBIEL
+========================================================== */
+
+@media (max-width:700px) {
+
+
+    body {
+
+        font-size:16px;
+
+    }
+
+
+    header {
+
+        padding:15px;
+
+    }
+
+
+    header h1 {
+
+        font-size:24px;
+
+    }
+
+
+    header p {
+
+        font-size:14px;
+
+    }
+
+
+    #search {
+
+        font-size:16px;
+
+        padding:14px;
+
+    }
+
+
+    #resultaten {
+
+        padding:10px;
+
+        gap:15px;
+
+    }
+
+
+    .kaart {
+
+        border-radius:10px;
+
+    }
+
+
+    .kaart img {
+
+        height:180px;
+
+    }
+
+
+    .inhoud {
+
+        padding:12px;
+
+    }
+
+
+    #detail {
+
+        padding:10px;
+
+    }
+
+
+    .detail-container {
+
+        padding:15px;
+
+        border-radius:10px;
+
+    }
+
+
+    .detail-table td {
+
+        padding:10px 5px;
+
+    }
+
+
+    .detail-table td:first-child {
+
+        width:40%;
+
+    }
+
+
+    button {
+
+        width:100%;
+
+        padding:14px;
+
+    }
+
+
+    .foto-container {
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+        gap:10px;
+
+    }
+
+
+    .foto-container img {
+
+        height:140px;
+
+    }
+
+
+}
+
+
+
+/* ==========================================================
+   IPHONE SAFE AREA
+========================================================== */
+
+@supports (padding:env(safe-area-inset-bottom)) {
+
+
+    body {
+
+        padding-bottom:
+        env(safe-area-inset-bottom);
+
+    }
 
 
 }
