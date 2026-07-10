@@ -450,19 +450,15 @@ button:hover {
     max-height:90%;
     border-radius:10px;
 }
-
-
 /* ============================================
    LAAD ANIMATIE
    ============================================ */
-
 .laden {
     text-align:center;
     padding:30px;
     font-size:18px;
     color:#666;
 }
-
 .spinner {
     width:40px;
     height:40px;
@@ -481,112 +477,72 @@ button:hover {
         transform:rotate(360deg);
     }
 }
-
-
 /* ============================================
    MOBIEL OPTIMALISATIE
    ============================================ */
 
 @media (max-width:700px) {
-
     body {
         font-size:16px;
     }
-
-
     header {
         padding:15px;
     }
-
-
     header h1 {
         font-size:24px;
     }
-
-
     header p {
         font-size:14px;
     }
-
-
     #search {
         font-size:16px;
         padding:14px;
     }
-
-
     .kaart {
         border-radius:10px;
     }
-
-
     .kaart img {
         height:180px;
     }
-
-
     .kaart-info {
         padding:12px;
     }
-
-
     #detail {
         padding:10px;
     }
-
-
     .detail-container {
         padding:15px;
         border-radius:10px;
     }
-
-
     .detail-table td {
         padding:10px 5px;
     }
-
-
     .detail-table td:first-child {
         width:40%;
     }
-
-
     button {
         width:100%;
         padding:14px;
     }
-
-
     .foto-container {
         grid-template-columns:repeat(2,1fr);
         gap:10px;
     }
-
-
     .foto-container img {
         height:140px;
     }
-
 }
-
-
 /* ============================================
    IPHONE SAFE AREA
    ============================================ */
-
 @supports(padding: env(safe-area-inset-bottom)) {
-
     body {
         padding-bottom: env(safe-area-inset-bottom);
     }
-
 }
-
-
 /* ============================================
    FOUTMELDINGEN
    ============================================ */
-
 .error {
     background:#ffe5e5;
     color:#a00;
@@ -594,7 +550,6 @@ button:hover {
     border-radius:8px;
     margin:15px 0;
 }
-
 .success {
     background:#e6ffe6;
     color:#176b17;
@@ -605,118 +560,97 @@ button:hover {
 /* ============================================
    FOTO TITEL & OPMERKING VELDEN
    ============================================ */
-
 #uploadKaart {
-
     background:white;
-
     padding:25px;
-
     margin-top:25px;
-
     border-radius:var(--radius);
-
     box-shadow:var(--shadow);
-
 }
-
-
 #uploadKaart label {
-
     display:block;
-
     margin-top:20px;
-
     margin-bottom:8px;
-
     font-weight:bold;
-
     color:#444;
-
     font-size:16px;
-
 }
-
-
 /* Titel invoer */
-
 #fotoTitel {
-
     width:100%;
-
     padding:15px 18px;
-
     border:2px solid #ddd;
-
     border-radius:12px;
-
     font-size:17px;
-
     background:#fafafa;
-
     transition:.2s;
-
     outline:none;
-
 }
-
-
 #fotoTitel:focus {
-
     border-color:var(--blauw);
-
     background:white;
-
     box-shadow:0 0 0 4px rgba(29,78,216,.15);
-
 }
-
-
 /* Opmerking */
-
 #fotoBeschrijving {
-
     width:100%;
-
     min-height:140px;
-
     padding:15px 18px;
-
     border:2px solid #ddd;
-
     border-radius:12px;
-
     font-size:16px;
-
     font-family:Arial, Helvetica, sans-serif;
-
     background:#fafafa;
-
     resize:vertical;
-
     transition:.2s;
-
     outline:none;
-
 }
-
-
 #fotoBeschrijving:focus {
-
     border-color:var(--blauw);
-
     background:white;
-
     box-shadow:0 0 0 4px rgba(29,78,216,.15);
-
 }
-
-
 /* Placeholder */
-
 #fotoTitel::placeholder,
 #fotoBeschrijving::placeholder {
-
     color:#999;
-
+}
+/* ============================================
+   DESKTOP DETAIL LAYOUT
+============================================ */
+@media (min-width:900px){
+#detailContent {
+    max-width:1200px;
+    margin:auto;
+}
+.detail-header {
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+}
+.detail-header h2 {
+    font-size:30px;
+    margin-bottom:15px;
+}
+#uploadKaart {
+    max-width:500px;
+    margin:30px auto;
+}
+#galerij {
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;
+}
+.fotoKaart {
+    background:white;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:var(--shadow);
+}
+.detailFoto {
+    border-radius:12px;
+}
 }
