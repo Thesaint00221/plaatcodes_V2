@@ -521,15 +521,92 @@ async function verwijderFoto(id, opslagPad){
 
 if(
 !confirm(
-"Deze case verwijderen?"
+"Deze case en foto's verwijderen?"
 )
 ){
+    return;
+}
 
-return;
+
+// ==========================================
+// Case ophalen
+// ==========================================
+
+const {data:item,error:zoekError} =
+await supabaseClient
+.from("eigen_data")
+.select("foto, overzicht_foto")
+.eq("id", id)
+.single();
+
+
+
+if(zoekError){
+
+    console.error(zoekError);
+
+    alert(
+        "Case ophalen mislukt"
+    );
+
+    return;
 
 }
 
 
+
+// ==========================================
+// Foto's verwijderen uit Storage
+// ==========================================
+
+const bestanden = [];
+
+
+if(item.foto){
+
+    bestanden.push(item.foto);
+
+}
+
+
+if(item.overzicht_foto){
+
+    bestanden.push(item.overzicht_foto);
+
+}
+
+
+
+if(bestanden.length){
+
+
+const {error:storageError} =
+await supabaseClient
+.storage
+.from("plaatfotos")
+.remove(bestanden);
+
+
+
+if(storageError){
+
+    console.error(storageError);
+
+    alert(
+        "Foto's verwijderen mislukt"
+    );
+
+    return;
+
+}
+
+}
+
+
+
+// ==========================================
+// Case verwijderen
+// ==========================================
 
 const {error} =
 await supabaseClient
@@ -547,7 +624,7 @@ if(error){
 console.error(error);
 
 alert(
-"Verwijderen mislukt"
+"Case verwijderen mislukt"
 );
 
 return;
@@ -557,7 +634,7 @@ return;
 
 
 alert(
-"Case verwijderd"
+"Case en foto's verwijderd"
 );
 
 
