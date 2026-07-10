@@ -189,11 +189,13 @@ loginBox.innerHTML = `
 
 <div class="loginGebruiker">
 
-    👤
+    <div class="gebruikerNaam">
+        👤 ${naam}
+    </div>
 
-    <span>
-        ${user}
-    </span>
+    <div class="gebruikerRol">
+        ${rol}
+    </div>
 
 </div>
 
