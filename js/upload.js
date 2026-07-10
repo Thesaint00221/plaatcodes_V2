@@ -488,33 +488,23 @@ const {error} =
 await supabaseClient
 .from("eigen_data")
 .insert({
+    code:
+        plaat.code,
 
-code:
-plaat.code,
+    type:
+        foto.type,
 
+    omschrijving:
+        `${titel}\n${beschrijving}`,
 
-type:
-"Case",
+    foto:
+        bestandsnaam,
 
+    toegevoegd_door:
+        gebruiker,
 
-omschrijving:
-`Titel: ${titel}
-
-Opmerking:
-${beschrijving}`,
-
-
-foto:
-detailPad,
-
-
-overzicht_foto:
-overzichtPad,
-
-
-toegevoegd_door:
-gebruiker
-
+    datum:
+        new Date().toISOString()
 });
 
 
