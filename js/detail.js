@@ -486,7 +486,10 @@ async function verwijderCase(id){
 
     }
 
-
+console.log(
+    "Te verwijderen bestanden:",
+    bestanden
+);
 
     if(bestanden.length){
 
