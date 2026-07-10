@@ -287,27 +287,50 @@ header h1{
 /* ============================================
    KNOPPEN
    ============================================ */
+/* ==========================================
+   BASIS KNOPPEN
+========================================== */
 
 button {
-    border: none;
-    background: #333;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.2s;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.2s;
 }
 
+/* ==========================================
+   UPLOAD KNOPPEN
+========================================== */
+
+#detailKnop {
+    background:var(--oranje);
+    color:white;
+}
+#overzichtKnop {
+    background:var(--groen);
+    color:white;
+}
+#opslaanFoto {
+    background:var(--blauw);
+    color:white;
+}
+#terug {
+    background:#555;
+    color:white;
+}
+#loginButton {
+    background:var(--blauw);
+    color:white;
+}
+#logoutButton {
+    background:#dc2626;
+    color:white;
+}
 button:hover {
-    background: #555;
+    opacity:.85;
 }
-
-#terug,
-#backButton {
-    margin-bottom: 20px;
-}
-
 
 /* ============================================
    FOTO'S
