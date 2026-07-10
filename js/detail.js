@@ -5,6 +5,37 @@
 
 
 window.geselecteerdePlaat = null;
+// ==========================================
+// Naam gebruiker ophalen
+// ==========================================
+
+const gebruikersCache = {};
+
+async function haalGebruikersNaam(email) {
+
+    if (!email) {
+        return "";
+    }
+
+    if (gebruikersCache[email]) {
+        return gebruikersCache[email];
+    }
+
+    const { data } =
+        await supabaseClient
+            .from("gebruikers")
+            .select("naam")
+            .eq("email", email)
+            .single();
+
+    const naam =
+        data?.naam || email;
+
+    gebruikersCache[email] = naam;
+
+    return naam;
+
+}
 
 
 const detail =
@@ -78,37 +109,6 @@ detailContent.innerHTML = `
 
 `;
 
-// ==========================================
-// Naam gebruiker ophalen
-// ==========================================
-
-const gebruikersCache = {};
-
-async function haalGebruikersNaam(email) {
-
-    if (!email) {
-        return "";
-    }
-
-    if (gebruikersCache[email]) {
-        return gebruikersCache[email];
-    }
-
-    const { data } =
-        await supabaseClient
-            .from("gebruikers")
-            .select("naam")
-            .eq("email", email)
-            .single();
-
-    const naam =
-        data?.naam || email;
-
-    gebruikersCache[email] = naam;
-
-    return naam;
-
-}
 
 toonFotos(plaat);
 
