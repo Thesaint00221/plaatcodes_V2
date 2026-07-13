@@ -169,42 +169,37 @@ return;
 if(ingelogd){
 
 
-
-const gebruiker =
-    await laadGebruikersRol();
-
-const naam =
-    gebruiker?.naam || data.session.user.email;
-
-const rol =
-    gebruiker?.rol || "";
+const user =
+data.session.user.email;
 
 
 
-loginBox.innerHTML = `
+let beheerKnop = "";
 
-
-<div class="loginIngelogd">
 
 
 const gebruiker =
-    await laadGebruikersRol();
+await laadGebruikersRol();
 
 
-const beheerKnop =
-    gebruiker &&
-    gebruiker.rol === "beheerder"
-    ?
-    `
-    <button
-    onclick="window.location.href='beheer.html'">
 
-    🛠 Beheer
+if(
+gebruiker &&
+gebruiker.rol === "beheerder"
+){
 
-    </button>
-    `
-    :
-    "";
+beheerKnop = `
+
+<button
+onclick="window.location.href='beheer.html'">
+
+🛠 Beheer
+
+</button>
+
+`;
+
+}
 
 
 
@@ -216,11 +211,12 @@ loginBox.innerHTML = `
 
 <div class="loginGebruiker">
 
-    👤
+👤
 
-    <span>
-        ${user}
-    </span>
+<span>
+${user}
+</span>
+
 
 </div>
 
@@ -230,7 +226,7 @@ ${beheerKnop}
 
 <button id="logoutButton">
 
-    Afmelden
+Afmelden
 
 </button>
 
@@ -241,14 +237,6 @@ ${beheerKnop}
 `;
 
 
-</div>
-
-
-`;
-
-
-
-// nieuwe knop koppelen
 
 document
 .getElementById("logoutButton")
@@ -262,13 +250,10 @@ await supabaseClient
 .signOut();
 
 
-
 updateLoginStatus();
 
 
-
 });
-
 
 
 }
