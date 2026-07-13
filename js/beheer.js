@@ -182,8 +182,11 @@ async function laadStatistieken() {
 // Statistieken laden bij openen pagina
 // ============================================
 
-laadStatistieken();
-
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+    laadStatistieken();
+});
 
 // ============================================
 // Opslagcontrole knop
