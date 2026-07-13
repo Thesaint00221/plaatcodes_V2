@@ -161,8 +161,22 @@ async function updateLoginStatus(){
 
 
 
-        const gebruiker =
-            await laadGebruikersRol();
+let gebruiker = null;
+
+try{
+
+    gebruiker =
+        await laadGebruikersRol();
+
+}
+catch(error){
+
+    console.error(
+        "Gebruiker laden mislukt:",
+        error
+    );
+
+}
 
 
 
@@ -195,8 +209,7 @@ async function updateLoginStatus(){
 
 <div class="gebruikerNaam">
 
-👤 ${gebruiker?.naam || user}
-
+👤 ${gebruiker?.naam ? gebruiker.naam : user}
 </div>
 
 
@@ -222,7 +235,6 @@ class="logoutKlein">
 
 
         loginBox.innerHTML = `
-
 
         <div class="loginTitel">
 
@@ -264,7 +276,19 @@ class="logoutKlein">
 
 
         `;
+        document
+.getElementById("logoutButton")
+?.addEventListener(
+"click",
+async()=>{
 
+await supabaseClient
+.auth
+.signOut();
+
+updateLoginStatus();
+
+});
 
 
         document
