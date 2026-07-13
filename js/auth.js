@@ -3,31 +3,33 @@
 // ============================================
 
 
-let emailInput;
-let wachtwoordInput;
-let loginButton;
-let logoutButton;
+let loginBox =
+    document.getElementById("loginBox");
 
+
+// ============================================
+// Login elementen ophalen
+// ============================================
 
 function laadLoginElementen(){
 
-    emailInput =
-        document.getElementById("email");
+    return {
 
-    wachtwoordInput =
-        document.getElementById("wachtwoord");
+        email:
+            document.getElementById("email"),
 
-    loginButton =
-        document.getElementById("loginButton");
+        wachtwoord:
+            document.getElementById("wachtwoord"),
 
-    logoutButton =
-        document.getElementById("logoutButton");
+        loginButton:
+            document.getElementById("loginButton"),
+
+        logoutButton:
+            document.getElementById("logoutButton")
+
+    };
 
 }
-
-
-laadLoginElementen();
-
 
 
 
@@ -35,83 +37,67 @@ laadLoginElementen();
 // Login
 // ============================================
 
+async function login(){
 
-loginButton?.addEventListener(
-"click",
-async()=>{
-
-
-const email =
-    emailInput.value.trim();
+    const elementen =
+        laadLoginElementen();
 
 
-const wachtwoord =
-    wachtwoordInput.value;
+    const email =
+        elementen.email?.value
+        .trim();
+
+
+    const wachtwoord =
+        elementen.wachtwoord?.value;
 
 
 
-if(
-!email ||
-!wachtwoord
-){
+    if(
+        !email ||
+        !wachtwoord
+    ){
 
-alert(
-"Vul e-mail en wachtwoord in"
-);
+        alert(
+            "Vul e-mail en wachtwoord in"
+        );
 
-return;
+        return;
+
+    }
+
+
+
+    const {error} =
+        await supabaseClient
+        .auth
+        .signInWithPassword({
+
+            email,
+
+            password:wachtwoord
+
+        });
+
+
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Login mislukt: "
+            + error.message
+        );
+
+        return;
+
+    }
+
+
+    updateLoginStatus();
 
 }
-
-
-
-
-const {error} =
-await supabaseClient
-.auth
-.signInWithPassword({
-
-email,
-
-password:wachtwoord
-
-});
-
-
-
-if(error){
-
-
-console.error(error);
-
-
-alert(
-"Login mislukt: " +
-error.message
-);
-
-
-return;
-
-
-}
-
-
-
-alert(
-"Inloggen gelukt"
-);
-
-
-
-updateLoginStatus();
-
-
-
-});
-
-
-
 
 
 
@@ -120,272 +106,200 @@ updateLoginStatus();
 // Logout
 // ============================================
 
+async function logout(){
 
-logoutButton?.addEventListener(
-"click",
-async()=>{
-
-
-await supabaseClient
-.auth
-.signOut();
+    await supabaseClient
+    .auth
+    .signOut();
 
 
+    updateLoginStatus();
 
-updateLoginStatus();
-
-
-
-});
-
-
-
-
+}
 
 
 
 // ============================================
-// Login status
+// Login status tonen
 // ============================================
-
 
 async function updateLoginStatus(){
 
 
-const {data} =
-await supabaseClient
-.auth
-.getSession();
+    loginBox =
+        document.getElementById(
+            "loginBox"
+        );
 
 
+    if(!loginBox){
 
-const ingelogd =
-!!data.session;
+        return;
 
+    }
 
 
 
-if(!loginBox){
-return;
-}
+    const {data} =
+        await supabaseClient
+        .auth
+        .getSession();
 
 
 
+    const ingelogd =
+        !!data.session;
 
-if(ingelogd){
 
 
-const user =
-data.session.user.email;
+    if(ingelogd){
 
 
+        const user =
+            data.session.user.email;
 
-let beheerKnop = "";
 
 
+        let beheerKnop = "";
 
-const gebruiker =
-await laadGebruikersRol();
 
 
+        const gebruiker =
+            await laadGebruikersRol();
 
-if(
-gebruiker &&
-gebruiker.rol === "beheerder"
-){
 
-beheerKnop = `
 
-<button
-onclick="window.location.href='beheer.html'">
+        if(
+            gebruiker &&
+            gebruiker.rol === "beheerder"
+        ){
 
-🛠 Beheer
+            beheerKnop = `
 
-</button>
+            <button
+            onclick="
+            window.location.href='beheer.html'
+            ">
 
-`;
+            🛠 Beheer
 
-}
+            </button>
 
+            `;
 
+        }
 
-loginBox.innerHTML = `
-laadLoginElementen();
 
-<div class="loginIngelogd">
 
+        loginBox.innerHTML = `
 
-<div class="loginGebruiker">
 
-👤
+        <div class="loginIngelogd">
 
-<span>
-${user}
-</span>
 
+            <div class="loginGebruiker">
 
-</div>
+                👤
 
+                <span>
+                ${gebruiker?.naam || user}
+                </span>
 
-${beheerKnop}
+            </div>
 
 
-<button id="logoutButton">
 
-Afmelden
+            ${beheerKnop}
 
-</button>
 
 
-</div>
+            <button
+            id="logoutButton">
 
+            Afmelden
 
-`;
+            </button>
 
 
+        </div>
 
-document
-.getElementById("logoutButton")
-.addEventListener(
-"click",
-async()=>{
 
+        `;
 
-await supabaseClient
-.auth
-.signOut();
 
 
-updateLoginStatus();
+        document
+        .getElementById(
+            "logoutButton"
+        )
+        ?.addEventListener(
+            "click",
+            logout
+        );
 
 
-});
 
+    }
+    else{
 
-}
-else {
 
+        loginBox.innerHTML = `
 
 
-loginBox.innerHTML = `
-laadLoginElementen();
+        <div class="loginTitel">
 
-<div class="loginTitel">
+            🔐
 
-    🔐
+            <h2>
+            Plaatcatalogus
+            </h2>
 
-    <h2>
+            <p>
+            Meld je aan om foto's toe te voegen
+            </p>
+
+
+        </div>
+
+
+
+        <input
+        type="email"
+        id="email"
+        placeholder="E-mailadres">
+
+
+
+        <input
+        type="password"
+        id="wachtwoord"
+        placeholder="Wachtwoord">
+
+
+
+        <button
+        id="loginButton">
+
         Aanmelden
-    </h2>
 
-    <p>
-        Meld je aan om foto's toe te voegen
-    </p>
+        </button>
 
-</div>
+
+        `;
 
 
 
-<input
-type="email"
-id="email"
-placeholder="E-mailadres">
+        document
+        .getElementById(
+            "loginButton"
+        )
+        ?.addEventListener(
+            "click",
+            login
+        );
 
 
-
-<input
-type="password"
-id="wachtwoord"
-placeholder="Wachtwoord">
-
-
-
-<button id="loginButton">
-
-Aanmelden
-
-</button>
-
-
-`;
-
-
-
-// opnieuw koppelen
-
-document
-.getElementById("loginButton")
-.addEventListener(
-"click",
-async()=>{
-
-
-const email =
-document
-.getElementById("email")
-.value
-.trim();
-
-
-
-const wachtwoord =
-document
-.getElementById("wachtwoord")
-.value;
-
-
-
-if(
-!email ||
-!wachtwoord
-){
-
-alert(
-"Vul e-mail en wachtwoord in"
-);
-
-return;
-
-}
-
-
-
-
-const {error} =
-await supabaseClient
-.auth
-.signInWithPassword({
-
-email,
-
-password:wachtwoord
-
-});
-
-
-
-if(error){
-
-alert(
-"Login mislukt: "
-+ error.message
-);
-
-return;
-
-}
-
-
-
-updateLoginStatus();
-
-
-
-});
-
-
-
-}
+    }
 
 
 }
@@ -393,118 +307,80 @@ updateLoginStatus();
 
 
 
-
-
-
 // ============================================
-// starten
+// Gebruikersrol ophalen
 // ============================================
-
-
-updateLoginStatus();
-
-
-
-
-
-
-// ============================================
-// gebruikersrol ophalen
-// ============================================
-
 
 window.huidigeGebruiker = null;
-
 
 
 
 async function laadGebruikersRol(){
 
 
-const {data:userData} =
-await supabaseClient
-.auth
-.getUser();
-
-
-
-if(!userData.user){
-
-return null;
-
-}
-
-
-
-const email =
-userData.user.email;
-
-
-
-
-const {data,error} =
-await supabaseClient
-.from("gebruikers")
-.select("*")
-.eq(
-"email",
-email
-)
-.single();
-
-
-
-if(error){
-
-console.error(
-"Rol ophalen mislukt:",
-error
-);
-
-return null;
-
-}
-
-
-
-window.huidigeGebruiker =
-data;
-
-
-return data;
-
-
-async function controleerBeheerder(){
-
-    const beheerBox =
-        document.getElementById(
-            "beheerBox"
-        );
-
-
-    if(!beheerBox){
-        return;
-    }
-
-
-    const gebruiker =
-        await laadGebruikersRol();
+    const {data:userData} =
+        await supabaseClient
+        .auth
+        .getUser();
 
 
 
     if(
-        gebruiker &&
-        gebruiker.rol === "beheerder"
+        !userData.user
     ){
 
-        beheerBox.style.display="block";
+        return null;
 
     }
+
+
+
+    const email =
+        userData.user.email;
+
+
+
+    const {data,error} =
+        await supabaseClient
+        .from("gebruikers")
+        .select("*")
+        .eq(
+            "email",
+            email
+        )
+        .single();
+
+
+
+    if(error){
+
+        console.error(
+            "Rol ophalen mislukt:",
+            error
+        );
+
+        return null;
+
+    }
+
+
+
+    window.huidigeGebruiker =
+        data;
+
+
+
+    return data;
+
 
 }
 
 
-setTimeout(
-    controleerBeheerder,
-    1000
-);
+
+
+// ============================================
+// Start
+// ============================================
+
+
+updateLoginStatus();
