@@ -1,36 +1,32 @@
 /* ==========================================================
-   PLAATCATALOGUS
-   STYLE.CSS
-   DEEL 1 - BASIS / LAYOUT / HEADER / LOGIN / ZOEKEN / KAARTEN
-========================================================== */
-
-
-/* ==========================================================
-   VARIABELEN
+   PLAATCATALOGUS V2
+   Basis
 ========================================================== */
 
 :root{
 
-    --blauw:#1d4ed8;
-    --blauw-donker:#1e40af;
+    --primary:#2357d9;
+    --primary-dark:#1b46b3;
 
-    --groen:#16a34a;
-    --rood:#dc2626;
-    --oranje:#f59e0b;
+    --success:#16a34a;
+    --danger:#dc2626;
+    --warning:#f59e0b;
 
-    --achtergrond:#f4f4f4;
-    --wit:#ffffff;
-    --licht:#f8fafc;
+    --background:#eef2f7;
+    --surface:#ffffff;
 
-    --tekst:#333;
-    --tekst-licht:#666;
+    --text:#1f2937;
+    --text-light:#6b7280;
+
+    --border:#dbe2ea;
 
     --radius:12px;
 
-    --schaduw:
-        0 4px 12px rgba(0,0,0,.12);
+    --shadow:
+        0 3px 10px rgba(0,0,0,.08);
 
-    --overgang:.25s ease;
+    --transition:.2s ease;
+
 }
 
 
@@ -45,65 +41,37 @@
 }
 
 html{
+
     scroll-behavior:smooth;
+
 }
 
 body{
 
-    background:var(--achtergrond);
-    color:var(--tekst);
+    background:var(--background);
+
+    color:var(--text);
 
     font-family:
+        "Segoe UI",
         Arial,
-        Helvetica,
         sans-serif;
 
-    line-height:1.5;
 }
 
 
 /* ==========================================================
-   ALGEMEEN
+   APP
 ========================================================== */
 
-img{
+#app{
 
-    display:block;
-    max-width:100%;
+    width:min(1400px,100%);
 
-    user-select:none;
-    -webkit-user-drag:none;
-}
-
-button,
-input,
-textarea,
-select{
-
-    font-family:inherit;
-    font-size:16px;
-}
-
-.hidden{
-    display:none!important;
-}
-
-
-/* ==========================================================
-   LAYOUT
-========================================================== */
-
-#app,
-.container{
-
-    width:min(1200px,100%);
     margin:auto;
-    padding:20px;
-}
 
-.app{
-    min-height:100vh;
-    padding-bottom:90px;
+    padding:24px;
+
 }
 
 
@@ -113,24 +81,32 @@ select{
 
 header{
 
-    background:var(--blauw);
-    color:white;
+    background:white;
 
-    text-align:center;
+    border-radius:18px;
 
-    padding:22px 20px;
+    padding:24px 30px;
+
+    margin-bottom:24px;
+
+    box-shadow:var(--shadow);
+
 }
 
 header h1{
 
-    font-size:28px;
+    color:var(--text);
+
+    font-size:32px;
+
     margin-bottom:6px;
+
 }
 
 header p{
 
-    opacity:.9;
-    font-size:15px;
+    color:var(--text-light);
+
 }
 
 
@@ -140,287 +116,315 @@ header p{
 
 #loginBox{
 
-    background:var(--wit);
-
     max-width:420px;
 
-    margin:25px auto;
+    margin:30px auto;
 
-    padding:20px;
+    background:white;
 
-    border-radius:var(--radius);
+    padding:25px;
 
-    box-shadow:var(--schaduw);
+    border-radius:18px;
+
+    box-shadow:var(--shadow);
+
 }
 
 #loginStatus{
 
-    text-align:center;
-    color:var(--tekst-licht);
+    color:var(--text);
 
-    margin:10px 0 20px;
+    text-align:center;
+
+    margin-bottom:18px;
+
+    font-weight:600;
+
 }
 
 #loginBox input{
 
     width:100%;
 
-    padding:14px;
+    padding:14px 16px;
 
-    margin-bottom:12px;
+    margin-bottom:14px;
 
-    border:1px solid #d5d5d5;
+    border-radius:10px;
 
-    border-radius:8px;
+    border:1px solid var(--border);
+
+}
+
+#loginBox input:focus{
+
+    outline:none;
+
+    border-color:var(--primary);
+
 }
 
 
 /* ==========================================================
-   ZOEKVELD
+   BUTTONS
 ========================================================== */
 
-#search{
+button{
 
-    width:100%;
-
-    max-width:700px;
-
-    margin:25px auto;
-
-    display:block;
-
-    padding:15px 18px;
-
-    border:1px solid #d5d5d5;
+    border:none;
 
     border-radius:10px;
 
-    background:var(--wit);
+    padding:14px 20px;
 
-    transition:var(--overgang);
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:var(--transition);
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+button:active{
+
+    transform:scale(.98);
+
+}
+
+.btn-primary{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-dark);
+
+}
+
+
+/* ==========================================================
+   SEARCH
+========================================================== */
+
+.searchContainer{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:30px;
+
+}
+
+#search{
+
+    width:min(700px,100%);
+
+    padding:16px 20px;
+
+    border-radius:999px;
+
+    border:1px solid var(--border);
+
+    background:white;
+
+    font-size:17px;
+
+    box-shadow:var(--shadow);
+
 }
 
 #search:focus{
 
     outline:none;
 
-    border-color:var(--blauw);
+    border-color:var(--primary);
 
-    box-shadow:
-        0 0 0 3px rgba(29,78,216,.15);
 }
 
 
 /* ==========================================================
-   CATALOGUS
+   GRID
 ========================================================== */
-
-#catalogus{
-    margin-top:20px;
-}
 
 #cards{
 
     display:grid;
 
     grid-template-columns:
-        repeat(auto-fill,minmax(260px,1fr));
 
-    gap:20px;
+        repeat(auto-fill,minmax(280px,1fr));
 
-    margin-top:20px;
+    gap:24px;
+
 }
+/* ==========================================================
+   PLAATCATALOGUS V2
+   DEEL 2 - KAARTEN / DETAIL
+========================================================== */
 
 
 /* ==========================================================
-   KAART
+   KAARTEN
 ========================================================== */
 
 .card{
 
-    position:relative;
+    background:var(--surface);
 
-    background:var(--wit);
-
-    border-radius:var(--radius);
+    border-radius:18px;
 
     overflow:hidden;
 
+    box-shadow:var(--shadow);
+
     cursor:pointer;
 
-    box-shadow:var(--schaduw);
-
     transition:
-        transform var(--overgang),
-        box-shadow var(--overgang);
+        transform .2s,
+        box-shadow .2s;
+
 }
 
 .card:hover{
 
-    transform:translateY(-4px);
+    transform:translateY(-5px);
 
     box-shadow:
-        0 8px 18px rgba(0,0,0,.15);
+        0 12px 24px rgba(0,0,0,.10);
+
 }
+
 
 .card img{
 
     width:100%;
-    height:220px;
+
+    height:250px;
 
     object-fit:cover;
 
-    transition:transform .3s;
+    background:#f4f4f4;
+
 }
 
-.card:hover img{
-
-    transform:scale(1.04);
-}
 
 .cardContent{
 
-    padding:15px;
+    padding:18px;
+
 }
+
 
 .cardContent h3{
 
-    color:var(--blauw);
+    font-size:22px;
 
-    margin-bottom:10px;
+    color:var(--text);
 
-    font-size:18px;
+    margin-bottom:6px;
+
 }
 
-.cardContent p{
-
-    margin:5px 0;
-
-    color:#555;
-}
-
-
-/* ==========================================================
-   BADGES
-========================================================== */
 
 .cardCode{
 
-    position:absolute;
+    display:inline-block;
 
-    top:12px;
-    left:12px;
+    margin-bottom:12px;
 
-    background:var(--blauw);
+    padding:6px 14px;
 
-    color:white;
+    border-radius:999px;
 
-    padding:6px 12px;
+    background:#edf3ff;
 
-    border-radius:20px;
+    color:var(--primary);
 
-    font-size:12px;
+    font-weight:700;
 
-    font-weight:bold;
+    font-size:14px;
+
 }
+
 
 .cardLeverancier{
 
-    display:inline-block;
+    color:var(--text-light);
 
-    margin-top:10px;
+    font-size:15px;
 
-    background:#eceff3;
-
-    padding:5px 12px;
-
-    border-radius:20px;
-
-    font-size:12px;
 }
 
-.favoriet{
 
-    position:absolute;
+.cardInfo{
 
-    top:12px;
-    right:12px;
-
-    width:40px;
-    height:40px;
+    margin-top:12px;
 
     display:flex;
 
-    justify-content:center;
+    justify-content:space-between;
+
     align-items:center;
 
-    background:white;
+    color:var(--text-light);
 
-    border-radius:50%;
+    font-size:14px;
 
-    font-size:22px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.2);
-}
-
-.favoriet.actief{
-    color:var(--oranje);
 }
 
 
 /* ==========================================================
-   GEEN RESULTATEN
-========================================================== */
-
-.geenResultaat,
-.leeg{
-
-    text-align:center;
-
-    padding:40px 20px;
-
-    color:var(--tekst-licht);
-
-    font-size:18px;
-}
-/* ==========================================================
-   PLAATCATALOGUS
-   STYLE.CSS
-   DEEL 2 - DETAIL / GALERIJ / KNOPPEN / UPLOAD
-========================================================== */
-
-
-/* ==========================================================
-   DETAIL PAGINA
+   DETAIL
 ========================================================== */
 
 #detail{
 
-    margin-top:20px;
+    margin-top:30px;
 
-    background:var(--wit);
+    background:var(--surface);
 
-    border-radius:var(--radius);
+    border-radius:20px;
 
-    padding:20px;
+    padding:30px;
 
-    box-shadow:var(--schaduw);
+    box-shadow:var(--shadow);
 
-    animation:detailOpen .25s ease;
+    animation:fadeUp .25s ease;
+
 }
 
-@keyframes detailOpen{
+
+@keyframes fadeUp{
 
     from{
+
         opacity:0;
-        transform:translateY(15px);
+
+        transform:translateY(20px);
+
     }
 
     to{
+
         opacity:1;
+
         transform:translateY(0);
+
     }
+
 }
 
 
@@ -430,76 +434,38 @@ header p{
 
     justify-content:space-between;
 
-    align-items:center;
+    align-items:flex-start;
 
-    gap:15px;
+    gap:20px;
+
+    margin-bottom:25px;
 
     flex-wrap:wrap;
 
-    margin-bottom:20px;
 }
 
-.detailHeader h2{
-
-    margin:0;
-
-    color:var(--blauw);
-
-    font-size:28px;
-}
 
 #detailTitle{
 
-    color:var(--blauw);
+    font-size:34px;
+
+    font-weight:700;
+
+    color:var(--text);
+
 }
+
 
 #detailCode{
 
+    margin-top:8px;
+
+    color:var(--primary);
+
     font-size:18px;
 
-    font-weight:bold;
+    font-weight:600;
 
-    color:var(--blauw);
-
-    margin-top:8px;
-}
-
-.codeBadge{
-
-    background:var(--blauw);
-
-    color:white;
-
-    padding:8px 16px;
-
-    border-radius:999px;
-
-    font-weight:bold;
-
-    white-space:nowrap;
-}
-
-
-/* ==========================================================
-   INFOBOX
-========================================================== */
-
-.infoBox{
-
-    margin-top:20px;
-
-    padding:16px;
-
-    background:var(--licht);
-
-    border-left:5px solid var(--blauw);
-
-    border-radius:8px;
-}
-
-.infoBox strong{
-
-    color:var(--blauw);
 }
 
 
@@ -511,82 +477,93 @@ header p{
 
     width:100%;
 
-    margin-top:20px;
-
     border-collapse:collapse;
+
+    margin-top:25px;
+
 }
+
 
 #detailTable tr{
 
-    transition:background .2s;
+    border-bottom:1px solid var(--border);
+
 }
 
-#detailTable tr:hover{
-
-    background:#f8fafc;
-}
 
 #detailTable td{
 
-    padding:12px;
+    padding:14px 10px;
 
-    border-bottom:1px solid #dddddd;
+    vertical-align:top;
+
 }
+
 
 #detailTable td:first-child{
 
-    width:35%;
+    width:220px;
 
-    font-weight:bold;
+    color:var(--text-light);
+
+    font-weight:600;
+
+}
+
+
+#detailTable td:last-child{
+
+    font-weight:500;
+
 }
 
 
 /* ==========================================================
-   FOTO GALERIJ
+   FOTO'S
 ========================================================== */
 
 #gallery{
 
+    margin-top:30px;
+
     display:grid;
 
     grid-template-columns:
-        repeat(auto-fit,minmax(240px,1fr));
+        repeat(auto-fit,minmax(320px,1fr));
 
-    gap:15px;
+    gap:22px;
 
-    margin-top:25px;
 }
+
 
 #gallery img{
 
     width:100%;
 
-    height:260px;
+    aspect-ratio:4/3;
 
     object-fit:cover;
 
-    border-radius:var(--radius);
+    border-radius:16px;
 
     cursor:pointer;
 
-    box-shadow:var(--schaduw);
+    transition:.25s;
 
-    transition:
-        transform .25s,
-        box-shadow .25s;
+    box-shadow:var(--shadow);
+
 }
+
 
 #gallery img:hover{
 
     transform:scale(1.02);
 
-    box-shadow:
-        0 8px 18px rgba(0,0,0,.18);
 }
 
 
 /* ==========================================================
-   FULLSCREEN FOTO
+   FOTO VIEWER
 ========================================================== */
 
 #fotoViewer{
@@ -603,24 +580,30 @@ header p{
 
     align-items:center;
 
-    padding:20px;
+    padding:30px;
 
     z-index:9999;
+
 }
+
 
 #fotoViewer.hidden{
 
     display:none;
+
 }
+
 
 #fotoViewer img{
 
-    max-width:95%;
+    max-width:95vw;
 
-    max-height:95%;
+    max-height:90vh;
 
-    border-radius:10px;
+    border-radius:16px;
+
 }
+
 
 #fotoSluiten{
 
@@ -630,108 +613,40 @@ header p{
 
     right:20px;
 
-    width:48px;
+    width:50px;
 
-    height:48px;
-
-    border:none;
+    height:50px;
 
     border-radius:50%;
 
     background:white;
 
-    color:#000;
+    color:#222;
 
     font-size:28px;
 
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-#fotoSluiten:hover{
-
-    transform:rotate(90deg);
 }
 
 
 /* ==========================================================
-   ALGEMENE KNOPPEN
+   GEEN RESULTATEN
 ========================================================== */
 
-button{
+.geenResultaat{
 
-    border:none;
+    padding:70px 20px;
 
-    border-radius:10px;
+    text-align:center;
 
-    padding:14px 20px;
+    color:var(--text-light);
 
-    cursor:pointer;
+    font-size:20px;
 
-    font-size:16px;
-
-    font-weight:bold;
-
-    transition:
-        background .2s,
-        transform .15s,
-        opacity .2s;
 }
-
-button:hover{
-
-    opacity:.95;
-}
-
-button:active{
-
-    transform:scale(.97);
-}
-
-.btn{
-
-    display:inline-block;
-
-    margin:5px;
-}
-
-.btn-primary{
-
-    background:var(--blauw);
-
-    color:white;
-}
-
-.btn-save{
-
-    background:var(--groen);
-
-    color:white;
-}
-
-.btn-delete{
-
-    background:var(--rood);
-
-    color:white;
-}
-
-#backButton{
-
-    background:#555;
-
-    color:white;
-
-    margin-bottom:20px;
-}
-
-.logoutKlein{
-
-    width:auto!important;
-
-    padding:10px 18px!important;
-}
+/* ==========================================================
+   PLAATCATALOGUS V2
+   DEEL 3 - UPLOAD / KNOPPEN / RESPONSIVE
+========================================================== */
 
 
 /* ==========================================================
@@ -740,25 +655,40 @@ button:active{
 
 #uploadBox{
 
-    margin-top:25px;
+    margin-top:30px;
 
-    background:var(--wit);
+    padding:28px;
 
-    padding:20px;
+    background:var(--surface);
 
-    border-radius:var(--radius);
+    border-radius:20px;
 
-    box-shadow:var(--schaduw);
+    box-shadow:var(--shadow);
+
 }
+
+
+#uploadBox h3{
+
+    margin-bottom:20px;
+
+    font-size:24px;
+
+}
+
 
 #uploadBox label{
 
     display:block;
 
-    margin-bottom:6px;
+    margin-bottom:8px;
 
-    font-weight:bold;
+    font-weight:600;
+
+    color:var(--text);
+
 }
+
 
 #uploadBox input,
 #uploadBox textarea,
@@ -766,23 +696,20 @@ button:active{
 
     width:100%;
 
-    padding:14px;
+    padding:15px 16px;
 
-    margin-bottom:15px;
+    margin-bottom:18px;
 
-    border:1px solid #d5d5d5;
+    border:1px solid var(--border);
 
-    border-radius:8px;
+    border-radius:12px;
 
     background:white;
+
+    transition:.2s;
+
 }
 
-#uploadBox textarea{
-
-    min-height:110px;
-
-    resize:vertical;
-}
 
 #uploadBox input:focus,
 #uploadBox textarea:focus,
@@ -790,408 +717,152 @@ button:active{
 
     outline:none;
 
-    border-color:var(--blauw);
+    border-color:var(--primary);
 
     box-shadow:
-        0 0 0 3px rgba(29,78,216,.15);
+        0 0 0 3px rgba(35,87,217,.12);
+
+}
+
+
+#uploadBox textarea{
+
+    resize:vertical;
+
+    min-height:120px;
+
 }
 
 
 /* ==========================================================
-   FOTO KEUZE
+   FOTO KNOPPEN
 ========================================================== */
 
 .fotoKeuze{
 
-    display:flex;
+    display:grid;
 
-    gap:10px;
+    grid-template-columns:1fr 1fr;
 
-    margin-bottom:15px;
+    gap:12px;
+
+    margin-bottom:18px;
+
 }
+
 
 .fotoKeuze button{
 
-    flex:1;
+    background:#eef3fb;
+
+    color:var(--primary);
+
 }
+
 
 .fotoNaam{
 
-    margin-bottom:12px;
+    margin-top:-6px;
+
+    margin-bottom:18px;
+
+    color:var(--text-light);
 
     font-size:14px;
 
-    color:#666;
 }
 
 
 /* ==========================================================
-   OPSLAAN / VERWIJDEREN
+   ACTIEKNOPPEN
 ========================================================== */
+
+#backButton{
+
+    background:#475569;
+
+    color:white;
+
+}
+
 
 #opslaanKnop{
 
     width:100%;
 
-    margin-top:15px;
-
-    background:var(--groen);
+    background:var(--success);
 
     color:white;
+
+    font-size:17px;
+
 }
+
 
 #opslaanKnop.uploading{
 
-    background:var(--oranje);
+    background:var(--warning);
+
 }
+
 
 #opslaanKnop.saved{
 
-    background:var(--groen);
+    background:var(--success);
+
 }
+
 
 .verwijderKnop{
 
     width:100%;
 
-    margin-top:12px;
+    margin-top:14px;
 
-    background:var(--rood);
+    background:var(--danger);
 
     color:white;
+
 }
 
 
 /* ==========================================================
-   STATUS MELDING
+   STATUS
 ========================================================== */
 
 #uploadStatus{
 
     display:none;
 
-    margin-top:18px;
+    margin-top:20px;
 
-    padding:14px;
+    padding:15px;
 
-    border-radius:8px;
+    border-radius:12px;
 
-    font-weight:bold;
+    font-weight:600;
+
 }
+
 
 .statusOk{
 
-    display:block!important;
+    display:block;
 
     background:#dcfce7;
 
     color:#166534;
+
 }
+
 
 .statusFout{
 
-    display:block!important;
+    display:block;
 
     background:#fee2e2;
 
     color:#991b1b;
-}
-/* ==========================================================
-   PLAATCATALOGUS
-   STYLE.CSS
-   DEEL 3 - BEHEER / UX / RESPONSIVE / DARK MODE
-========================================================== */
-
-
-/* ==========================================================
-   BEHEER
-========================================================== */
-
-.beheerBox{
-
-    background:var(--wit);
-
-    padding:20px;
-
-    margin-top:20px;
-
-    border-radius:var(--radius);
-
-    box-shadow:var(--schaduw);
-}
-
-.gebruiker{
-
-    padding:15px;
-
-    border-bottom:1px solid #ddd;
-}
-
-.gebruiker:last-child{
-
-    border-bottom:none;
-}
-
-
-/* ==========================================================
-   LOADER
-========================================================== */
-
-.loader{
-
-    width:42px;
-    height:42px;
-
-    margin:30px auto;
-
-    border-radius:50%;
-
-    border:5px solid #ddd;
-    border-top-color:var(--blauw);
-
-    animation:loaderSpin 1s linear infinite;
-}
-
-@keyframes loaderSpin{
-
-    from{
-        transform:rotate(0deg);
-    }
-
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-
-/* ==========================================================
-   TOAST
-========================================================== */
-
-.toast{
-
-    position:fixed;
-
-    left:50%;
-    bottom:25px;
-
-    transform:translateX(-50%);
-
-    background:#333;
-
-    color:white;
-
-    padding:14px 24px;
-
-    border-radius:30px;
-
-    box-shadow:var(--schaduw);
-
-    z-index:9999;
-
-    animation:toastOpen .25s ease;
-}
-
-@keyframes toastOpen{
-
-    from{
-
-        opacity:0;
-
-        transform:
-            translate(-50%,20px);
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:
-            translate(-50%,0);
-    }
-}
-
-
-/* ==========================================================
-   MODAL
-========================================================== */
-
-.modal{
-
-    position:fixed;
-
-    inset:0;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    padding:20px;
-
-    background:rgba(0,0,0,.55);
-
-    z-index:10000;
-}
-
-.modalContent{
-
-    width:100%;
-    max-width:500px;
-
-    max-height:90vh;
-
-    overflow:auto;
-
-    background:var(--wit);
-
-    border-radius:15px;
-
-    padding:20px;
-
-    box-shadow:var(--schaduw);
-}
-
-
-/* ==========================================================
-   STATUS ICONEN
-========================================================== */
-
-.successIcon{
-
-    color:var(--groen);
-
-    font-size:22px;
-}
-
-.errorIcon{
-
-    color:var(--rood);
-
-    font-size:22px;
-}
-
-
-/* ==========================================================
-   BOTTOM NAV
-========================================================== */
-
-.bottomNav{
-
-    position:fixed;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    height:65px;
-
-    display:flex;
-
-    justify-content:space-around;
-    align-items:center;
-
-    background:var(--wit);
-
-    box-shadow:
-        0 -3px 12px rgba(0,0,0,.15);
-
-    z-index:9000;
-}
-
-.bottomNav button{
-
-    background:none;
-
-    width:auto;
-
-    color:#555;
-
-    padding:8px 15px;
-
-    font-size:13px;
-}
-
-.bottomNav button.actief{
-
-    color:var(--blauw);
-
-    font-weight:bold;
-}
-
-.bottomNav span{
-
-    display:block;
-
-    font-size:22px;
-}
-
-
-/* ==========================================================
-   FLOATING BUTTON
-========================================================== */
-
-.floatingButton{
-
-    position:fixed;
-
-    right:20px;
-    bottom:85px;
-
-    width:60px;
-    height:60px;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    border-radius:50%;
-
-    background:var(--groen);
-
-    color:white;
-
-    font-size:30px;
-
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.25);
-
-    z-index:8000;
-}
-
-.floatingButton:active{
-
-    transform:scale(.92);
-}
-
-
-/* ==========================================================
-   SAFE AREA
-========================================================== */
-
-@supports(padding:max(0px)){
-
-    .bottomNav{
-
-        padding-bottom:
-            env(safe-area-inset-bottom);
-
-        height:
-            calc(
-                65px +
-                env(safe-area-inset-bottom)
-            );
-    }
-
-    .app{
-
-        padding-bottom:
-            calc(
-                90px +
-                env(safe-area-inset-bottom)
-            );
-    }
 
 }
 
@@ -1200,42 +871,77 @@ button:active{
    RESPONSIVE
 ========================================================== */
 
-@media (max-width:700px){
+@media (max-width:900px){
+
+    #app{
+
+        padding:18px;
+
+    }
 
     header{
 
-        padding:18px 12px;
+        padding:20px;
+
     }
 
     header h1{
 
-        font-size:22px;
+        font-size:28px;
+
     }
 
-    .container,
+}
+
+
+@media (max-width:700px){
+
     #app{
 
         padding:12px;
+
+    }
+
+    header{
+
+        padding:18px;
+
+        border-radius:14px;
+
+    }
+
+    header h1{
+
+        font-size:24px;
+
+    }
+
+    header p{
+
+        font-size:14px;
+
     }
 
     #cards{
 
         grid-template-columns:1fr;
+
+        gap:18px;
+
     }
 
     .card img{
 
-        height:210px;
-    }
+        height:230px;
 
-    .cardContent{
-
-        padding:12px;
     }
 
     #detail{
 
-        padding:15px;
+        padding:20px;
+
+        border-radius:16px;
+
     }
 
     .detailHeader{
@@ -1243,128 +949,54 @@ button:active{
         flex-direction:column;
 
         align-items:flex-start;
+
+    }
+
+    #detailTitle{
+
+        font-size:28px;
+
     }
 
     #gallery{
 
         grid-template-columns:1fr;
-    }
 
-    #gallery img{
-
-        height:230px;
     }
 
     .fotoKeuze{
 
-        flex-direction:column;
+        grid-template-columns:1fr;
+
     }
 
     button{
 
         width:100%;
+
     }
 
 }
 
 
-@media (min-width:701px) and (max-width:1100px){
-
-    #cards{
-
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
-}
-
-
-@media (max-width:380px){
-
-    header h1{
-
-        font-size:20px;
-    }
+@media (max-width:420px){
 
     .card img{
 
-        height:180px;
+        height:210px;
+
     }
 
-}
+    #detailTitle{
 
+        font-size:24px;
 
-/* ==========================================================
-   DARK MODE
-========================================================== */
-
-@media (prefers-color-scheme:dark){
-
-    body{
-
-        background:#111827;
-
-        color:#e5e7eb;
     }
 
-    header{
+    #uploadBox{
 
-        background:#111827;
+        padding:18px;
 
-        border-bottom:
-            1px solid #374151;
-    }
-
-    .card,
-    #detail,
-    #loginBox,
-    #uploadBox,
-    .beheerBox,
-    .modalContent{
-
-        background:#1f2937;
-
-        color:#e5e7eb;
-    }
-
-    .card h3,
-    #detail h2{
-
-        color:#60a5fa;
-    }
-
-    input,
-    textarea,
-    select,
-    #search{
-
-        background:#111827;
-
-        color:white;
-
-        border-color:#374151;
-    }
-
-    #detailTable td{
-
-        border-color:#374151;
-    }
-
-    .infoBox{
-
-        background:#111827;
-    }
-
-    .bottomNav{
-
-        background:#1f2937;
-    }
-
-    .cardLeverancier{
-
-        background:#374151;
-
-        color:white;
     }
 
 }
@@ -1378,25 +1010,54 @@ button:active{
 
     header,
     button,
-    #uploadBox,
     #loginBox,
-    .bottomNav,
-    .floatingButton{
+    #uploadBox{
 
-        display:none!important;
+        display:none !important;
+
     }
 
     body{
 
         background:white;
+
     }
 
-    .card,
     #detail{
 
         box-shadow:none;
 
-        border:1px solid #ddd;
+        border:1px solid #ccc;
+
     }
+
+}
+
+
+/* ==========================================================
+   HULPKLASSEN
+========================================================== */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.center{
+
+    text-align:center;
+
+}
+
+.mt20{
+
+    margin-top:20px;
+
+}
+
+.mb20{
+
+    margin-bottom:20px;
 
 }
