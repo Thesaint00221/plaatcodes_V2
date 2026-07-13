@@ -1,3 +1,7 @@
+// ============================================
+// OPSCHONEN STORAGE
+// ============================================
+
 document
 .getElementById("opschonenButton")
 ?.addEventListener(
@@ -5,12 +9,10 @@ document
 async()=>{
 
 
-alert(
-"Opschonen wordt gestart..."
-);
+console.log("Opschonen gestart");
 
 
-const {data: bestanden,error} =
+const { data: bestanden, error } =
 await supabaseClient
 .storage
 .from("plaatfotos")
@@ -25,16 +27,31 @@ limit:1000
 
 if(error){
 
-console.error(error);
+console.error(
+"Fout bij ophalen bestanden:",
+error
+);
+
+alert(
+"Bestanden ophalen mislukt"
+);
 
 return;
 
 }
 
 
+
 console.log(
-"Bestanden:",
+"Bestanden in bucket:",
 bestanden
+);
+
+
+
+alert(
+bestanden.length +
+" bestanden gevonden. Kijk in F12 console."
 );
 
 
