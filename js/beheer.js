@@ -4,370 +4,300 @@
 // ============================================
 
 
-async function controleerToegang(){
+// ============================================
+// Controle toegang
+// ============================================
 
+async function controleerToegang() {
 
-const gebruiker =
-    await laadGebruikersRol();
+    const gebruiker = await laadGebruikersRol();
 
+    const status = document.getElementById("beheerStatus");
 
+    if (!status) {
+        console.error("Element 'beheerStatus' niet gevonden.");
+        return false;
+    }
 
-if(!gebruiker){
+    if (!gebruiker) {
 
+        status.innerHTML = "❌ Geen toegang";
+        return false;
 
-document.getElementById(
-    "beheerStatus"
-).innerHTML =
+    }
 
-"❌ Geen toegang";
+    if (gebruiker.rol !== "beheerder") {
 
+        status.innerHTML = "❌ Alleen beheerders hebben toegang";
+        return false;
 
-return false;
+    }
 
-}
+    status.innerHTML =
+        `Welkom ${gebruiker.naam || gebruiker.email}`;
 
-
-
-if(
-    gebruiker.rol !== "beheerder"
-){
-
-
-document.getElementById(
-    "beheerStatus"
-).innerHTML =
-
-"❌ Alleen beheerders hebben toegang";
-
-
-return false;
+    return true;
 
 }
 
 
+// ============================================
+// Alle bestanden uit Supabase ophalen
+// ============================================
 
-document.getElementById(
-    "beheerStatus"
-).innerHTML =
+async function haalAlleBestanden(map = "") {
 
-`
-Welkom ${gebruiker.naam || gebruiker.email}
-`;
+    const { data, error } =
+        await supabaseClient
+            .storage
+            .from("plaatfotos")
+            .list(map, {
+                limit: 1000
+            });
 
+    if (error) {
 
+        console.error("Fout bij ophalen bestanden:", error);
+        return [];
 
-return true;
+    }
 
+    let bestanden = [];
 
-}
+    for (const item of data) {
 
+        const pad =
+            map
+                ? `${map}/${item.name}`
+                : item.name;
 
+        // Map
+        if (!item.metadata) {
 
+            const subBestanden =
+                await haalAlleBestanden(pad);
 
+            bestanden.push(...subBestanden);
 
-async function laadStatistieken(){
+        }
 
+        // Bestand
+        else {
 
+            bestanden.push(pad);
 
-const toegang =
-    await controleerToegang();
+        }
 
+    }
 
-
-if(!toegang){
-    return;
-}
-
-
-
-// aantal cases
-
-const {count:cases} =
-await supabaseClient
-.from("eigen_data")
-.select(
-"id",
-{
-count:"exact",
-head:true
-}
-);
-
-
-
-// aantal foto's
-
-const fotos =
-await haalAlleBestanden();
-
-
-
-document.getElementById(
-"aantalCases"
-).innerHTML =
-cases || 0;
-
-
-
-document.getElementById(
-"aantalFotos"
-).innerHTML =
-fotos.length;
-
-
-
-// aantal platen uit data.json
-
-
-try{
-
-
-const antwoord =
-await fetch(
-"data.json"
-);
-
-
-const platen =
-await antwoord.json();
-
-
-
-document.getElementById(
-"aantalPlaten"
-).innerHTML =
-platen.length;
-
-
-}
-catch(error){
-
-
-console.error(
-"Platen laden mislukt:",
-error
-);
-
-
-document.getElementById(
-"aantalPlaten"
-).innerHTML =
-"Fout";
-
+    return bestanden;
 
 }
 
 
+// ============================================
+// Statistieken laden
+// ============================================
 
+async function laadStatistieken() {
 
+    const toegang =
+        await controleerToegang();
 
-async function haalAlleBestanden(map=""){
+    if (!toegang) {
+        return;
+    }
 
+    // aantal cases
 
-const {data,error} =
-await supabaseClient
-.storage
-.from("plaatfotos")
-.list(
-map,
-{
-limit:1000
+    const { count: cases } =
+        await supabaseClient
+            .from("eigen_data")
+            .select("id", {
+                count: "exact",
+                head: true
+            });
+
+    const aantalCases =
+        document.getElementById("aantalCases");
+
+    if (aantalCases) {
+        aantalCases.innerHTML = cases || 0;
+    }
+
+    // aantal foto's
+
+    const fotos =
+        await haalAlleBestanden();
+
+    const aantalFotos =
+        document.getElementById("aantalFotos");
+
+    if (aantalFotos) {
+        aantalFotos.innerHTML = fotos.length;
+    }
+
+    // aantal platen uit data.json
+
+    try {
+
+        const antwoord =
+            await fetch("data.json");
+
+        if (!antwoord.ok) {
+            throw new Error("data.json niet gevonden");
+        }
+
+        const platen =
+            await antwoord.json();
+
+        const aantalPlaten =
+            document.getElementById("aantalPlaten");
+
+        if (aantalPlaten) {
+            aantalPlaten.innerHTML = platen.length;
+        }
+
+    }
+        catch (error) {
+
+        console.error(
+            "Platen laden mislukt:",
+            error
+        );
+
+        const aantalPlaten =
+            document.getElementById("aantalPlaten");
+
+        if (aantalPlaten) {
+            aantalPlaten.innerHTML = "Fout";
+        }
+
+    }
+
 }
-);
 
 
-
-if(error){
-
-console.error(error);
-
-return [];
-
-}
-
-
-
-let bestanden=[];
-
-
-
-for(const item of data){
-
-
-const pad =
-map
-?
-`${map}/${item.name}`
-:
-item.name;
-
-
-
-if(
-!item.metadata
-){
-
-
-const sub =
-await haalAlleBestanden(
-pad
-);
-
-
-bestanden.push(
-...sub
-);
-
-
-}
-else{
-
-
-bestanden.push(
-pad
-);
-
-
-}
-
-
-}
-
-
-
-return bestanden;
-
-
-}
-
-
-
-
+// ============================================
+// Statistieken laden bij openen pagina
+// ============================================
 
 laadStatistieken();
+
+
 // ============================================
 // Opslagcontrole knop
 // ============================================
 
+const controleKnop =
+    document.getElementById("controleerOpslag");
 
-document
-.getElementById("controleerOpslag")
-?.addEventListener(
-"click",
-async()=>{
+if (controleKnop) {
 
+    controleKnop.addEventListener(
+        "click",
+        async () => {
 
-const veld =
-document.getElementById(
-"opslagControle"
-);
+            const veld =
+                document.getElementById("opslagControle");
 
+            if (!veld) {
+                console.error("Element 'opslagControle' niet gevonden.");
+                return;
+            }
 
+            veld.innerHTML =
+                "⏳ Bezig met controleren...";
 
-veld.innerHTML =
-"⏳ Bezig met controleren...";
+            // Alle bestanden ophalen
 
+            const bestanden =
+                await haalAlleBestanden();
 
+            // Alle foto's uit database ophalen
 
-const bestanden =
-await haalAlleBestanden();
+            const {
+                data: cases,
+                error
+            } =
+                await supabaseClient
+                    .from("eigen_data")
+                    .select("foto, overzicht_foto");
 
+            if (error) {
 
+                console.error(error);
 
-const {data:cases,error} =
-await supabaseClient
-.from("eigen_data")
-.select(
-"foto, overzicht_foto"
-);
+                veld.innerHTML =
+                    "❌ Fout bij ophalen cases";
 
+                return;
 
+            }
 
-if(error){
+            let gebruikt = [];
 
-console.error(error);
+            cases.forEach(item => {
 
-veld.innerHTML =
-"❌ Fout bij ophalen cases";
+                if (item.foto) {
+                    gebruikt.push(item.foto);
+                }
 
-return;
+                if (item.overzicht_foto) {
+                    gebruikt.push(item.overzicht_foto);
+                }
 
-}
+            });
 
+            const ongebruikt =
+                bestanden.filter(bestand =>
 
+                    !gebruikt.includes(bestand) &&
+                    !bestand.includes(".emptyFolderPlaceholder")
 
-let gebruikt=[];
+                );
 
-
-
-cases.forEach(item=>{
-
-
-if(item.foto){
-
-gebruikt.push(
-item.foto
-);
-
-}
-
-
-if(item.overzicht_foto){
-
-gebruikt.push(
-item.overzicht_foto
-);
-
-}
-
-
-});
-
-
-
-const ongebruikt =
-bestanden.filter(
-bestand =>
-!gebruikt.includes(bestand)
-&&
-!bestand.includes(
-".emptyFolderPlaceholder"
-)
-);
-
-
-
-veld.innerHTML = `
-
+            veld.innerHTML = `
 
 <p>
 📸 Bestanden in bucket:
 <b>${bestanden.length}</b>
 </p>
 
+<p>
+📄 Foto's gekoppeld aan cases:
+<b>${gebruikt.length}</b>
+</p>
 
 <p>
 ⚠️ Ongebruikte foto's:
 <b>${ongebruikt.length}</b>
 </p>
 
-
 `;
 
+            console.log(
+                "Alle bestanden:",
+                bestanden
+            );
 
+            console.log(
+                "Gebruikte foto's:",
+                gebruikt
+            );
 
-console.log(
-"Alle bestanden:",
-bestanden
-);
+            console.log(
+                "Ongebruikte foto's:",
+                ongebruikt
+            );
 
+            if (ongebruikt.length > 0) {
 
-console.log(
-"Ongebruikte foto's:",
-ongebruikt
-);
+                console.table(ongebruikt);
 
+            }
 
+        }
+    );
 
 }
-);
