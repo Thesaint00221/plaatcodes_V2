@@ -84,29 +84,92 @@ function toonDetail(plaat){
 
 
 
-    detailContent.innerHTML = `
+   detailContent.innerHTML = `
 
-    <div class="detail-container">
+<div class="detailPagina">
 
-        <h2>${plaat.naam}</h2>
+    <div class="detailHeader">
 
-        <table class="detail-table">
+        <div class="detailFotoGroot">
 
-            <tr>
-                <td>Code</td>
-                <td>${plaat.code}</td>
-            </tr>
+            ${
+                plaat.photos && plaat.photos.length
+                    ? `
+                        <img
+                            id="groteFoto"
+                            src="photos/${plaat.photos[0]}"
+                            alt="${plaat.naam}">
+                    `
+                    : `
+                        <div class="geenFotoGroot">
+                            📷
+                        </div>
+                    `
+            }
 
-            <tr>
-                <td>Leverancier</td>
-                <td>${plaat.leverancier}</td>
-            </tr>
+        </div>
 
-        </table>
+        <div class="detailInfo">
 
-        <div id="galerij"></div>
+            <span class="detailBadge">
+                ${plaat.leverancier}
+            </span>
+
+            <h1>${plaat.naam}</h1>
+
+            <div class="detailCode">
+                ${plaat.code}
+            </div>
+
+            <table class="detailTable">
+
+                <tr>
+                    <td>Leverancier</td>
+                    <td>${plaat.leverancier}</td>
+                </tr>
+
+                <tr>
+                    <td>Code</td>
+                    <td>${plaat.code}</td>
+                </tr>
+
+                ${
+                    plaat.info?.Referentie
+                    ?
+                    `
+                    <tr>
+                        <td>Referentie</td>
+                        <td>${plaat.info.Referentie}</td>
+                    </tr>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    plaat.info?.Kleur
+                    ?
+                    `
+                    <tr>
+                        <td>Kleur</td>
+                        <td>${plaat.info.Kleur}</td>
+                    </tr>
+                    `
+                    :
+                    ""
+                }
+
+            </table>
+
+        </div>
 
     </div>
+
+    <div id="galerij"></div>
+
+</div>
+
+`;
 
     `;
 
