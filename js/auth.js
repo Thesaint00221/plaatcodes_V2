@@ -187,17 +187,45 @@ loginBox.innerHTML = `
 <div class="loginIngelogd">
 
 
+const gebruiker =
+    await laadGebruikersRol();
+
+
+const beheerKnop =
+    gebruiker &&
+    gebruiker.rol === "beheerder"
+    ?
+    `
+    <button
+    onclick="window.location.href='beheer.html'">
+
+    🛠 Beheer
+
+    </button>
+    `
+    :
+    "";
+
+
+
+loginBox.innerHTML = `
+
+
+<div class="loginIngelogd">
+
+
 <div class="loginGebruiker">
 
-    <div class="gebruikerNaam">
-        👤 ${naam}
-    </div>
+    👤
 
-    <div class="gebruikerRol">
-        ${rol}
-    </div>
+    <span>
+        ${user}
+    </span>
 
 </div>
+
+
+${beheerKnop}
 
 
 <button id="logoutButton">
@@ -205,6 +233,12 @@ loginBox.innerHTML = `
     Afmelden
 
 </button>
+
+
+</div>
+
+
+`;
 
 
 </div>
