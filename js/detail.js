@@ -498,7 +498,23 @@ console.log(
 );
 
 if(bestanden.length){
+for(const bestand of bestanden){
 
+    const {data:testBestand} =
+        await supabaseClient
+        .storage
+        .from("plaatfotos")
+        .list(
+            bestand.split("/")[0]
+        );
+
+    console.log(
+        "Controle map:",
+        bestand,
+        testBestand
+    );
+
+}
     const {data:removeData,error:storageError} =
         await supabaseClient
         .storage
