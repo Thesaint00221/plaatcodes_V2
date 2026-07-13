@@ -64,15 +64,18 @@ function toonPlaten(lijst) {
     resultaten.innerHTML = "";
 
     if (lijst.length === 0) {
-        resultaten.innerHTML =
-            "<p class='geenResultaat'>Geen platen gevonden.</p>";
+        resultaten.innerHTML = `
+            <p class="geenResultaat">
+                Geen platen gevonden.
+            </p>
+        `;
         return;
     }
 
     lijst.forEach(plaat => {
 
         const kaart = document.createElement("div");
-        kaart.className = "kaart";
+        kaart.className = "kaart modern-kaart";
 
         kaart.addEventListener("click", () => {
             if (typeof toonDetail === "function") {
@@ -86,25 +89,48 @@ function toonPlaten(lijst) {
                 : "";
 
         kaart.innerHTML = `
+
             <div class="kaartFoto">
+
                 ${
                     eersteFoto
                         ? `
-                    <img src="${eersteFoto}"
-     alt="${plaat.naam}"
-     onerror="this.parentElement.innerHTML='📷';">
-                    `
-                        : "📷"
+                        <img
+                            src="${eersteFoto}"
+                            alt="${plaat.naam}"
+                            loading="lazy"
+                            onerror="this.parentElement.innerHTML='📷';"
+                        >
+                        `
+                        : `
+                        <div class="geenFoto">
+                            📷
+                        </div>
+                        `
                 }
+
             </div>
 
-            <div class="inhoud">
-                <h2>${plaat.naam}</h2>
+            <div class="kaartBody">
 
-                <p><strong>Code:</strong> ${plaat.code}</p>
+                <div class="kaartTitel">
+                    ${plaat.naam}
+                </div>
 
-                <p><strong>Leverancier:</strong> ${plaat.leverancier}</p>
+                <div class="kaartCode">
+                    ${plaat.code}
+                </div>
+
+                <div class="kaartLeverancier">
+                    ${plaat.leverancier}
+                </div>
+
+                <button class="detailKnop">
+                    Bekijk details →
+                </button>
+
             </div>
+
         `;
 
         resultaten.appendChild(kaart);
