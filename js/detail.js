@@ -171,8 +171,6 @@ function toonDetail(plaat){
 
 `;
 
-    `;
-
 
     toonFotos(plaat);
 
