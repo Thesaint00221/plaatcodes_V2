@@ -245,3 +245,129 @@ return bestanden;
 
 
 laadStatistieken();
+// ============================================
+// Opslagcontrole knop
+// ============================================
+
+
+document
+.getElementById("controleerOpslag")
+?.addEventListener(
+"click",
+async()=>{
+
+
+const veld =
+document.getElementById(
+"opslagControle"
+);
+
+
+
+veld.innerHTML =
+"⏳ Bezig met controleren...";
+
+
+
+const bestanden =
+await haalAlleBestanden();
+
+
+
+const {data:cases,error} =
+await supabaseClient
+.from("eigen_data")
+.select(
+"foto, overzicht_foto"
+);
+
+
+
+if(error){
+
+console.error(error);
+
+veld.innerHTML =
+"❌ Fout bij ophalen cases";
+
+return;
+
+}
+
+
+
+let gebruikt=[];
+
+
+
+cases.forEach(item=>{
+
+
+if(item.foto){
+
+gebruikt.push(
+item.foto
+);
+
+}
+
+
+if(item.overzicht_foto){
+
+gebruikt.push(
+item.overzicht_foto
+);
+
+}
+
+
+});
+
+
+
+const ongebruikt =
+bestanden.filter(
+bestand =>
+!gebruikt.includes(bestand)
+&&
+!bestand.includes(
+".emptyFolderPlaceholder"
+)
+);
+
+
+
+veld.innerHTML = `
+
+
+<p>
+📸 Bestanden in bucket:
+<b>${bestanden.length}</b>
+</p>
+
+
+<p>
+⚠️ Ongebruikte foto's:
+<b>${ongebruikt.length}</b>
+</p>
+
+
+`;
+
+
+
+console.log(
+"Alle bestanden:",
+bestanden
+);
+
+
+console.log(
+"Ongebruikte foto's:",
+ongebruikt
+);
+
+
+
+}
+);
