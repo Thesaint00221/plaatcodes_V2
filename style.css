@@ -1365,16 +1365,9 @@ button:hover {
     font-size:14px;
 
 }
-   /* ==========================================
-   Compact gebruikersmenu
+/* ==========================================
+   Gebruikersblok
 ========================================== */
-
-
-header{
-
-position:relative;
-
-}
 
 
 #loginBox{
@@ -1389,77 +1382,59 @@ top:15px;
 
 
 
-.gebruikerKnop{
+.gebruikersMenu{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
 
 background:white;
 
-border:1px solid #ddd;
+padding:8px 12px;
 
-border-radius:20px;
+border-radius:14px;
 
-padding:8px 14px;
+box-shadow:0 2px 8px rgba(0,0,0,.12);
 
 font-size:14px;
 
-cursor:pointer;
+}
+
+
+
+.gebruikerNaam{
+
+font-weight:600;
 
 }
 
 
 
-.gebruikersDropdown{
+.logoutKlein{
 
-display:none;
+background:#ef4444;
 
-position:absolute;
-
-right:0;
-
-top:45px;
-
-background:white;
-
-padding:10px;
-
-border-radius:12px;
-
-box-shadow:0 5px 20px rgba(0,0,0,.15);
-
-min-width:150px;
-
-}
-
-
-
-.gebruikersDropdown.toon{
-
-display:block;
-
-}
-
-
-
-.gebruikersDropdown button{
-
-width:100%;
-
-margin:3px 0;
-
-padding:8px;
-
-border-radius:8px;
+color:white;
 
 border:none;
 
+padding:6px 10px;
+
+border-radius:8px;
+
 cursor:pointer;
+
+font-size:13px;
 
 }
 
 
 
-.headerTitel{
+.gebruikersMenu button{
 
-padding-right:150px;
+white-space:nowrap;
 
 }
 }
