@@ -188,30 +188,24 @@ async function updateLoginStatus(){
 
 
 
-       loginBox.innerHTML = `
+      loginBox.innerHTML = `
 
 <div class="gebruikersMenu">
 
 
-<button
-class="gebruikerKnop"
-id="gebruikerKnop">
+<div class="gebruikerNaam">
 
 👤 ${gebruiker?.naam || user}
 
-</button>
-
-
-<div
-class="gebruikersDropdown"
-id="gebruikersDropdown">
+</div>
 
 
 ${beheerKnop}
 
 
 <button
-id="logoutButton">
+id="logoutButton"
+class="logoutKlein">
 
 🚪 Afmelden
 
@@ -220,30 +214,7 @@ id="logoutButton">
 
 </div>
 
-
-</div>
-
 `;
-
-
-document
-.getElementById(
-"gebruikerKnop"
-)
-?.addEventListener(
-"click",
-()=>{
-
-document
-.getElementById(
-"gebruikersDropdown"
-)
-.classList.toggle(
-"toon"
-);
-
-});
-
 
 
     }
