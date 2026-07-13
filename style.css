@@ -1288,3 +1288,202 @@ body{
     font-size:18px;
 
 }
+/* ===========================================
+   HEADER
+=========================================== */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:30px;
+
+    padding:18px 35px;
+
+    box-shadow:
+        0 2px 20px rgba(0,0,0,.08);
+
+}
+
+/* ========================== */
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.logoIcon{
+
+    width:54px;
+
+    height:54px;
+
+    border-radius:16px;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:26px;
+
+}
+
+.logoTekst h1{
+
+    margin:0;
+
+    font-size:28px;
+
+    color:#1f2937;
+
+}
+
+.logoTekst span{
+
+    color:#6b7280;
+
+    font-size:14px;
+
+}
+
+/* ========================== */
+
+.zoekContainer{
+
+    flex:1;
+
+    max-width:650px;
+
+    position:relative;
+
+}
+
+.zoekIcon{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:18px;
+
+    opacity:.6;
+
+}
+
+.zoekContainer input{
+
+    width:100%;
+
+    height:52px;
+
+    border-radius:16px;
+
+    border:1px solid #dbe3ec;
+
+    background:#f7f9fb;
+
+    padding-left:52px;
+
+    padding-right:20px;
+
+    font-size:16px;
+
+    transition:.25s;
+
+}
+
+.zoekContainer input:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+    background:white;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+/* ========================== */
+
+.headerButtons{
+
+    display:flex;
+
+    gap:14px;
+
+}
+
+/* ========================== */
+
+.uploadKnop{
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:13px 22px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.uploadKnop:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* ========================== */
+
+@media(max-width:900px){
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .zoekContainer{
+
+        max-width:none;
+
+    }
+
+}
