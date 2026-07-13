@@ -450,3 +450,28 @@ return data;
 
 
 }
+async function controleerBeheerder(){
+
+    const gebruiker =
+        await laadGebruikersRol();
+
+    const beheerBox =
+        document.getElementById("beheerBox");
+
+
+    if(
+        gebruiker &&
+        gebruiker.rol === "beheerder"
+    ){
+
+        beheerBox.style.display="block";
+
+    }
+
+}
+
+
+setTimeout(
+    controleerBeheerder,
+    1000
+);
