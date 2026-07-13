@@ -216,20 +216,24 @@ if(
 
     plaat.photos.forEach(foto=>{
 
-        galerij.innerHTML += `
+galerij.innerHTML += `
 
-        <div class="fotoKaart">
+<div class="fotoKaart modernFoto">
 
-            <img
-            src="photos/${foto}"
-            class="detailFoto">
+    <img
+        src="photos/${foto}"
+        class="detailFoto"
+        onclick="document.getElementById('groteFoto').src=this.src">
 
-            <p>Basisfoto</p>
+    <div class="fotoLabel">
 
-        </div>
+        Basisfoto
 
-        `;
+    </div>
 
+</div>
+
+`;
     });
 
 }
@@ -373,9 +377,10 @@ const verwijderen =
             detailUrl
             ?
             `
-            <img
-            src="${detailUrl}"
-            class="detailFoto">
+<img
+    src="${detailUrl}"
+    class="detailFoto"
+    onclick="document.getElementById('groteFoto').src=this.src">
             `
             :
             ""
@@ -385,9 +390,10 @@ const verwijderen =
             overzichtUrl
             ?
             `
-            <img
-            src="${overzichtUrl}"
-            class="detailFoto">
+<img
+    src="${detailUrl}"
+    class="detailFoto"
+    onclick="document.getElementById('groteFoto').src=this.src">
             `
             :
             ""
