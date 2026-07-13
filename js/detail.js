@@ -73,10 +73,11 @@ function toonDetail(plaat){
     ).style.display="none";
 
 
-    document.querySelector(
-        ".search"
-    ).style.display="none";
+    const zoekContainer = document.querySelector(".zoekContainer");
 
+if (zoekContainer) {
+    zoekContainer.style.display = "none";
+}
 
     detail.classList.remove(
         "hidden"
@@ -666,9 +667,11 @@ terug.addEventListener(
         "resultaten"
     ).style.display="grid";
 
-    document.querySelector(
-        ".search"
-    ).style.display="block";
+const zoekContainer = document.querySelector(".zoekContainer");
+
+if (zoekContainer) {
+    zoekContainer.style.display = "flex";
+}
 
 
     window.scrollTo({
