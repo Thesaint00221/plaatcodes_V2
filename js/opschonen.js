@@ -154,10 +154,127 @@ weesFotos
 
 
 
-alert(
-weesFotos.length +
-" ongebruikte foto's gevonden. Bekijk F12."
+let lijst = "";
+
+weesFotos.forEach(
+(foto,index)=>{
+
+lijst += `
+<div>
+<input 
+type="checkbox"
+class="wisFoto"
+value="${foto}"
+checked>
+
+${foto}
+
+</div>
+`;
+
+});
+
+
+const beheer =
+document.getElementById(
+"beheerBox"
 );
+
+
+beheer.innerHTML += `
+
+<div class="opschoonKaart">
+
+<h3>
+🧹 Ongebruikte foto's
+</h3>
+
+<p>
+${weesFotos.length}
+bestanden gevonden
+</p>
+
+<div id="wisLijst">
+
+${lijst}
+
+</div>
+
+
+<button id="verwijderOngebruikte">
+
+🗑 Verwijder geselecteerde
+
+</button>
+
+</div>
+
+`;
+
+
+
+
+document
+.getElementById(
+"verwijderOngebruikte"
+)
+.onclick =
+async()=>{
+
+
+const geselecteerd =
+[
+...document.querySelectorAll(
+".wisFoto:checked"
+)
+]
+.map(
+(x)=>x.value
+);
+
+
+
+if(
+!confirm(
+geselecteerd.length +
+" bestanden verwijderen?"
+)
+){
+
+return;
+
+}
+
+
+
+const {data,error} =
+await supabaseClient
+.storage
+.from("plaatfotos")
+.remove(
+geselecteerd
+);
+
+
+
+console.log(
+"Verwijderd:",
+data
+);
+
+
+console.log(
+"Fout:",
+error
+);
+
+
+alert(
+"Opschonen klaar"
+);
+
+
+};
 
 
 
