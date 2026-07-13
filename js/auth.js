@@ -468,14 +468,22 @@ data;
 return data;
 
 
-}
 async function controleerBeheerder(){
+
+    const beheerBox =
+        document.getElementById(
+            "beheerBox"
+        );
+
+
+    if(!beheerBox){
+        return;
+    }
+
 
     const gebruiker =
         await laadGebruikersRol();
 
-    const beheerBox =
-        document.getElementById("beheerBox");
 
 
     if(
