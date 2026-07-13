@@ -32,7 +32,7 @@ async function haalGebruikersNaam(email){
 
 
     const naam =
-        data?.naam || email;
+        (data && data.naam) || email
 
 
     gebruikersCache[email] = naam;
@@ -135,7 +135,7 @@ if (zoekContainer) {
                 </tr>
 
                 ${
-                    plaat.info?.Referentie
+                   plaat.info && plaat.info.Referentie
                     ?
                     `
                     <tr>
@@ -148,7 +148,7 @@ if (zoekContainer) {
                 }
 
                 ${
-                    plaat.info?.Kleur
+                    plaat.info && plaat.info.Kleur
                     ?
                     `
                     <tr>
