@@ -37,7 +37,6 @@ async function haalAlleBestanden(map = "") {
 
 
 
-        // map herkennen
         if(!item.metadata){
 
             const sub =
@@ -83,16 +82,81 @@ const bestanden =
 
 
 
+const {data: cases,error} =
+await supabaseClient
+.from("eigen_data")
+.select(
+"foto, overzicht_foto"
+);
+
+
+
+if(error){
+
+console.error(error);
+
+return;
+
+}
+
+
+
+
+let gebruikt = [];
+
+
+
+cases.forEach(item=>{
+
+
+if(item.foto){
+
+gebruikt.push(
+item.foto
+);
+
+}
+
+
+if(item.overzicht_foto){
+
+gebruikt.push(
+item.overzicht_foto
+);
+
+}
+
+
+});
+
+
+
+
+
+const weesFotos =
+bestanden.filter(
+bestand =>
+!gebruikt.includes(bestand)
+&&
+!bestand.endsWith(
+".emptyFolderPlaceholder"
+)
+);
+
+
+
+
+
 console.log(
-"Alle bestanden:",
-bestanden
+"Ongebruikte foto's:",
+weesFotos
 );
 
 
 
 alert(
-bestanden.length +
-" bestanden gevonden"
+weesFotos.length +
+" ongebruikte foto's gevonden. Bekijk F12."
 );
 
 
