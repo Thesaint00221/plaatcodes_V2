@@ -469,22 +469,28 @@ async function verwijderCase(id){
     const bestanden=[];
 
 
-    if(item.foto){
+if(item.foto){
 
-        bestanden.push(
-            haalOpslagPad(item.foto)
-        );
+    const pad =
+        haalOpslagPad(item.foto);
 
+    if(pad){
+        bestanden.push(pad);
     }
 
+}
 
-    if(item.overzicht_foto){
 
-        bestanden.push(
-            haalOpslagPad(item.overzicht_foto)
-        );
+if(item.overzicht_foto){
 
+    const pad =
+        haalOpslagPad(item.overzicht_foto);
+
+    if(pad){
+        bestanden.push(pad);
     }
+
+}
 
 console.log(
     "Te verwijderen bestanden:",
