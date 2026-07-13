@@ -8,21 +8,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
+<header class="topbar">
 
-    <div class="headerTitel">
+    <div class="logo">
 
-        <h1>Plaatcatalogus</h1>
+        <div class="logoIcon">🪵</div>
 
-        <p>
-            Zoek op code, kleur of leverancier
-        </p>
+        <div class="logoTekst">
+            <h1>Plaatcodes</h1>
+            <span>Alle leveranciers op één plaats</span>
+        </div>
 
     </div>
 
+    <div class="zoekContainer">
 
-    <div id="loginBox"></div>
+        <span class="zoekIcon">🔍</span>
 
+        <input
+            id="search"
+            type="text"
+            placeholder="Zoek op naam, plaatcode, leverancier..."
+        >
+
+    </div>
+
+    <div class="headerButtons">
+
+        <a href="upload.html" class="uploadKnop">
+            Upload
+        </a>
+
+    </div>
 
 </header>
 
