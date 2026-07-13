@@ -1,33 +1,9 @@
 // ============================================
 // auth.js
 // ============================================
-let loginBox =
-    document.getElementById("loginBox");
 
-// ============================================
-// Login elementen ophalen
-// ============================================
 
-function laadLoginElementen(){
-
-    return {
-
-        email:
-            document.getElementById("email"),
-
-        wachtwoord:
-            document.getElementById("wachtwoord"),
-
-        loginButton:
-            document.getElementById("loginButton"),
-
-        logoutButton:
-            document.getElementById("logoutButton")
-
-    };
-
-}
-
+let loginBox;
 
 
 // ============================================
@@ -36,17 +12,18 @@ function laadLoginElementen(){
 
 async function login(){
 
-    const elementen =
-        laadLoginElementen();
-
 
     const email =
-        elementen.email?.value
+        document
+        .getElementById("email")
+        ?.value
         .trim();
 
 
     const wachtwoord =
-        elementen.wachtwoord?.value;
+        document
+        .getElementById("wachtwoord")
+        ?.value;
 
 
 
@@ -94,7 +71,9 @@ async function login(){
 
     updateLoginStatus();
 
+
 }
+
 
 
 
@@ -105,6 +84,7 @@ async function login(){
 
 async function logout(){
 
+
     await supabaseClient
     .auth
     .signOut();
@@ -112,12 +92,14 @@ async function logout(){
 
     updateLoginStatus();
 
+
 }
 
 
 
+
 // ============================================
-// Login status tonen
+// Login status
 // ============================================
 
 async function updateLoginStatus(){
@@ -152,31 +134,36 @@ async function updateLoginStatus(){
     if(ingelogd){
 
 
-        const user =
-            data.session.user.email;
+        const email =
+            data.session
+            .user
+            .email;
+
+
+
+        const gebruiker =
+            await laadGebruikersRol();
+
+
+
+        let naam =
+            email;
+
+
+        if(
+            gebruiker &&
+            gebruiker.naam
+        ){
+
+            naam =
+                gebruiker.naam;
+
+        }
+
 
 
 
         let beheerKnop = "";
-
-
-
-let gebruiker = null;
-
-try{
-
-    gebruiker =
-        await laadGebruikersRol();
-
-}
-catch(error){
-
-    console.error(
-        "Gebruiker laden mislukt:",
-        error
-    );
-
-}
 
 
 
@@ -188,6 +175,7 @@ catch(error){
             beheerKnop = `
 
             <button
+            class="beheerKnop"
             onclick="
             window.location.href='beheer.html'
             ">
@@ -202,32 +190,49 @@ catch(error){
 
 
 
-      loginBox.innerHTML = `
-
-<div class="gebruikersMenu">
+        loginBox.innerHTML = `
 
 
-<div class="gebruikerNaam">
-
-👤 ${gebruiker?.naam ? gebruiker.naam : user}
-</div>
+        <div class="gebruikersMenu">
 
 
-${beheerKnop}
+            <div class="gebruikerNaam">
+
+                👤 ${naam}
+
+            </div>
 
 
-<button
-id="logoutButton"
-class="logoutKlein">
 
-🚪 Afmelden
-
-</button>
+            ${beheerKnop}
 
 
-</div>
 
-`;
+            <button
+            id="logoutButton"
+            class="logoutKlein">
+
+            🚪 Afmelden
+
+            </button>
+
+
+        </div>
+
+
+        `;
+
+
+
+        document
+        .getElementById(
+            "logoutButton"
+        )
+        ?.addEventListener(
+            "click",
+            logout
+        );
+
 
 
     }
@@ -236,59 +241,37 @@ class="logoutKlein">
 
         loginBox.innerHTML = `
 
-        <div class="loginTitel">
 
-            🔐
+        <div class="loginCompact">
 
-            <h2>
-            Plaatcatalogus
-            </h2>
 
-            <p>
-            Meld je aan om foto's toe te voegen
-            </p>
+            <input
+            type="email"
+            id="email"
+            placeholder="E-mailadres">
+
+
+
+            <input
+            type="password"
+            id="wachtwoord"
+            placeholder="Wachtwoord">
+
+
+
+            <button
+            id="loginButton">
+
+            🔐 Aanmelden
+
+            </button>
 
 
         </div>
 
 
-
-        <input
-        type="email"
-        id="email"
-        placeholder="E-mailadres">
-
-
-
-        <input
-        type="password"
-        id="wachtwoord"
-        placeholder="Wachtwoord">
-
-
-
-        <button
-        id="loginButton">
-
-        Aanmelden
-
-        </button>
-
-
         `;
-        document
-.getElementById("logoutButton")
-?.addEventListener(
-"click",
-async()=>{
 
-await supabaseClient
-.auth
-.signOut();
-
-updateLoginStatus();
-
-});
 
 
         document
@@ -312,6 +295,7 @@ updateLoginStatus();
 // ============================================
 // Gebruikersrol ophalen
 // ============================================
+
 
 window.huidigeGebruiker = null;
 
