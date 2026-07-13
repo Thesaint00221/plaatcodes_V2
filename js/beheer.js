@@ -97,7 +97,7 @@ head:true
 
 // aantal foto's
 
-const {data:fotos} =
+const fotos =
 await haalAlleBestanden();
 
 
