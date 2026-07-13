@@ -119,6 +119,9 @@ fotos.length;
 // aantal platen uit data.json
 
 
+try{
+
+
 const antwoord =
 await fetch(
 "data.json"
@@ -135,6 +138,21 @@ document.getElementById(
 ).innerHTML =
 platen.length;
 
+
+}
+catch(error){
+
+
+console.error(
+"Platen laden mislukt:",
+error
+);
+
+
+document.getElementById(
+"aantalPlaten"
+).innerHTML =
+"Fout";
 
 
 }
