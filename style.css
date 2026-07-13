@@ -281,110 +281,110 @@ button:active{
 ========================================================== */
 
 .card{
+    display:flex;
+    flex-direction:column;
 
-    background:var(--surface);
-
+    background:#fff;
     border-radius:18px;
 
     overflow:hidden;
 
-    box-shadow:var(--shadow);
+    border:1px solid #e6ebf2;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.06);
 
     cursor:pointer;
 
     transition:
-        transform .2s,
-        box-shadow .2s;
-
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
 }
 
 .card:hover{
 
-    transform:translateY(-5px);
+    transform:translateY(-6px);
+
+    border-color:#2357d9;
 
     box-shadow:
-        0 12px 24px rgba(0,0,0,.10);
-
+        0 14px 30px rgba(0,0,0,.12);
 }
-
 
 .card img{
 
     width:100%;
-
-    height:250px;
+    aspect-ratio:4/3;
 
     object-fit:cover;
 
-    background:#f4f4f4;
-
+    background:#f4f6f8;
 }
-
 
 .cardContent{
 
+    display:flex;
+    flex-direction:column;
+
+    gap:8px;
+
     padding:18px;
 
+    flex:1;
 }
-
-
-.cardContent h3{
-
-    font-size:22px;
-
-    color:var(--text);
-
-    margin-bottom:6px;
-
-}
-
 
 .cardCode{
 
     display:inline-block;
 
-    margin-bottom:12px;
+    width:fit-content;
 
-    padding:6px 14px;
+    padding:5px 12px;
 
     border-radius:999px;
 
-    background:#edf3ff;
+    background:#eef4ff;
 
-    color:var(--primary);
+    color:#2357d9;
+
+    font-size:13px;
 
     font-weight:700;
-
-    font-size:14px;
-
 }
 
+.cardContent h3{
+
+    font-size:21px;
+
+    line-height:1.2;
+
+    color:#222;
+
+    margin:0;
+}
 
 .cardLeverancier{
 
-    color:var(--text-light);
+    color:#7a7a7a;
 
     font-size:15px;
-
 }
 
+.cardFooter{
 
-.cardInfo{
+    margin-top:auto;
 
-    margin-top:12px;
+    padding-top:16px;
 
-    display:flex;
+    border-top:1px solid #ececec;
 
-    justify-content:space-between;
+    color:#2357d9;
 
-    align-items:center;
+    font-weight:600;
 
-    color:var(--text-light);
-
-    font-size:14px;
-
+    font-size:15px;
 }
-
 
 /* ==========================================================
    DETAIL
