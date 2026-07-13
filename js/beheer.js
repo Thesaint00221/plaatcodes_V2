@@ -1,9 +1,10 @@
 // ============================================
 // beheer.js
+// Dashboard beheerpagina
 // ============================================
 
 
-async function controleerBeheerder(){
+async function controleerToegang(){
 
 
 const gebruiker =
@@ -15,37 +16,125 @@ if(!gebruiker){
 
 
 document.getElementById(
-"beheerStatus"
+    "beheerStatus"
 ).innerHTML =
+
 "❌ Geen toegang";
 
 
 return false;
-
 
 }
 
 
 
 if(
-gebruiker.rol !== "beheerder"
+    gebruiker.rol !== "beheerder"
 ){
 
 
 document.getElementById(
-"beheerStatus"
+    "beheerStatus"
 ).innerHTML =
+
 "❌ Alleen beheerders hebben toegang";
 
 
 return false;
+
+}
+
+
+
+document.getElementById(
+    "beheerStatus"
+).innerHTML =
+
+`
+Welkom ${gebruiker.naam || gebruiker.email}
+`;
+
+
+
+return true;
 
 
 }
 
 
 
-return true;
+
+
+async function laadStatistieken(){
+
+
+
+const toegang =
+    await controleerToegang();
+
+
+
+if(!toegang){
+    return;
+}
+
+
+
+// aantal cases
+
+const {count:cases} =
+await supabaseClient
+.from("eigen_data")
+.select(
+"id",
+{
+count:"exact",
+head:true
+}
+);
+
+
+
+// aantal foto's
+
+const {data:fotos} =
+await haalAlleBestanden();
+
+
+
+document.getElementById(
+"aantalCases"
+).innerHTML =
+cases || 0;
+
+
+
+document.getElementById(
+"aantalFotos"
+).innerHTML =
+fotos.length;
+
+
+
+// aantal platen uit data.json
+
+
+const antwoord =
+await fetch(
+"data.json"
+);
+
+
+const platen =
+await antwoord.json();
+
+
+
+document.getElementById(
+"aantalPlaten"
+).innerHTML =
+platen.length;
+
 
 
 }
@@ -87,7 +176,6 @@ let bestanden=[];
 for(const item of data){
 
 
-
 const pad =
 map
 ?
@@ -97,17 +185,20 @@ item.name;
 
 
 
-if(!item.metadata){
+if(
+!item.metadata
+){
 
 
 const sub =
-await haalAlleBestanden(pad);
+await haalAlleBestanden(
+pad
+);
 
 
 bestanden.push(
 ...sub
 );
-
 
 
 }
@@ -135,114 +226,4 @@ return bestanden;
 
 
 
-
-
-async function controleerOpslag(){
-
-
-const toegang =
-await controleerBeheerder();
-
-
-
-if(!toegang){
-return;
-}
-
-
-
-const bestanden =
-await haalAlleBestanden();
-
-
-
-const {data:cases} =
-await supabaseClient
-.from("eigen_data")
-.select(
-"foto, overzicht_foto"
-);
-
-
-
-let gebruikt=[];
-
-
-
-cases.forEach(item=>{
-
-
-if(item.foto){
-
-gebruikt.push(
-item.foto
-);
-
-}
-
-
-if(item.overzicht_foto){
-
-gebruikt.push(
-item.overzicht_foto
-);
-
-}
-
-
-});
-
-
-
-
-const ongebruikt =
-bestanden.filter(
-foto =>
-!gebruikt.includes(foto)
-&&
-!foto.includes(
-".emptyFolderPlaceholder"
-)
-);
-
-
-
-
-document.getElementById(
-"beheerStatus"
-).innerHTML = `
-
-
-<h2>
-Opslagcontrole
-</h2>
-
-
-<p>
-📸 Bestanden in opslag:
-${bestanden.length}
-</p>
-
-
-<p>
-⚠️ Ongebruikte foto's:
-${ongebruikt.length}
-</p>
-
-
-`;
-
-
-
-console.log(
-"Ongebruikte foto's:",
-ongebruikt
-);
-
-
-
-}
-
-
-
-controleerOpslag();
+laadStatistieken();
