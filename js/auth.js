@@ -3,24 +3,30 @@
 // ============================================
 
 
-const emailInput =
-    document.getElementById("email");
-
-const wachtwoordInput =
-    document.getElementById("wachtwoord");
-
-
-const loginButton =
-    document.getElementById("loginButton");
+let emailInput;
+let wachtwoordInput;
+let loginButton;
+let logoutButton;
 
 
-const logoutButton =
-    document.getElementById("logoutButton");
+function laadLoginElementen(){
+
+    emailInput =
+        document.getElementById("email");
+
+    wachtwoordInput =
+        document.getElementById("wachtwoord");
+
+    loginButton =
+        document.getElementById("loginButton");
+
+    logoutButton =
+        document.getElementById("logoutButton");
+
+}
 
 
-const loginBox =
-    document.getElementById("loginBox");
-
+laadLoginElementen();
 
 
 
@@ -204,7 +210,7 @@ onclick="window.location.href='beheer.html'">
 
 
 loginBox.innerHTML = `
-
+laadLoginElementen();
 
 <div class="loginIngelogd">
 
@@ -262,7 +268,7 @@ else {
 
 
 loginBox.innerHTML = `
-
+laadLoginElementen();
 
 <div class="loginTitel">
 
