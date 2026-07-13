@@ -1487,3 +1487,144 @@ body{
     }
 
 }
+/* DETAIL PAGINA */
+
+.detailPagina{
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:40px;
+
+}
+
+.detailHeader{
+
+    display:grid;
+
+    grid-template-columns:500px 1fr;
+
+    gap:50px;
+
+    margin-bottom:40px;
+
+}
+
+.detailFotoGroot{
+
+    background:white;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+.detailFotoGroot img{
+
+    width:100%;
+
+    display:block;
+
+    aspect-ratio:4/3;
+
+    object-fit:cover;
+
+}
+
+.geenFotoGroot{
+
+    height:420px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:80px;
+
+}
+
+.detailBadge{
+
+    display:inline-block;
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    margin-bottom:15px;
+
+    font-size:14px;
+
+}
+
+.detailInfo h1{
+
+    font-size:40px;
+
+    margin:0 0 10px;
+
+}
+
+.detailCode{
+
+    font-size:20px;
+
+    color:#64748b;
+
+    margin-bottom:30px;
+
+}
+
+.detailTable{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+}
+
+.detailTable td{
+
+    padding:16px 20px;
+
+    border-bottom:1px solid #ececec;
+
+}
+
+.detailTable td:first-child{
+
+    font-weight:600;
+
+    width:180px;
+
+    background:#fafafa;
+
+}
+
+@media(max-width:1000px){
+
+    .detailHeader{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
