@@ -86,6 +86,7 @@ function toonDetail(plaat){
                     src="photos/${plaat.photos[0]}"
                     alt="${plaat.naam}"
                     loading="lazy">
+                    onclick="openFotoLightbox('${detailUrl}')">
                 `
                 :
                 `
@@ -291,6 +292,7 @@ async function toonFotos(plaat){
                 src="${detailUrl}"
                 class="detailFoto"
                 loading="lazy">
+                onclick="openFotoLightbox('${detailUrl}')">
             `
             :
             ""
@@ -304,6 +306,7 @@ async function toonFotos(plaat){
                 src="${overzichtUrl}"
                 class="detailFoto"
                 loading="lazy">
+                onclick="openFotoLightbox('${detailUrl}')">
             `
             :
             ""
@@ -362,7 +365,6 @@ async function toonFotos(plaat){
 
 galerij.innerHTML += html;
 
-activeerFotoKlik();
 
 }
 // ============================================
