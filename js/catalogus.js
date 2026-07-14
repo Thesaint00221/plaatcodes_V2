@@ -30,11 +30,12 @@ function haalPlaatFotoUrl(foto){
 async function initCatalogus() {
     resultaten.innerHTML = '<p class="loader">Catalogus laden...</p>';
 
-    const {data, error} = await supabaseClient
-        .from("platen")
-        .select("naam, code, leverancier, photos, referentie, kleur, kleurnummer")
-        .order("leverancier")
-        .order("naam");
+const {data, error} = await supabaseClient
+    .from("platen")
+    .select("naam, code, leverancier, photos, referentie, kleur, kleurnummer, gearchiveerd")
+    .eq("gearchiveerd", false)
+    .order("leverancier")
+    .order("naam");
 
     if(error){
         console.error(error);
