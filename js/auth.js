@@ -5,6 +5,14 @@
 
 let loginBox;
 
+function toonNieuwePlaatKnop(isBeheerder){
+    const knop = document.getElementById("nieuwePlaatKnop");
+
+    if(knop){
+        knop.style.display = isBeheerder ? "" : "none";
+    }
+}
+
 
 // ============================================
 // Login
@@ -188,6 +196,8 @@ async function updateLoginStatus(){
 
         }
 
+        toonNieuwePlaatKnop(rol === "beheerder");
+
 
 
         loginBox.innerHTML = `
@@ -296,6 +306,8 @@ async function updateLoginStatus(){
 
     }
     else{
+
+        toonNieuwePlaatKnop(false);
 
 
         loginBox.innerHTML = `
