@@ -577,34 +577,3 @@ function openFotoLightbox(url){
 }
 
 
-
-// ============================================
-// FOTO KLIK EVENTS TOEVOEGEN
-// ============================================
-
-
-function activeerFotoKlik(){
-
-    const foto's =
-        document.querySelectorAll(
-            ".caseFotos img"
-        );
-
-
-    foto's.forEach(
-        foto => {
-
-
-            foto.onclick = function(){
-
-                openFotoLightbox(
-                    this.src
-                );
-
-            };
-
-
-        }
-    );
-
-}
