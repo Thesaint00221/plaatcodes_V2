@@ -1311,3 +1311,131 @@ BEHEER
     position:relative;
 
 }
+
+/* Actuele catalogus-, login- en detailcomponenten */
+.loginArea { position: relative; }
+
+.loginCompact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.loginCompact input {
+    width: 146px;
+    padding: 9px 11px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: white;
+    color: var(--text);
+    font: inherit;
+}
+
+.loginCompact input:focus { outline: 2px solid rgba(37, 99, 235, .35); }
+
+.loginCompact button,
+.gebruikerNaam {
+    border: 0;
+    border-radius: 10px;
+    background: var(--primary);
+    color: white;
+    padding: 10px 13px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.gebruikersMenu { position: relative; }
+.gebruikerNaam { display: flex; align-items: center; gap: 7px; }
+.gebruikersRol { color: #dbeafe; font-size: 13px; font-weight: 600; }
+
+.dropdown {
+    top: calc(100% + 10px);
+    z-index: 300;
+    min-width: 190px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, .18);
+}
+
+.dropdown button {
+    display: block;
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 12px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-weight: 650;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown button:hover { background: var(--surface-2); }
+.dropdown .logoutKlein { color: var(--danger); }
+
+.kaart {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .07);
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.kaart:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(15, 23, 42, .13); }
+.kaartFoto { height: 220px; background: var(--surface-2); overflow: hidden; }
+.kaartFoto img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.kaart:hover .kaartFoto img { transform: scale(1.04); }
+.kaartBody { padding: 18px; }
+.kaartTitel { font-size: 20px; font-weight: 750; }
+.kaartCode { display: inline-block; margin: 10px 0 7px; padding: 4px 9px; border-radius: 7px; background: #eff6ff; color: var(--primary); font-size: 13px; font-weight: 750; }
+.kaartLeverancier { color: var(--text-light); font-size: 14px; }
+.detailKnop { display: block; margin-top: 16px; color: var(--primary); font: inherit; font-weight: 700; border: 0; background: transparent; cursor: pointer; }
+
+.detailHeader { display: grid; grid-template-columns: minmax(280px, .9fr) 1.1fr; gap: 34px; align-items: start; }
+.detailFotoGroot { overflow: hidden; border-radius: 16px; background: var(--surface-2); }
+.detailFotoGroot img { display: block; width: 100%; aspect-ratio: 1 / .78; object-fit: cover; cursor: zoom-in; }
+.detailBadge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #eff6ff; color: var(--primary); font-size: 13px; font-weight: 700; }
+.detailInfo h1 { margin: 12px 0 8px; font-size: clamp(28px, 4vw, 42px); }
+.detailCode { color: var(--text-light); font-weight: 700; }
+.detailTable { width: 100%; margin-top: 24px; border-collapse: collapse; }
+.detailTable td { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.detailTable td:first-child { color: var(--text-light); width: 42%; }
+
+.caseKaart { margin-top: 18px; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface-2); }
+.caseFotos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px; }
+.caseFotos img { width: 100%; height: 220px; border-radius: 12px; object-fit: cover; cursor: zoom-in; transition: transform .2s ease; }
+.caseFotos img:hover { transform: scale(1.02); }
+.fotoInfo { display: block; margin-top: 16px; color: var(--text-light); line-height: 1.6; }
+
+#fotoLightbox { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, .88); }
+#fotoLightbox.actief { display: flex; }
+.lightboxBinnen { position: relative; max-width: min(1200px, 95vw); max-height: 92vh; }
+.lightboxBinnen img { display: block; max-width: 100%; max-height: 88vh; border-radius: 12px; box-shadow: 0 24px 70px rgba(0, 0, 0, .45); object-fit: contain; }
+.lightboxSluiten { position: absolute; top: -13px; right: -13px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: white; color: var(--text); font-size: 28px; line-height: 1; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, .25); }
+body.lightboxOpen { overflow: hidden; }
+
+@media (max-width: 900px) {
+    .loginCompact { flex-wrap: wrap; }
+    .loginCompact input { flex: 1 1 130px; }
+    .detailHeader { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .headerButtons { flex-wrap: wrap; }
+    .loginArea { width: 100%; }
+    .loginCompact { width: 100%; }
+    .loginCompact button { width: 100%; }
+    .gebruikersMenu, .gebruikerNaam { width: 100%; justify-content: center; }
+    .dropdown { left: 0; right: auto; width: 100%; }
+    #detail { margin: 16px auto; padding: 16px; }
+    #detailContent { padding: 18px; }
+    #fotoLightbox { padding: 14px; }
+}
