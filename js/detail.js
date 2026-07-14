@@ -71,10 +71,10 @@ function toonDetail(plaat){
 
     detail.classList.remove("hidden");
 
-    const basisFoto =
-        plaat.photos && plaat.photos.length
-            ? `photos/${plaat.photos[0]}`
-            : "";
+const basisFoto =
+    plaat.photos && plaat.photos.length
+        ? plaat.photos[0]
+        : "";
 
     detailContent.innerHTML = `
 
