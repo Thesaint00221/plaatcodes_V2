@@ -1867,3 +1867,97 @@ body{
     transform:scale(1.04);
 
 }
+.uploadForm{
+
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-top:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+
+}
+
+
+.formTitel{
+
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:20px;
+
+}
+
+
+
+.uploadVeld{
+
+    margin-bottom:20px;
+
+}
+
+
+.uploadVeld label{
+
+    display:block;
+    font-weight:600;
+    margin-bottom:8px;
+    color:#333;
+
+}
+
+
+.uploadVeld input,
+.uploadVeld textarea{
+
+    width:100%;
+    box-sizing:border-box;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    font-size:15px;
+
+    background:#fafafa;
+
+    transition:.2s;
+
+}
+
+
+.uploadVeld input:focus,
+.uploadVeld textarea:focus{
+
+    outline:none;
+
+    background:white;
+
+    border-color:#333;
+
+    box-shadow:0 0 0 3px rgba(0,0,0,.08);
+
+}
+
+
+.uploadVeld textarea{
+
+    resize:vertical;
+
+    min-height:120px;
+
+}
+
+
+
+.uploadVeld small{
+
+    display:block;
+
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:12px;
+
+}
