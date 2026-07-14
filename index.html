@@ -220,3 +220,181 @@
 <script src="js/app.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaatcatalogus</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+
+    <div class="logo">
+        <div class="logoIcon">🪵</div>
+
+        <div class="logoTekst">
+            <h1>Plaatcodes</h1>
+            <span>Alle leveranciers op één plaats</span>
+        </div>
+    </div>
+
+    <div class="zoekContainer">
+        <input
+            id="search"
+            type="text"
+            placeholder="Zoek op naam, plaatcode, leverancier..."
+        >
+    </div>
+
+    <div class="headerButtons">
+
+        <div id="loginBox"></div>
+
+        <div class="userMenu">
+
+            <button id="userButton">
+
+                <span id="gebruikersNaam">-</span>
+                <span id="gebruikersRol">-</span>
+
+            </button>
+
+        </div>
+
+        <button
+            id="nieuwePlaatKnop"
+            class="uploadKnop"
+            style="display:none;">
+
+            ➕ Nieuwe plaat
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<div id="resultaten"></div>
+
+
+<div id="detail" class="hidden">
+
+    <button id="terug">← Terug</button>
+
+    <div id="detailContent"></div>
+
+    <div id="uploadKaart">
+
+        <button id="detailKnop" class="uploadKnop detail">
+
+            🔍 DETAILFOTO
+
+            <span>
+                Beschadiging - structuur - fout
+            </span>
+
+        </button>
+
+        <button id="overzichtKnop" class="uploadKnop overzicht">
+
+            🖼 OVERZICHTSFOTO
+
+            <span>
+                Volledige plaat
+            </span>
+
+        </button>
+
+
+        <input
+            type="file"
+            id="detailBestand"
+            accept="image/*"
+            capture="environment"
+            hidden>
+
+        <input
+            type="file"
+            id="overzichtBestand"
+            accept="image/*"
+            capture="environment"
+            hidden>
+
+
+        <div class="uploadForm">
+
+            <div class="formTitel">
+                📝 Beschrijving van de case
+            </div>
+
+            <div class="uploadVeld">
+
+                <label for="fotoTitel">
+                    Titel
+                </label>
+
+                <input
+                    id="fotoTitel"
+                    type="text"
+                    maxlength="80"
+                    placeholder="Bijvoorbeeld: Kras op frontzijde, kleurverschil, beschadiging...">
+
+                <small>
+                    Korte omschrijving van het probleem
+                </small>
+
+            </div>
+
+            <div class="uploadVeld">
+
+                <label for="fotoBeschrijving">
+                    Opmerking
+                </label>
+
+                <textarea
+                    id="fotoBeschrijving"
+                    rows="5"
+                    placeholder="Geef meer details: locatie, oorzaak, ernst van de beschadiging..."></textarea>
+
+                <small>
+                    Extra informatie voor collega's
+                </small>
+
+            </div>
+
+        </div>
+
+        <button id="opslaanFoto">
+            ✔ Opslaan
+        </button>
+
+    </div>
+
+    <div id="beheerBox" style="display:none;">
+
+        <button id="opschonenButton">
+            🧹 Opschonen opslag
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/detail.js"></script>
+<script src="js/catalogus.js"></script>
+<script src="js/upload.js"></script>
+<script src="js/opschonen.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
