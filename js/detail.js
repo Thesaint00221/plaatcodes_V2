@@ -565,6 +565,13 @@ function openFotoLightbox(url){
 
         <div class="lightboxBinnen">
 
+            <button
+                class="lightboxSluiten"
+                type="button"
+                aria-label="Foto sluiten">
+                ×
+            </button>
+
             <img
                 src="${url}"
                 alt="Foto"
@@ -576,12 +583,27 @@ function openFotoLightbox(url){
 
     lightbox.classList.add("actief");
 
-    lightbox.onclick = function(){
+    const sluitLightbox = function(){
+        lightbox.classList.remove("actief");
+        document.body.classList.remove("lightboxOpen");
+    };
 
-        lightbox.classList.remove(
-            "actief"
-        );
+    document.body.classList.add("lightboxOpen");
 
+    lightbox.onclick = function(event){
+        if(event.target === lightbox){
+            sluitLightbox();
+        }
+    };
+
+    lightbox
+        .querySelector(".lightboxSluiten")
+        .addEventListener("click", sluitLightbox);
+
+    document.onkeydown = function(event){
+        if(event.key === "Escape"){
+            sluitLightbox();
+        }
     };
 
 }

@@ -198,7 +198,10 @@ async function updateLoginStatus(){
 
             <button
             id="userButton"
-            class="gebruikerNaam">
+            class="gebruikerNaam"
+            type="button"
+            aria-expanded="false"
+            aria-controls="userDropdown">
 
 
                 👤 ${naam}
@@ -216,7 +219,7 @@ async function updateLoginStatus(){
 
             <div
             id="userDropdown"
-            class="dropdown verborgen">
+            class="dropdown hidden">
 
 
                 ${beheerKnop}
@@ -275,9 +278,16 @@ async function updateLoginStatus(){
                     "userDropdown"
                 )
                 .classList
-                .toggle(
-                    "verborgen"
-                );
+                .toggle("hidden");
+
+                const isOpen = !document
+                    .getElementById("userDropdown")
+                    .classList
+                    .contains("hidden");
+
+                document
+                    .getElementById("userButton")
+                    .setAttribute("aria-expanded", isOpen);
 
             }
         );
@@ -291,32 +301,37 @@ async function updateLoginStatus(){
         loginBox.innerHTML = `
 
 
-        <div class="loginCompact">
+        <form id="loginForm" class="loginCompact">
 
 
             <input
             type="email"
             id="email"
-            placeholder="E-mailadres">
+            placeholder="E-mailadres"
+            autocomplete="email"
+            required>
 
 
 
             <input
             type="password"
             id="wachtwoord"
-            placeholder="Wachtwoord">
+            placeholder="Wachtwoord"
+            autocomplete="current-password"
+            required>
 
 
 
             <button
-            id="loginButton">
+            id="loginButton"
+            type="submit">
 
                 🔐 Aanmelden
 
             </button>
 
 
-        </div>
+        </form>
 
 
         `;
@@ -324,11 +339,11 @@ async function updateLoginStatus(){
 
 
         document
-        .getElementById("loginButton")
-        ?.addEventListener(
-            "click",
-            login
-        );
+        .getElementById("loginForm")
+        ?.addEventListener("submit", event => {
+            event.preventDefault();
+            login();
+        });
 
 
     }
