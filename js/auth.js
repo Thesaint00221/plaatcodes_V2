@@ -5,12 +5,24 @@
 
 let loginBox;
 
-function toonNieuwePlaatKnop(isBeheerder){
-    const knop = document.getElementById("nieuwePlaatKnop");
+function toonBeheerKnoppen(isBeheerder){
 
-    if(knop){
-        knop.style.display = isBeheerder ? "" : "none";
+    const nieuwePlaatKnop =
+        document.getElementById("nieuwePlaatKnop");
+
+    const archiefKnop =
+        document.getElementById("archiefKnop");
+
+    if(nieuwePlaatKnop){
+        nieuwePlaatKnop.style.display =
+            isBeheerder ? "" : "none";
     }
+
+    if(archiefKnop){
+        archiefKnop.style.display =
+            isBeheerder ? "" : "none";
+    }
+
 }
 
 
@@ -197,6 +209,7 @@ async function updateLoginStatus(){
         }
 
         toonNieuwePlaatKnop(rol === "beheerder");
+        toonBeheerKnoppen(rol === "beheerder");
 
 
 
@@ -308,6 +321,7 @@ async function updateLoginStatus(){
     else{
 
         toonNieuwePlaatKnop(false);
+        toonBeheerKnoppen(false);
 
 
         loginBox.innerHTML = `
