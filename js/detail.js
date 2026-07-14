@@ -105,7 +105,25 @@ const basisFoto =
             }
 
         </div>
+${
+    window.huidigeGebruiker?.rol === "beheerder"
+    ?
+    `
+    <div class="beheerKnoppen">
 
+        <button
+            class="archiveerKnop"
+            onclick="archiveerPlaat('${plaat.code}')">
+
+            📦 Archiveren
+
+        </button>
+
+    </div>
+    `
+    :
+    ""
+}
         <div class="detailInfo">
 
             <span class="detailBadge">
@@ -531,7 +549,55 @@ async function verwijderCase(id){
     );
 
 }
+// ============================================
+// Plaat archiveren
+// ============================================
 
+async function archiveerPlaat(code){
+
+    if(!confirm(
+        "Deze plaat archiveren?"
+    )){
+        return;
+    }
+
+
+    const {error} =
+        await supabaseClient
+            .from("platen")
+            .update({
+                gearchiveerd:true
+            })
+            .eq("code",code);
+
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Archiveren mislukt."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Plaat werd gearchiveerd."
+    );
+
+
+    detail.classList.add("hidden");
+
+
+    document.getElementById("resultaten").style.display = "";
+
+
+    await initCatalogus();
+
+}
 // ============================================
 // Lightbox
 // ============================================
