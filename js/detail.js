@@ -73,7 +73,7 @@ function toonDetail(plaat){
 
 const basisFoto =
     plaat.photos && plaat.photos.length
-        ? plaat.photos[0]
+        ? haalPlaatFotoUrl(plaat.photos[0])
         : "";
 
     detailContent.innerHTML = `
