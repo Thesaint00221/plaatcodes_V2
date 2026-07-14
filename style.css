@@ -1961,3 +1961,98 @@ body{
     font-size:12px;
 
 }
+/* ============================================
+   Mobiele header optimalisatie
+============================================ */
+
+@media (max-width: 600px){
+
+
+.topbar{
+
+    padding:10px 12px;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+
+
+.logo{
+
+    width:auto;
+
+}
+
+
+.logoIcon{
+
+    font-size:28px;
+
+}
+
+
+
+.logoTekst h1{
+
+    font-size:20px;
+
+    margin:0;
+
+}
+
+
+.logoTekst span{
+
+    display:none;
+
+}
+
+
+
+/* Zoekveld volledige breedte */
+
+.zoekContainer{
+
+    order:3;
+
+    width:100%;
+
+}
+
+
+
+.zoekContainer input{
+
+    height:42px;
+
+    padding:10px 14px;
+
+    font-size:14px;
+
+}
+
+
+
+/* Knoppen compacter */
+
+.headerButtons{
+
+    margin-left:auto;
+
+}
+
+
+.uploadKnop{
+
+    padding:8px 12px;
+
+    font-size:13px;
+
+}
+
+
+
+}
