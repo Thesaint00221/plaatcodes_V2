@@ -1276,3 +1276,38 @@ BEHEER
     font-weight:700;
 
 }
+/* dropdown gebruiker */
+
+.dropdown{
+
+    position:absolute;
+
+    right:0;
+
+    top:55px;
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    box-shadow:var(--shadow);
+
+    min-width:160px;
+
+}
+
+
+.dropdown button{
+
+    width:100%;
+
+}
+
+
+.userMenu{
+
+    position:relative;
+
+}
