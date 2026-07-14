@@ -2052,7 +2052,101 @@ body{
     font-size:13px;
 
 }
+}
+.userMenu{
+
+    position:relative;
+
+}
 
 
+#userButton{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    padding:8px;
+
+}
+
+
+.dropdown{
+
+    position:absolute;
+
+    right:0;
+
+    top:45px;
+
+    background:white;
+
+    border-radius:12px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.15);
+
+    overflow:hidden;
+
+    min-width:160px;
+
+}
+
+
+.dropdown button{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    background:white;
+
+    text-align:left;
+
+    cursor:pointer;
+
+}
+
+
+.dropdown button:hover{
+
+    background:#f5f5f5;
+
+}
+
+
+.verborgen{
+
+    display:none;
+
+}
+
+
+@media(max-width:600px){
+
+    .headerButtons{
+
+        margin-left:auto;
+
+    }
+
+
+    #userButton{
+
+        font-size:13px;
+
+    }
+
+
+    #nieuwePlaatKnop{
+
+        display:none !important;
+
+    }
 
 }
