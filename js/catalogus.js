@@ -10,6 +10,7 @@ const zoekveld = document.getElementById("search");
 function normaliseerPlaat(plaat){
     return {
         ...plaat,
+        gearchiveerd: plaat.gearchiveerd || false,
         photos: plaat.photos || [],
         info: {
             Referentie: plaat.referentie || "",
