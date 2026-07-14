@@ -78,6 +78,42 @@ CATALOGUS
 
 </main>
 
+<section
+    id="plaatModal"
+    class="plaatModal hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="plaatModalTitel">
+
+    <form id="nieuwePlaatForm" class="plaatForm">
+        <div class="plaatFormKop">
+            <div>
+                <p class="beheerEyebrow">Beheer</p>
+                <h2 id="plaatModalTitel">Nieuwe plaat toevoegen</h2>
+                <p>De plaat wordt onmiddellijk in de catalogus opgeslagen.</p>
+            </div>
+            <button id="sluitPlaatModal" class="modalSluiten" type="button" aria-label="Sluiten">×</button>
+        </div>
+
+        <div class="plaatFormGrid">
+            <label>Naam<input id="plaatNaam" type="text" required></label>
+            <label>Code<input id="plaatCode" type="text" required></label>
+            <label>Leverancier<input id="plaatLeverancier" type="text" required></label>
+            <label>Referentie<input id="plaatReferentie" type="text"></label>
+            <label>Kleur<input id="plaatKleur" type="text"></label>
+            <label>Kleurnummer<input id="plaatKleurnummer" type="number" step="1"></label>
+            <label class="plaatFotoVeld">Foto <input id="plaatFoto" type="file" accept="image/*"></label>
+        </div>
+
+        <p id="plaatFormMelding" class="plaatFormMelding" aria-live="polite"></p>
+
+        <div class="plaatFormActies">
+            <button id="annuleerPlaat" class="secundaireKnop" type="button">Annuleren</button>
+            <button class="primary" type="submit">Plaat opslaan</button>
+        </div>
+    </form>
+</section>
+
 <!-- =========================
 DETAILPAGINA
 ========================== -->
@@ -188,6 +224,7 @@ SCRIPTS
 <script src="js/detail.js"></script>
 <script src="js/upload.js"></script>
 <script src="js/opschonen.js"></script>
+<script src="js/platen-beheer.js"></script>
 <script src="js/app.js"></script>
 
 </body>
