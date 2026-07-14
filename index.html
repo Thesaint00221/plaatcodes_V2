@@ -126,18 +126,31 @@ DETAILPAGINA
 
         <div class="uploadForm">
 
-            <label>Titel</label>
+            <div class="uploadFormKop">
+                <h3>Nieuwe case toevoegen</h3>
+                <p>Voeg een korte titel en toelichting toe bij de foto's.</p>
+            </div>
+
+            <div class="uploadVeld">
+            <label for="fotoTitel">Titel</label>
 
             <input
                 id="fotoTitel"
                 type="text"
-                maxlength="80">
+                maxlength="80"
+                placeholder="Bijvoorbeeld: Keuken bij familie Janssens">
+            <small>Maximaal 80 tekens.</small>
+            </div>
 
-            <label>Opmerking</label>
+            <div class="uploadVeld">
+            <label for="fotoBeschrijving">Opmerking</label>
 
             <textarea
                 id="fotoBeschrijving"
-                rows="5"></textarea>
+                rows="5"
+                placeholder="Beschrijf kort de toepassing, afwerking of bijzonderheden."></textarea>
+            <small>Deze toelichting verschijnt bij de case.</small>
+            </div>
 
             <button id="opslaanFoto">
 

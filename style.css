@@ -1439,3 +1439,66 @@ body.lightboxOpen { overflow: hidden; }
     #detailContent { padding: 18px; }
     #fotoLightbox { padding: 14px; }
 }
+
+/* Verfijnd formulier voor cases */
+.uploadFormKop {
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+}
+
+.uploadFormKop h3 { font-size: 22px; }
+.uploadFormKop p { margin-top: 6px; color: var(--text-light); line-height: 1.5; }
+
+.uploadVeld input,
+.uploadVeld textarea {
+    border-color: var(--border);
+    background: #fbfdff;
+}
+
+.uploadVeld input:hover,
+.uploadVeld textarea:hover { border-color: #b7c7dc; }
+
+/* Beheerdashboard */
+.beheerPagina { background: linear-gradient(135deg, #f5f8ff 0%, #eef4ff 45%, #f8fafc 100%); }
+
+.beheerTopbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px clamp(20px, 5vw, 64px);
+    background: rgba(255, 255, 255, .88);
+    border-bottom: 1px solid rgba(219, 227, 236, .9);
+    backdrop-filter: blur(14px);
+}
+
+.beheerMerk { display: flex; align-items: center; gap: 10px; color: var(--text); font-size: 19px; font-weight: 800; text-decoration: none; }
+.beheerMerk > span:first-child { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 10px; background: var(--primary); }
+
+.beheer-container { width: min(100% - 40px, 1080px); margin: 0 auto; padding: 54px 0 64px; }
+.beheerIntro { margin-bottom: 30px; }
+.beheerEyebrow { color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.beheerIntro h1 { margin: 7px 0 8px; font-size: clamp(30px, 5vw, 44px); letter-spacing: -.03em; }
+.beheerIntro > p:last-child { color: var(--text-light); font-size: 17px; }
+
+#beheerStatus { display: inline-flex; align-items: center; padding: 8px 12px; margin-bottom: 24px; border-radius: 999px; background: #e0ecff; color: #1e4fa8; font-size: 14px; font-weight: 700; }
+
+.beheerKaarten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.beheerKaart { min-height: 160px; padding: 24px; border: 1px solid rgba(219, 227, 236, .95); border-radius: 18px; background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(30, 64, 175, .08); }
+.beheerKaart h3 { color: var(--text-light); font-size: 15px; font-weight: 700; }
+.beheerKaart p { margin-top: 20px; color: var(--primary); font-size: 42px; font-weight: 800; letter-spacing: -.04em; }
+
+.beheerActies { margin-top: 24px; padding: 26px; border: 1px solid rgba(219, 227, 236, .95); border-radius: 18px; background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(30, 64, 175, .08); }
+.beheerActies h2 { margin-bottom: 8px; font-size: 22px; }
+.beheerPrimaireKnop { margin: 18px 0; padding: 12px 16px; border: 0; border-radius: 11px; background: var(--primary); color: white; font: inherit; font-weight: 750; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+.beheerPrimaireKnop:hover { background: var(--primary-hover); transform: translateY(-2px); }
+#opslagControle { min-height: 52px; padding: 14px; border-radius: 12px; background: var(--surface-2); color: var(--text-light); line-height: 1.5; }
+.beheerTerug { display: inline-flex; margin-top: 28px; color: var(--primary); font-weight: 750; text-decoration: none; }
+.beheerTerug:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+    .beheerTopbar { align-items: flex-start; flex-direction: column; }
+    .beheerTopbar .loginArea { width: 100%; }
+    .beheerKaarten { grid-template-columns: 1fr; }
+    .beheer-container { width: min(100% - 28px, 1080px); padding-top: 34px; }
+}

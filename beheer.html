@@ -14,15 +14,24 @@
 </head>
 
 
-<body>
+<body class="beheerPagina">
 
-<div id="loginBox"></div>
-<div class="beheer-container">
+<header class="beheerTopbar">
+    <a class="beheerMerk" href="index.html">
+        <span>🪵</span>
+        <span>Plaatcodes</span>
+    </a>
+    <div id="loginBox" class="loginArea"></div>
+</header>
+
+<main class="beheer-container">
 
 
-<h1>
-🛠 Beheer Plaatcatalogus
-</h1>
+<div class="beheerIntro">
+    <p class="beheerEyebrow">Beheeromgeving</p>
+    <h1>🛠 Beheer Plaatcatalogus</h1>
+    <p>Overzicht van je catalogus, cases en opgeslagen foto's.</p>
+</div>
 
 
 <div id="beheerStatus">
@@ -90,7 +99,8 @@ Controleren...
 
 
 <button
-id="controleerOpslag">
+id="controleerOpslag"
+class="beheerPrimaireKnop">
 
 🔍 Controleer opslag
 
@@ -107,19 +117,9 @@ Nog geen controle uitgevoerd.
 </div>
 
 
-<br>
+<a class="beheerTerug" href="index.html">← Terug naar catalogus</a>
 
-
-<button
-onclick="window.location.href='index.html'">
-
-← Terug naar catalogus
-
-</button>
-
-
-
-</div>
+</main>
 
 
 
