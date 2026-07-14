@@ -215,14 +215,13 @@ if(
 
     plaat.photos.forEach(foto=>{
 
-galerij.innerHTML += `
+        galerij.innerHTML += `
 
 <div class="fotoKaart modernFoto">
 
     <img
         src="photos/${foto}"
         class="detailFoto"
-        onclick="document.getElementById('groteFoto').src=this.src">
 
     <div class="fotoLabel">
 
@@ -236,7 +235,6 @@ galerij.innerHTML += `
     });
 
 }
-
 
 
 
@@ -379,7 +377,6 @@ const verwijderen =
 <img
     src="${detailUrl}"
     class="detailFoto"
-    onclick="document.getElementById('groteFoto').src=this.src">
             `
             :
             ""
@@ -392,7 +389,6 @@ const verwijderen =
     <img
         src="${overzichtUrl}"
         class="detailFoto"
-        onclick="document.getElementById('groteFoto').src=this.src">
     `
     :
     ""
