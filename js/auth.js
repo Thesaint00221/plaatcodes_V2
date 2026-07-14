@@ -12,7 +12,6 @@ let loginBox;
 
 async function login(){
 
-
     const email =
         document
         .getElementById("email")
@@ -26,20 +25,13 @@ async function login(){
         ?.value;
 
 
+    if(!email || !wachtwoord){
 
-    if(
-        !email ||
-        !wachtwoord
-    ){
-
-        alert(
-            "Vul e-mail en wachtwoord in"
-        );
+        alert("Vul e-mail en wachtwoord in");
 
         return;
 
     }
-
 
 
     const {error} =
@@ -54,14 +46,12 @@ async function login(){
         });
 
 
-
     if(error){
 
         console.error(error);
 
         alert(
-            "Login mislukt: "
-            + error.message
+            "Login mislukt: " + error.message
         );
 
         return;
@@ -70,7 +60,6 @@ async function login(){
 
 
     updateLoginStatus();
-
 
 }
 
@@ -84,7 +73,6 @@ async function login(){
 
 async function logout(){
 
-
     await supabaseClient
     .auth
     .signOut();
@@ -92,8 +80,8 @@ async function logout(){
 
     updateLoginStatus();
 
-
 }
+
 
 
 
@@ -150,16 +138,31 @@ async function updateLoginStatus(){
             email;
 
 
-        if(
-            gebruiker &&
-            gebruiker.naam
-        ){
 
-            naam =
-                gebruiker.naam;
+        let rol =
+            "gebruiker";
+
+
+
+        if(gebruiker){
+
+
+            if(gebruiker.naam){
+
+                naam =
+                    gebruiker.naam;
+
+            }
+
+
+            if(gebruiker.rol){
+
+                rol =
+                    gebruiker.rol;
+
+            }
 
         }
-
 
 
 
@@ -167,88 +170,68 @@ async function updateLoginStatus(){
 
 
 
-        if(
-            gebruiker &&
-            gebruiker.rol === "beheerder"
-        ){
+        if(rol === "beheerder"){
+
 
             beheerKnop = `
 
             <button
             class="beheerKnop"
-            onclick="
-            window.location.href='beheer.html'
-            ">
+            id="beheerButton">
 
-            🛠 Beheer
+                🛠 Beheer
 
             </button>
 
             `;
 
+
         }
 
 
 
-loginBox.innerHTML = `
+        loginBox.innerHTML = `
 
 
-<div class="gebruikersMenu">
-
-
-    <button 
-    id="userButton"
-    class="gebruikerNaam">
-
-
-        👤 ${naam}
-
-        <span class="gebruikersRol">
-
-            · ${gebruiker?.rol || "gebruiker"}
-
-        </span>
-
-        ▼
-
-
-    </button>
-
-
-    <div 
-    id="userDropdown"
-    class="dropdown verborgen">
-
-
-        ${beheerKnop}
-
-
-        <button
-        id="logoutButton"
-        class="logoutKlein">
-
-        🚪 Afmelden
-
-        </button>
-
-
-    </div>
-
-
-</div>
-
-
-`;
-
+        <div class="gebruikersMenu">
 
 
             <button
-            id="logoutButton"
-            class="logoutKlein">
+            id="userButton"
+            class="gebruikerNaam">
 
-            🚪 Afmelden
+
+                👤 ${naam}
+
+                <span class="gebruikersRol">
+                    · ${rol}
+                </span>
+
+                ▼
+
 
             </button>
+
+
+
+            <div
+            id="userDropdown"
+            class="dropdown verborgen">
+
+
+                ${beheerKnop}
+
+
+                <button
+                id="logoutButton"
+                class="logoutKlein">
+
+                    🚪 Afmelden
+
+                </button>
+
+
+            </div>
 
 
         </div>
@@ -259,26 +242,46 @@ loginBox.innerHTML = `
 
 
         document
-        .getElementById(
-            "logoutButton"
-        )
+        .getElementById("logoutButton")
         ?.addEventListener(
             "click",
             logout
         );
-document
-.getElementById("userButton")
-?.addEventListener(
-"click",
-()=>{
 
-document
-.getElementById("userDropdown")
-.classList.toggle(
-"verborgen"
-);
 
-});
+
+        document
+        .getElementById("beheerButton")
+        ?.addEventListener(
+            "click",
+            ()=>{
+
+                window.location.href =
+                    "beheer.html";
+
+            }
+        );
+
+
+
+        document
+        .getElementById("userButton")
+        ?.addEventListener(
+            "click",
+            ()=>{
+
+                document
+                .getElementById(
+                    "userDropdown"
+                )
+                .classList
+                .toggle(
+                    "verborgen"
+                );
+
+            }
+        );
+
 
 
     }
@@ -308,7 +311,7 @@ document
             <button
             id="loginButton">
 
-            🔐 Aanmelden
+                🔐 Aanmelden
 
             </button>
 
@@ -321,9 +324,7 @@ document
 
 
         document
-        .getElementById(
-            "loginButton"
-        )
+        .getElementById("loginButton")
         ?.addEventListener(
             "click",
             login
@@ -334,6 +335,7 @@ document
 
 
 }
+
 
 
 
@@ -357,9 +359,7 @@ async function laadGebruikersRol(){
 
 
 
-    if(
-        !userData.user
-    ){
+    if(!userData.user){
 
         return null;
 
@@ -407,19 +407,7 @@ async function laadGebruikersRol(){
 
 }
 
-const dropdown =
-document.getElementById("userDropdown");
 
-
-userButton?.addEventListener(
-"click",
-()=>{
-
-dropdown.classList.toggle(
-"verborgen"
-);
-
-});
 
 
 
