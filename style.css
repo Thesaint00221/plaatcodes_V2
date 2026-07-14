@@ -2150,3 +2150,30 @@ body{
     }
 
 }
+#userButton{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+
+#gebruikersRol{
+
+    font-size:12px;
+
+    color:#777;
+
+    font-weight:400;
+
+}
+
+
+#gebruikersRol::before{
+
+    content:"· ";
+
+}
