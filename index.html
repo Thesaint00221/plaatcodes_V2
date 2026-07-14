@@ -89,28 +89,50 @@
     hidden>
 
 
-   <div class="uploadVeld">
+<div class="uploadForm">
 
-    <label>
-        Titel
-    </label>
-
-    <input 
-        id="fotoTitel"
-        placeholder="Geef een korte titel...">
-
-</div>
+    <div class="formTitel">
+        📝 Beschrijving van de case
+    </div>
 
 
-<div class="uploadVeld">
+    <div class="uploadVeld">
 
-    <label>
-        Opmerking
-    </label>
+        <label for="fotoTitel">
+            Titel
+        </label>
 
-    <textarea 
-        id="fotoBeschrijving"
-        placeholder="Beschrijf de beschadiging, fout of bijzonderheid..."></textarea>
+        <input 
+            id="fotoTitel"
+            type="text"
+            placeholder="Bijvoorbeeld: Kras op frontzijde, kleurverschil, beschadiging..."
+            maxlength="80">
+
+        <small>
+            Korte omschrijving van het probleem
+        </small>
+
+    </div>
+
+
+
+    <div class="uploadVeld">
+
+        <label for="fotoBeschrijving">
+            Opmerking
+        </label>
+
+        <textarea 
+            id="fotoBeschrijving"
+            rows="5"
+            placeholder="Geef meer details: locatie, oorzaak, ernst van de beschadiging..."></textarea>
+
+        <small>
+            Extra informatie voor collega's
+        </small>
+
+    </div>
+
 
 </div>
     <button id="opslaanFoto">
