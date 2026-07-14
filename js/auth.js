@@ -360,7 +360,22 @@ async function laadGebruikersRol(){
 
 
 }
+const userButton =
+document.getElementById("userButton");
 
+const dropdown =
+document.getElementById("userDropdown");
+
+
+userButton?.addEventListener(
+"click",
+()=>{
+
+dropdown.classList.toggle(
+"verborgen"
+);
+
+});
 
 
 
