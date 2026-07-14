@@ -1807,3 +1807,63 @@ body{
     cursor:pointer;
 
 }
+/* ==========================================
+   FOTO LIGHTBOX
+========================================== */
+
+
+#fotoLightbox{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.85);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+}
+
+
+
+#fotoLightbox.actief{
+
+    display:flex;
+
+}
+
+
+
+.lightboxBinnen img{
+
+    max-width:90vw;
+
+    max-height:90vh;
+
+    border-radius:15px;
+
+}
+
+
+
+.caseFotos img{
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+
+.caseFotos img:hover{
+
+    transform:scale(1.04);
+
+}
