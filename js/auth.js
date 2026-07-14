@@ -190,21 +190,55 @@ async function updateLoginStatus(){
 
 
 
-        loginBox.innerHTML = `
+loginBox.innerHTML = `
 
 
-        <div class="gebruikersMenu">
+<div class="gebruikersMenu">
 
 
-            <div class="gebruikerNaam">
-
-                👤 ${naam}
-
-            </div>
+    <button 
+    id="userButton"
+    class="gebruikerNaam">
 
 
+        👤 ${naam}
 
-            ${beheerKnop}
+        <span class="gebruikersRol">
+
+            · ${gebruiker?.rol || "gebruiker"}
+
+        </span>
+
+        ▼
+
+
+    </button>
+
+
+    <div 
+    id="userDropdown"
+    class="dropdown verborgen">
+
+
+        ${beheerKnop}
+
+
+        <button
+        id="logoutButton"
+        class="logoutKlein">
+
+        🚪 Afmelden
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+`;
 
 
 
@@ -232,7 +266,19 @@ async function updateLoginStatus(){
             "click",
             logout
         );
+document
+.getElementById("userButton")
+?.addEventListener(
+"click",
+()=>{
 
+document
+.getElementById("userDropdown")
+.classList.toggle(
+"verborgen"
+);
+
+});
 
 
     }
@@ -360,8 +406,6 @@ async function laadGebruikersRol(){
 
 
 }
-const userButton =
-document.getElementById("userButton");
 
 const dropdown =
 document.getElementById("userDropdown");
