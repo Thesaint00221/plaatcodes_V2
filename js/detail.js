@@ -1,12 +1,12 @@
 // ============================================
 // detail.js
-// CASE weergave met detail + overzichtsfoto
+// Detailpagina
 // ============================================
 
 window.geselecteerdePlaat = null;
 
 // ============================================
-// Naam gebruiker ophalen
+// Gebruikerscache
 // ============================================
 
 const gebruikersCache = {};
@@ -23,13 +23,15 @@ async function haalGebruikersNaam(email){
 
     const {data} =
         await supabaseClient
-        .from("gebruikers")
-        .select("naam")
-        .eq("email",email)
-        .single();
+            .from("gebruikers")
+            .select("naam")
+            .eq("email",email)
+            .single();
 
     const naam =
-        (data && data.naam) || email;
+        (data && data.naam)
+            ? data.naam
+            : email;
 
     gebruikersCache[email] = naam;
 
@@ -69,6 +71,11 @@ function toonDetail(plaat){
 
     detail.classList.remove("hidden");
 
+    const basisFoto =
+        plaat.photos && plaat.photos.length
+            ? `photos/${plaat.photos[0]}`
+            : "";
+
     detailContent.innerHTML = `
 
 <div class="detailPagina">
@@ -78,15 +85,16 @@ function toonDetail(plaat){
         <div class="detailFotoGroot">
 
             ${
-                plaat.photos && plaat.photos.length
+                basisFoto
                 ?
                 `
                 <img
                     id="groteFoto"
-                    src="photos/${plaat.photos[0]}"
+                    src="${basisFoto}"
                     alt="${plaat.naam}"
-                    loading="lazy">
-                    onclick="openFotoLightbox('${detailUrl}')">
+                    loading="lazy"
+                    onclick="openFotoLightbox('${basisFoto}')"
+                >
                 `
                 :
                 `
@@ -125,7 +133,7 @@ function toonDetail(plaat){
                 </tr>
 
                 ${
-                    plaat.info && plaat.info.Referentie
+                    plaat.info?.Referentie
                     ?
                     `
                     <tr>
@@ -138,12 +146,25 @@ function toonDetail(plaat){
                 }
 
                 ${
-                    plaat.info && plaat.info.Kleur
+                    plaat.info?.Kleur
                     ?
                     `
                     <tr>
                         <td>Kleur</td>
                         <td>${plaat.info.Kleur}</td>
+                    </tr>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    plaat.info?.Kleurnummer
+                    ?
+                    `
+                    <tr>
+                        <td>Kleurnummer</td>
+                        <td>${plaat.info.Kleurnummer}</td>
                     </tr>
                     `
                     :
@@ -156,13 +177,16 @@ function toonDetail(plaat){
 
     </div>
 
-    <div id="galerij"></div>
+    <div id="galerij">
+
+        <h3>Cases & foto's</h3>
+
+    </div>
 
 </div>
 
 `;
 
-    // Cases laden
     toonFotos(plaat);
 
     window.scrollTo({
@@ -172,7 +196,7 @@ function toonDetail(plaat){
 
 }
 // ============================================
-// Foto's en cases laden
+// Cases en foto's laden
 // ============================================
 
 async function toonFotos(plaat){
@@ -189,17 +213,17 @@ async function toonFotos(plaat){
 
     const {data,error} =
         await supabaseClient
-        .from("eigen_data")
-        .select("*")
-        .eq("code",plaat.code)
-        .order("datum",{ascending:false});
+            .from("eigen_data")
+            .select("*")
+            .eq("code",plaat.code)
+            .order("datum",{ascending:false});
 
     if(error){
 
         console.error(error);
 
         galerij.innerHTML += `
-            <p>Fout bij laden.</p>
+            <p>Fout bij laden van de cases.</p>
         `;
 
         return;
@@ -209,7 +233,7 @@ async function toonFotos(plaat){
     if(!data || data.length===0){
 
         galerij.innerHTML += `
-            <p>Nog geen meldingen.</p>
+            <p>Nog geen cases toegevoegd.</p>
         `;
 
         return;
@@ -235,12 +259,11 @@ async function toonFotos(plaat){
 
                 const {data:urlData} =
                     supabaseClient
-                    .storage
-                    .from("plaatfotos")
-                    .getPublicUrl(item.foto);
+                        .storage
+                        .from("plaatfotos")
+                        .getPublicUrl(item.foto);
 
-                detailUrl =
-                    urlData.publicUrl;
+                detailUrl = urlData.publicUrl;
 
             }
 
@@ -252,31 +275,27 @@ async function toonFotos(plaat){
 
             if(item.overzicht_foto.startsWith("http")){
 
-                overzichtUrl =
-                    item.overzicht_foto;
+                overzichtUrl = item.overzicht_foto;
 
             }else{
 
                 const {data:urlData} =
                     supabaseClient
-                    .storage
-                    .from("plaatfotos")
-                    .getPublicUrl(item.overzicht_foto);
+                        .storage
+                        .from("plaatfotos")
+                        .getPublicUrl(item.overzicht_foto);
 
-                overzichtUrl =
-                    urlData.publicUrl;
+                overzichtUrl = urlData.publicUrl;
 
             }
 
         }
 
+        const naam =
+            await haalGebruikersNaam(item.toegevoegd_door);
+
         const verwijderen =
             magVerwijderen(item,gebruiker);
-
-        const naam =
-            await haalGebruikersNaam(
-                item.toegevoegd_door
-            );
 
         html += `
 
@@ -291,8 +310,9 @@ async function toonFotos(plaat){
             <img
                 src="${detailUrl}"
                 class="detailFoto"
-                loading="lazy">
-                onclick="openFotoLightbox('${detailUrl}')">
+                loading="lazy"
+                onclick="openFotoLightbox('${detailUrl}')"
+            >
             `
             :
             ""
@@ -305,8 +325,9 @@ async function toonFotos(plaat){
             <img
                 src="${overzichtUrl}"
                 class="detailFoto"
-                loading="lazy">
-                onclick="openFotoLightbox('${detailUrl}')">
+                loading="lazy"
+                onclick="openFotoLightbox('${overzichtUrl}')"
+            >
             `
             :
             ""
@@ -330,11 +351,8 @@ async function toonFotos(plaat){
 
         📅 ${
             item.datum
-            ?
-            new Date(item.datum)
-                .toLocaleDateString("nl-BE")
-            :
-            ""
+            ? new Date(item.datum).toLocaleDateString("nl-BE")
+            : ""
         }
 
     </small>
@@ -343,7 +361,7 @@ async function toonFotos(plaat){
         verwijderen
         ?
         `
-        <br>
+        <br><br>
 
         <button
             class="verwijderFoto"
@@ -363,8 +381,7 @@ async function toonFotos(plaat){
 
     }
 
-galerij.innerHTML += html;
-
+    galerij.innerHTML += html;
 
 }
 // ============================================
@@ -401,11 +418,9 @@ function haalOpslagPad(pad){
         const positie = pad.indexOf(marker);
 
         if(positie !== -1){
-
             return pad.substring(
                 positie + marker.length
             );
-
         }
 
     }
@@ -428,10 +443,10 @@ async function verwijderCase(id){
 
     const {data:item,error:zoekError} =
         await supabaseClient
-        .from("eigen_data")
-        .select("foto,overzicht_foto")
-        .eq("id",id)
-        .single();
+            .from("eigen_data")
+            .select("foto,overzicht_foto")
+            .eq("id",id)
+            .single();
 
     if(zoekError){
 
@@ -447,7 +462,8 @@ async function verwijderCase(id){
 
     if(item.foto){
 
-        const pad = haalOpslagPad(item.foto);
+        const pad =
+            haalOpslagPad(item.foto);
 
         if(pad){
             bestanden.push(pad);
@@ -468,13 +484,11 @@ async function verwijderCase(id){
 
     if(bestanden.length){
 
-        const {
-            error:storageError
-        } =
-        await supabaseClient
-        .storage
-        .from("plaatfotos")
-        .remove(bestanden);
+        const {error:storageError} =
+            await supabaseClient
+                .storage
+                .from("plaatfotos")
+                .remove(bestanden);
 
         if(storageError){
 
@@ -490,13 +504,11 @@ async function verwijderCase(id){
 
     }
 
-    const {
-        error
-    } =
-    await supabaseClient
-    .from("eigen_data")
-    .delete()
-    .eq("id",id);
+    const {error} =
+        await supabaseClient
+            .from("eigen_data")
+            .delete()
+            .eq("id",id);
 
     if(error){
 
@@ -519,29 +531,29 @@ async function verwijderCase(id){
     );
 
 }
-// ============================================
-// LIGHTBOX VOOR CASE FOTO'S
-// ============================================
 
+// ============================================
+// Lightbox
+// ============================================
 
 function openFotoLightbox(url){
+
+    if(!url){
+        return;
+    }
 
     let lightbox =
         document.getElementById(
             "fotoLightbox"
         );
 
-
     if(!lightbox){
 
         lightbox =
-        document.createElement(
-            "div"
-        );
+            document.createElement("div");
 
         lightbox.id =
             "fotoLightbox";
-
 
         document.body.appendChild(
             lightbox
@@ -549,22 +561,20 @@ function openFotoLightbox(url){
 
     }
 
-
     lightbox.innerHTML = `
 
         <div class="lightboxBinnen">
 
-            <img src="${url}">
+            <img
+                src="${url}"
+                alt="Foto"
+            >
 
         </div>
 
     `;
 
-
-    lightbox.classList.add(
-        "actief"
-    );
-
+    lightbox.classList.add("actief");
 
     lightbox.onclick = function(){
 
@@ -576,4 +586,30 @@ function openFotoLightbox(url){
 
 }
 
+// ============================================
+// Terugknop
+// ============================================
 
+if(terug){
+
+    terug.addEventListener("click",function(){
+
+        detail.classList.add("hidden");
+
+        document.getElementById("resultaten").style.display = "";
+
+        const zoekContainer =
+            document.querySelector(".zoekContainer");
+
+        if(zoekContainer){
+            zoekContainer.style.display = "";
+        }
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    });
+
+}
