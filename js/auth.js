@@ -208,7 +208,6 @@ async function updateLoginStatus(){
 
         }
 
-        toonNieuwePlaatKnop(rol === "beheerder");
         toonBeheerKnoppen(rol === "beheerder");
 
 
@@ -320,7 +319,6 @@ async function updateLoginStatus(){
     }
     else{
 
-        toonNieuwePlaatKnop(false);
         toonBeheerKnoppen(false);
 
 
