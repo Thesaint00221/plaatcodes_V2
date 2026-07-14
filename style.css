@@ -128,6 +128,8 @@ LOGO
 
     font-weight:700;
 
+    color:var(--primary);
+
 }
 
 .logoTekst span{
@@ -1501,4 +1503,28 @@ body.lightboxOpen { overflow: hidden; }
     .beheerTopbar .loginArea { width: 100%; }
     .beheerKaarten { grid-template-columns: 1fr; }
     .beheer-container { width: min(100% - 28px, 1080px); padding-top: 34px; }
+}
+
+/* Modal voor nieuwe platen */
+.plaatModal { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 24px; background: rgba(15, 23, 42, .64); }
+.plaatForm { width: min(100%, 720px); max-height: 90vh; overflow-y: auto; padding: 28px; border-radius: 20px; background: white; box-shadow: 0 24px 80px rgba(15, 23, 42, .32); }
+.plaatFormKop { display: flex; justify-content: space-between; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.plaatFormKop h2 { margin: 5px 0 7px; font-size: 28px; }
+.plaatFormKop p:not(.beheerEyebrow) { color: var(--text-light); }
+.modalSluiten { display: grid; width: 38px; height: 38px; place-items: center; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--text); font-size: 28px; line-height: 1; cursor: pointer; }
+.plaatFormGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 24px 0; }
+.plaatFormGrid label { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 14px; font-weight: 700; }
+.plaatFormGrid input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fbfdff; color: var(--text); font: inherit; }
+.plaatFormGrid input:focus { outline: 2px solid rgba(37, 99, 235, .25); border-color: var(--primary); }
+.plaatFotoVeld { grid-column: 1 / -1; }
+.plaatFormMelding { min-height: 22px; color: var(--text-light); font-size: 14px; }
+.plaatFormActies { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
+.secundaireKnop { padding: 12px 16px; border: 1px solid var(--border); border-radius: 11px; background: white; color: var(--text); font: inherit; font-weight: 700; cursor: pointer; }
+
+@media (max-width: 600px) {
+    .plaatModal { padding: 12px; }
+    .plaatForm { padding: 20px; }
+    .plaatFormGrid { grid-template-columns: 1fr; }
+    .plaatFormActies { flex-direction: column-reverse; }
+    .plaatFormActies button { width: 100%; }
 }
