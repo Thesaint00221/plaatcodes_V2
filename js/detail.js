@@ -386,17 +386,16 @@ const verwijderen =
             }
 
             ${
-{
-overzichtUrl
-?
-`
-<img
-    src="${overzichtUrl}"
-    class="detailFoto"
-    onclick="document.getElementById('groteFoto').src=this.src">
-`
-:
-""
+    overzichtUrl
+    ?
+    `
+    <img
+        src="${overzichtUrl}"
+        class="detailFoto"
+        onclick="document.getElementById('groteFoto').src=this.src">
+    `
+    :
+    ""
 }
 
         </div>
