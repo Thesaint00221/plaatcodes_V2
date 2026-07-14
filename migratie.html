@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Migratie platen | Plaatcodes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="beheerPagina">
+    <main class="beheer-container">
+        <div class="beheerIntro">
+            <p class="beheerEyebrow">Eenmalige migratie</p>
+            <h1>Platen naar Supabase</h1>
+            <p>Deze stap kopieert de huidige gegevens uit <code>data.json</code> naar de tabel <code>platen</code>.</p>
+        </div>
+
+        <section class="beheerActies">
+            <h2>Voor je begint</h2>
+            <p>Voer eerst <code>supabase/migratie_platen.sql</code> uit in de SQL Editor van Supabase. Meld je vervolgens aan als beheerder.</p>
+            <div id="loginBox" class="loginArea migratieLogin"></div>
+            <button id="startMigratie" class="beheerPrimaireKnop" type="button">Start migratie</button>
+            <div id="migratieStatus" aria-live="polite">Klaar om te migreren.</div>
+        </section>
+
+        <a class="beheerTerug" href="index.html">← Terug naar catalogus</a>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/migratie.js"></script>
+</body>
+</html>
