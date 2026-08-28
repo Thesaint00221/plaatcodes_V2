@@ -495,13 +495,13 @@
   },
   {
     "naam": "Wit",
-    "code": "W980",
+    "code": "W980 ST2",
     "leverancier": "Egger",
     "photos": [
       "W980.jpg"
     ],
     "info": {
-      "Referentie": "W980",
+      "Referentie": "W980 ST2",
       "Kleur": "Wit",
       "Kleurnummer": 100
     }
