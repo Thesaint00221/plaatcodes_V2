@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beheer Plaatcatalogus</title>
+
+<link rel="stylesheet" href="style.min.css">
+
+</head>
+
+
+<body class="beheerPagina">
+
+<header class="beheerTopbar">
+    <a class="beheerMerk" href="index.html">
+        <span>🪵</span>
+        <span>Plaatcodes</span>
+    </a>
+    <div id="loginBox" class="loginArea"></div>
+</header>
+
+<main class="beheer-container">
+
+
+<div class="beheerIntro">
+    <p class="beheerEyebrow">Beheeromgeving</p>
+    <h1>🛠 Beheer Plaatcatalogus</h1>
+    <p>Overzicht van je catalogus, cases en opgeslagen foto's.</p>
+</div>
+
+
+<div id="beheerStatus">
+
+Controleren...
+
+</div>
+
+
+
+<div class="beheerKaarten">
+
+
+<div class="beheerKaart">
+
+<h3>
+📋 Platen
+</h3>
+
+<p id="aantalPlaten">
+-
+</p>
+
+</div>
+
+
+
+<div class="beheerKaart">
+
+<h3>
+⚠️ Cases
+</h3>
+
+<p id="aantalCases">
+-
+</p>
+
+</div>
+
+
+
+<div class="beheerKaart">
+
+<h3>
+📸 Foto's
+</h3>
+
+<p id="aantalFotos">
+-
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<div class="beheerActies">
+
+
+<h2>
+🗂 Opslagbeheer
+</h2>
+
+
+<button
+id="controleerOpslag"
+class="beheerPrimaireKnop">
+
+🔍 Controleer opslag
+
+</button>
+
+
+<div id="opslagControle">
+
+Nog geen controle uitgevoerd.
+
+</div>
+
+
+</div>
+
+
+<a class="beheerTerug" href="index.html">← Terug naar catalogus</a>
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script src="js/opslag.js"></script>
+
+<script src="js/beheer.js"></script>
+
+
+</body>
+
+</html>
