@@ -1,64 +1,7 @@
 // ============================================
 // OPSCHONEN STORAGE
 // ============================================
-
-async function haalAlleBestanden(map = "") {
-
-    const { data, error } =
-        await supabaseClient
-            .storage
-            .from("plaatfotos")
-            .list(
-                map,
-                {
-                    limit:1000
-                }
-            );
-
-
-    if(error){
-
-        console.error(error);
-        return [];
-
-    }
-
-
-    let bestanden = [];
-
-
-    for(const item of data){
-
-
-        const pad =
-            map
-            ? `${map}/${item.name}`
-            : item.name;
-
-
-
-        if(!item.metadata){
-
-            const sub =
-                await haalAlleBestanden(pad);
-
-            bestanden.push(
-                ...sub
-            );
-
-        }
-        else {
-
-            bestanden.push(pad);
-
-        }
-
-    }
-
-
-    return bestanden;
-
-}
+// haalAlleBestanden() staat nu in js/opslag.js (gedeeld met beheer.js)
 
 
 
