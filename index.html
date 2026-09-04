@@ -8,6 +8,11 @@
 
     <title>Plaatcatalogus</title>
 
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/favicon.ico">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#2563eb">
+
     <link rel="stylesheet" href="style.min.css">
 
 </head>
@@ -40,6 +45,10 @@ HEADER
             id="search"
             type="text"
             placeholder="Zoek op naam, plaatcode of leverancier">
+
+        <select id="leverancierFilter" aria-label="Filter op leverancier">
+            <option value="">Alle leveranciers</option>
+        </select>
 
     </div>
 
@@ -82,6 +91,8 @@ CATALOGUS
 <main>
 
     <div id="resultaten" class="cards"></div>
+
+    <div id="laadMeer" class="laadMeer hidden">Meer platen laden...</div>
 
 </main>
 
@@ -241,12 +252,14 @@ SCRIPTS
 <script src="js/auth.js"></script>
 <script src="js/catalogus.js"></script>
 <script src="js/detail.js"></script>
+<script src="js/foto.js"></script>
 <script src="js/upload.js"></script>
 <script src="js/opslag.js"></script>
 <script src="js/opschonen.js"></script>
 <script src="js/platen-beheer.js"></script>
 <script src="js/archief.js"></script>
 <script src="js/app.js"></script>
+<script src="js/pwa.js"></script>
 
 </body>
 </html>

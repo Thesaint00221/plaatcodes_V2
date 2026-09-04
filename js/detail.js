@@ -11,32 +11,42 @@ window.geselecteerdePlaat = null;
 
 const gebruikersCache = {};
 
-async function haalGebruikersNaam(email){
+// Eén gebundelde query voor alle onbekende e-mailadressen tegelijk,
+// i.p.v. een aparte query per case (voorheen haalGebruikersNaam per item).
+async function laadGebruikersNamen(emails){
 
-    if(!email){
-        return "";
+    const onbekend = [...new Set(emails)]
+        .filter(email => email && !gebruikersCache[email]);
+
+    if(onbekend.length === 0){
+        return;
     }
 
-    if(gebruikersCache[email]){
-        return gebruikersCache[email];
-    }
-
-    const {data} =
+    const {data, error} =
         await supabaseClient
             .from("gebruikers")
-            .select("naam")
-            .eq("email",email)
-            .single();
+            .select("email,naam")
+            .in("email", onbekend);
 
-    const naam =
-        (data && data.naam)
-            ? data.naam
-            : email;
+    if(error){
+        console.error(error);
+    }
 
-    gebruikersCache[email] = naam;
+    (data || []).forEach(rij => {
+        gebruikersCache[rij.email] = rij.naam || rij.email;
+    });
 
-    return naam;
+    // E-mails zonder gebruikersrecord tonen we gewoon als e-mailadres
+    onbekend.forEach(email => {
+        if(!gebruikersCache[email]){
+            gebruikersCache[email] = email;
+        }
+    });
 
+}
+
+function gebruikersNaam(email){
+    return gebruikersCache[email] || email || "";
 }
 
 // ============================================
@@ -113,7 +123,7 @@ ${
 
         <button
             class="archiveerKnop"
-            onclick="archiveerPlaat('${plaat.code}')">
+            onclick="archiveerPlaat('${plaat.code}', this)">
 
             📦 Archiveren
 
@@ -258,6 +268,9 @@ async function toonFotos(plaat){
 
     }
 
+    // Eén query voor alle betrokken gebruikersnamen, i.p.v. één per case
+    await laadGebruikersNamen(data.map(item => item.toegevoegd_door));
+
     let html = "";
 
     for(const item of data){
@@ -310,7 +323,7 @@ async function toonFotos(plaat){
         }
 
         const naam =
-            await haalGebruikersNaam(item.toegevoegd_door);
+            gebruikersNaam(item.toegevoegd_door);
 
         const verwijderen =
             magVerwijderen(item,gebruiker);
@@ -383,7 +396,7 @@ async function toonFotos(plaat){
 
         <button
             class="verwijderFoto"
-            onclick="verwijderCase('${item.id}')">
+            onclick="verwijderCase('${item.id}', this)">
 
             🗑 Verwijderen
 
@@ -451,12 +464,26 @@ function haalOpslagPad(pad){
 // Case verwijderen
 // ============================================
 
-async function verwijderCase(id){
+async function verwijderCase(id, knop){
 
     if(!confirm(
         "Deze case en alle foto's verwijderen?"
     )){
         return;
+    }
+
+    const oorspronkelijkeTekst = knop ? knop.innerHTML : "";
+
+    const herstelKnop = () => {
+        if(knop){
+            knop.disabled = false;
+            knop.innerHTML = oorspronkelijkeTekst;
+        }
+    };
+
+    if(knop){
+        knop.disabled = true;
+        knop.innerHTML = "⏳ Bezig...";
     }
 
     const {data:item,error:zoekError} =
@@ -471,6 +498,8 @@ async function verwijderCase(id){
         console.error(zoekError);
 
         alert("Case ophalen mislukt.");
+
+        herstelKnop();
 
         return;
 
@@ -516,6 +545,8 @@ async function verwijderCase(id){
                 "Foto's verwijderen mislukt."
             );
 
+            herstelKnop();
+
             return;
 
         }
@@ -536,6 +567,8 @@ async function verwijderCase(id){
             "Case verwijderen mislukt."
         );
 
+        herstelKnop();
+
         return;
 
     }
@@ -553,7 +586,7 @@ async function verwijderCase(id){
 // Plaat archiveren
 // ============================================
 
-async function archiveerPlaat(code){
+async function archiveerPlaat(code, knop){
 
     if(!confirm(
         "Deze plaat archiveren?"
@@ -561,6 +594,12 @@ async function archiveerPlaat(code){
         return;
     }
 
+    const oorspronkelijkeTekst = knop ? knop.innerHTML : "";
+
+    if(knop){
+        knop.disabled = true;
+        knop.innerHTML = "⏳ Bezig...";
+    }
 
     const {error} =
         await supabaseClient
@@ -578,6 +617,11 @@ async function archiveerPlaat(code){
         alert(
             "Archiveren mislukt."
         );
+
+        if(knop){
+            knop.disabled = false;
+            knop.innerHTML = oorspronkelijkeTekst;
+        }
 
         return;
 

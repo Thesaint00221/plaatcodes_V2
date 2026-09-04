@@ -152,11 +152,16 @@ ZOEKBALK
 
     justify-content:center;
 
+    gap:10px;
+
+    flex-wrap:wrap;
+
 }
 
 #search{
 
-    width:100%;
+    flex:1;
+    min-width:220px;
     max-width:700px;
 
     padding:15px 22px;
@@ -174,6 +179,38 @@ ZOEKBALK
 }
 
 #search:focus{
+
+    outline:none;
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+#leverancierFilter{
+
+    padding:0 20px;
+
+    border-radius:50px;
+
+    border:2px solid var(--border);
+
+    font-size:15px;
+
+    font-family:inherit;
+
+    color:inherit;
+
+    background:white;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+}
+
+#leverancierFilter:focus{
 
     outline:none;
 
@@ -525,6 +562,39 @@ LOADER
     color:#64748b;
 
     font-size:20px;
+
+}
+
+
+/* ==========================================================
+MEER LADEN (infinite scroll sentinel)
+========================================================== */
+
+.laadMeer{
+
+    text-align:center;
+
+    padding:30px;
+
+    color:#64748b;
+
+    font-size:15px;
+
+    opacity:0;
+
+    transition:opacity .2s ease;
+
+}
+
+.laadMeer.laadMeerActief{
+
+    opacity:1;
+
+}
+
+.laadMeer.hidden{
+
+    display:none;
 
 }
 

@@ -23,6 +23,8 @@ async function laadArchief(){
 
     archiefPagina.classList.remove("hidden");
 
+    archiefResultaten.innerHTML = '<p class="loader">Archief laden...</p>';
+
     const {data,error} =
         await supabaseClient
             .from("platen")
@@ -33,6 +35,18 @@ async function laadArchief(){
     if(error){
 
         console.error(error);
+
+        archiefResultaten.innerHTML =
+            '<p class="geenResultaat">Archief kon niet geladen worden.</p>';
+
+        return;
+
+    }
+
+    if(data.length === 0){
+
+        archiefResultaten.innerHTML =
+            '<p class="geenResultaat">Geen gearchiveerde platen.</p>';
 
         return;
 
@@ -61,7 +75,7 @@ async function laadArchief(){
         </div>
 
         <button
-            onclick="terugActief('${plaat.code}')">
+            onclick="terugActief('${plaat.code}', this)">
 
             ♻️ Terugzetten
 
@@ -76,7 +90,14 @@ async function laadArchief(){
     });
 
 }
-async function terugActief(code){
+async function terugActief(code, knop){
+
+    const oorspronkelijkeTekst = knop ? knop.innerHTML : "";
+
+    if(knop){
+        knop.disabled = true;
+        knop.innerHTML = "⏳ Bezig...";
+    }
 
     const {error} =
         await supabaseClient
@@ -89,6 +110,11 @@ async function terugActief(code){
     if(error){
 
         alert("Terugzetten mislukt");
+
+        if(knop){
+            knop.disabled = false;
+            knop.innerHTML = oorspronkelijkeTekst;
+        }
 
         return;
 

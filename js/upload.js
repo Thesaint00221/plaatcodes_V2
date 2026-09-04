@@ -95,167 +95,7 @@ overzichtBestand?.addEventListener(
 // ============================================
 // Foto verkleinen
 // ============================================
-
-
-function verkleinFoto(bestand){
-
-
-return new Promise((resolve)=>{
-
-
-const img =
-    new Image();
-
-
-const reader =
-    new FileReader();
-
-
-
-reader.onload = (e)=>{
-
-
-img.onload = ()=>{
-
-
-let breedte =
-    img.width;
-
-
-let hoogte =
-    img.height;
-
-
-const maximum =
-    2000;
-
-
-
-if(
-    breedte > maximum ||
-    hoogte > maximum
-){
-
-
-if(breedte > hoogte){
-
-
-hoogte =
-    hoogte *
-    (maximum / breedte);
-
-
-breedte =
-    maximum;
-
-
-}
-else{
-
-
-breedte =
-    breedte *
-    (maximum / hoogte);
-
-
-hoogte =
-    maximum;
-
-
-}
-
-
-}
-
-
-
-const canvas =
-    document.createElement(
-        "canvas"
-    );
-
-
-canvas.width =
-    breedte;
-
-
-canvas.height =
-    hoogte;
-
-
-
-const ctx =
-    canvas.getContext(
-        "2d"
-    );
-
-
-ctx.drawImage(
-    img,
-    0,
-    0,
-    breedte,
-    hoogte
-);
-
-
-
-canvas.toBlob(
-(blob)=>{
-
-
-const naam =
-    bestand.name
-    .replace(
-        /\.[^/.]+$/,
-        ""
-    )
-    + ".jpg";
-
-
-
-resolve(
-
-new File(
-    [blob],
-    naam,
-    {
-        type:"image/jpeg"
-    }
-)
-
-);
-
-
-
-},
-"image/jpeg",
-0.8
-);
-
-
-
-};
-
-
-
-img.src =
-    e.target.result;
-
-
-};
-
-
-
-reader.readAsDataURL(bestand);
-
-
-});
-
-
-}
-
-
+// verkleinFoto() staat nu in js/foto.js (gedeeld met platen-beheer.js)
 
 
 
@@ -418,6 +258,10 @@ alert(
 
 console.error(error);
 
+knop.disabled=false;
+
+knop.innerHTML="✔ Opslaan";
+
 return;
 
 }
@@ -467,6 +311,10 @@ alert(
 );
 
 console.error(error);
+
+knop.disabled=false;
+
+knop.innerHTML="✔ Opslaan";
 
 return;
 

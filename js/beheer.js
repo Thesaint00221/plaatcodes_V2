@@ -89,42 +89,27 @@ async function laadStatistieken() {
         aantalFotos.innerHTML = fotos.length;
     }
 
-    // aantal platen uit data.json
+    // aantal platen (rechtstreeks uit Supabase, niet uit het
+    // verouderde data.json dat enkel nog als migratiebron dient)
 
-    try {
+    const aantalPlaten =
+        document.getElementById("aantalPlaten");
 
-        const antwoord =
-            await fetch("data.json");
+    const { count: platenCount, error: platenError } =
+        await supabaseClient
+            .from("platen")
+            .select("code", {
+                count: "exact",
+                head: true
+            });
 
-        if (!antwoord.ok) {
-            throw new Error("data.json niet gevonden");
-        }
-
-        const platen =
-            await antwoord.json();
-
-        const aantalPlaten =
-            document.getElementById("aantalPlaten");
-
-        if (aantalPlaten) {
-            aantalPlaten.innerHTML = platen.length;
-        }
-
+    if (aantalPlaten) {
+        aantalPlaten.innerHTML =
+            platenError ? "Fout" : (platenCount || 0);
     }
-        catch (error) {
 
-        console.error(
-            "Platen laden mislukt:",
-            error
-        );
-
-        const aantalPlaten =
-            document.getElementById("aantalPlaten");
-
-        if (aantalPlaten) {
-            aantalPlaten.innerHTML = "Fout";
-        }
-
+    if (platenError) {
+        console.error("Platen tellen mislukt:", platenError);
     }
 
 }
@@ -161,6 +146,8 @@ if (controleKnop) {
                 return;
             }
 
+            controleKnop.disabled = true;
+
             veld.innerHTML =
                 "⏳ Bezig met controleren...";
 
@@ -185,6 +172,8 @@ if (controleKnop) {
 
                 veld.innerHTML =
                     "❌ Fout bij ophalen cases";
+
+                controleKnop.disabled = false;
 
                 return;
 
@@ -251,6 +240,8 @@ if (controleKnop) {
                 console.table(ongebruikt);
 
             }
+
+            controleKnop.disabled = false;
 
         }
     );

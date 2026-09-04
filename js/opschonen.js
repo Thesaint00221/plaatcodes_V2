@@ -11,7 +11,14 @@ document
 .getElementById("opschonenButton")
 ?.addEventListener(
 "click",
-async()=>{
+async(event)=>{
+
+
+const scanKnop = event.currentTarget;
+const scanKnopTekst = scanKnop.innerHTML;
+
+scanKnop.disabled = true;
+scanKnop.innerHTML = "⏳ Bezig met scannen...";
 
 
 console.log(
@@ -37,6 +44,9 @@ await supabaseClient
 if(error){
 
 console.error(error);
+
+scanKnop.disabled = false;
+scanKnop.innerHTML = scanKnopTekst;
 
 return;
 
@@ -124,9 +134,13 @@ document.getElementById(
 );
 
 
+// Vorig scanresultaat verwijderen zodat ze niet blijven opstapelen
+document.getElementById("opschoonResultaat")?.remove();
+
+
 beheer.innerHTML += `
 
-<div class="opschoonKaart">
+<div id="opschoonResultaat" class="opschoonKaart">
 
 <h3>
 🧹 Ongebruikte foto's
@@ -155,6 +169,10 @@ ${lijst}
 `;
 
 
+scanKnop.disabled = false;
+scanKnop.innerHTML = scanKnopTekst;
+
+
 
 
 document
@@ -162,7 +180,7 @@ document
 "verwijderOngebruikte"
 )
 .onclick =
-async()=>{
+async(event)=>{
 
 
 const geselecteerd =
@@ -189,6 +207,11 @@ return;
 }
 
 
+const verwijderKnop = event.currentTarget;
+
+verwijderKnop.disabled = true;
+verwijderKnop.innerHTML = "⏳ Bezig met verwijderen...";
+
 
 const {data,error} =
 await supabaseClient
@@ -212,9 +235,26 @@ error
 );
 
 
+if(error){
+
+alert(
+"Verwijderen mislukt: " + error.message
+);
+
+verwijderKnop.disabled = false;
+verwijderKnop.innerHTML = "🗑 Verwijder geselecteerde";
+
+return;
+
+}
+
+
 alert(
 "Opschonen klaar"
 );
+
+
+document.getElementById("opschoonResultaat")?.remove();
 
 
 };

@@ -34,6 +34,25 @@ plaatModal?.addEventListener("click", event => {
     }
 });
 
+// Toegelaten tekens in een plaatcode: letters, cijfers, spaties, punt, streepje, underscore, schuine streep
+const PLAATCODE_PATROON = /^[A-Za-z0-9 ._/-]{1,50}$/;
+
+async function codeAlBezet(code){
+    const {count, error} = await supabaseClient
+        .from("platen")
+        .select("code", {count: "exact", head: true})
+        .eq("code", code);
+
+    if(error){
+        console.error(error);
+        // Bij een onzekere check laten we de submit doorgaan; de unieke
+        // constraint in de database vangt duplicaten sowieso alsnog op.
+        return false;
+    }
+
+    return (count || 0) > 0;
+}
+
 nieuwePlaatForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
@@ -43,22 +62,43 @@ nieuwePlaatForm?.addEventListener("submit", async event => {
     }
 
     const opslaanKnop = nieuwePlaatForm.querySelector('[type="submit"]');
+    const opslaanKnopTekst = opslaanKnop.innerHTML;
     const code = document.getElementById("plaatCode").value.trim();
     const foto = document.getElementById("plaatFoto").files[0];
     let photos = [];
 
+    // Vooraf valideren, vóór er iets geüpload wordt
+    if(!PLAATCODE_PATROON.test(code)){
+        plaatFormMelding.textContent =
+            "Ongeldige plaatcode. Gebruik enkel letters, cijfers, spaties, punten, streepjes of underscores (max. 50 tekens).";
+        return;
+    }
+
     opslaanKnop.disabled = true;
-    plaatFormMelding.textContent = "Plaat opslaan...";
+    opslaanKnop.innerHTML = "⏳ Bezig...";
+    plaatFormMelding.textContent = "Code controleren...";
 
     try {
+        if(await codeAlBezet(code)){
+            plaatFormMelding.textContent = "Deze plaatcode bestaat al.";
+            return;
+        }
+
+        plaatFormMelding.textContent = "Plaat opslaan...";
+
         if(foto){
-            const extensie = foto.name.split(".").pop().toLowerCase();
-            const bestandsnaam = `${code.replace(/[^a-z0-9-_]/gi, "-")}-${Date.now()}.${extensie}`;
+            plaatFormMelding.textContent = "Foto verkleinen...";
+
+            const verkleind = await verkleinFoto(foto);
+            const bestandsnaam = `${code.replace(/[^a-z0-9-_]/gi, "-")}-${Date.now()}.jpg`;
             const opslagpad = `platen/${bestandsnaam}`;
+
+            plaatFormMelding.textContent = "Foto uploaden...";
+
             const {error: uploadError} = await supabaseClient
                 .storage
                 .from("plaatfotos")
-                .upload(opslagpad, foto, {upsert: false});
+                .upload(opslagpad, verkleind, {upsert: false});
 
             if(uploadError){
                 throw uploadError;
@@ -71,6 +111,8 @@ nieuwePlaatForm?.addEventListener("submit", async event => {
 
             photos = [urlData.publicUrl];
         }
+
+        plaatFormMelding.textContent = "Plaat opslaan...";
 
         const kleurnummerWaarde = document.getElementById("plaatKleurnummer").value;
         const nieuwePlaat = {
@@ -101,5 +143,6 @@ nieuwePlaatForm?.addEventListener("submit", async event => {
             : "Opslaan mislukt. Controleer je Supabase-instellingen.";
     }finally{
         opslaanKnop.disabled = false;
+        opslaanKnop.innerHTML = opslaanKnopTekst;
     }
 });
