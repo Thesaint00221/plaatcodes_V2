@@ -5,7 +5,7 @@
 // bewust NIET onderschept: de catalogus moet altijd actuele data tonen.
 // ============================================
 
-const CACHE_NAAM = "plaatcodes-shell-v1";
+const CACHE_NAAM = "plaatcodes-shell-v2";
 
 const SHELL_BESTANDEN = [
     "./",
@@ -30,7 +30,8 @@ const SHELL_BESTANDEN = [
     "icons/icon-192.png",
     "icons/icon-512.png",
     "icons/apple-touch-icon.png",
-    "icons/favicon.ico"
+    "icons/favicon.ico",
+    "images/logo-detremmerie.png"
 ];
 
 self.addEventListener("install", event => {

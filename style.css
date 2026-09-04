@@ -102,23 +102,15 @@ LOGO
 
 }
 
-.logoIcon{
+.merkLogo{
 
-    width:56px;
-    height:56px;
+    height:42px;
 
-    border-radius:14px;
+    width:auto;
 
-    background:var(--primary);
+    border-radius:9px;
 
-    color:white;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    font-size:28px;
+    display:block;
 
 }
 
@@ -1620,7 +1612,7 @@ body.lightboxOpen { overflow: hidden; }
 }
 
 .beheerMerk { display: flex; align-items: center; gap: 10px; color: var(--text); font-size: 19px; font-weight: 800; text-decoration: none; }
-.beheerMerk > span:first-child { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 10px; background: var(--primary); }
+.beheerMerk .merkLogo { height: 32px; }
 
 .beheer-container { width: min(100% - 40px, 1080px); margin: 0 auto; padding: 54px 0 64px; }
 .beheerIntro { margin-bottom: 30px; }
