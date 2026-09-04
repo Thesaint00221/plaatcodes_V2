@@ -50,6 +50,31 @@ function gebruikersNaam(email){
 }
 
 // ============================================
+// Opslagpad -> publieke URL
+// ============================================
+
+function haalOpenbareUrl(pad){
+
+    if(!pad){
+        return "";
+    }
+
+    if(pad.startsWith("http")){
+        return pad;
+    }
+
+    const {data} =
+        supabaseClient.storage.from("plaatfotos").getPublicUrl(pad);
+
+    return data.publicUrl;
+
+}
+
+// Bewaart de ruwe case-data per id, zodat rapport.js (klachtenrapport)
+// er zonder extra query bij kan.
+window.laatstGeladenCases = {};
+
+// ============================================
 // Elementen
 // ============================================
 
@@ -275,52 +300,9 @@ async function toonFotos(plaat){
 
     for(const item of data){
 
-        let detailUrl = "";
-        let overzichtUrl = "";
+        window.laatstGeladenCases[item.id] = item;
 
-        // Detailfoto
-
-        if(item.foto){
-
-            if(item.foto.startsWith("http")){
-
-                detailUrl = item.foto;
-
-            }else{
-
-                const {data:urlData} =
-                    supabaseClient
-                        .storage
-                        .from("plaatfotos")
-                        .getPublicUrl(item.foto);
-
-                detailUrl = urlData.publicUrl;
-
-            }
-
-        }
-
-        // Overzichtsfoto
-
-        if(item.overzicht_foto){
-
-            if(item.overzicht_foto.startsWith("http")){
-
-                overzichtUrl = item.overzicht_foto;
-
-            }else{
-
-                const {data:urlData} =
-                    supabaseClient
-                        .storage
-                        .from("plaatfotos")
-                        .getPublicUrl(item.overzicht_foto);
-
-                overzichtUrl = urlData.publicUrl;
-
-            }
-
-        }
+        const isLeverancier = item.type === "leverancier";
 
         const naam =
             gebruikersNaam(item.toegevoegd_door);
@@ -332,47 +314,100 @@ async function toonFotos(plaat){
 
 <div class="caseKaart">
 
-    <div class="caseFotos">
+    <div class="caseFotos${isLeverancier ? " caseFotosGalerij" : ""}">
 
         ${
-            detailUrl
+            isLeverancier
             ?
-            `
-            <img
-                src="${detailUrl}"
-                class="detailFoto"
-                loading="lazy"
-                onclick="openFotoLightbox('${detailUrl}')"
-            >
-            `
+            (item.fotos || [])
+                .map(pad => haalOpenbareUrl(pad))
+                .filter(Boolean)
+                .map(url => `
+                    <img
+                        src="${url}"
+                        class="detailFoto"
+                        loading="lazy"
+                        onclick="openFotoLightbox('${url}')"
+                    >
+                `)
+                .join("")
             :
-            ""
-        }
-
-        ${
-            overzichtUrl
-            ?
             `
-            <img
-                src="${overzichtUrl}"
-                class="detailFoto"
-                loading="lazy"
-                onclick="openFotoLightbox('${overzichtUrl}')"
-            >
+            ${
+                item.foto
+                ?
+                `
+                <img
+                    src="${haalOpenbareUrl(item.foto)}"
+                    class="detailFoto"
+                    loading="lazy"
+                    onclick="openFotoLightbox('${haalOpenbareUrl(item.foto)}')"
+                >
+                `
+                :
+                ""
+            }
+            ${
+                item.overzicht_foto
+                ?
+                `
+                <img
+                    src="${haalOpenbareUrl(item.overzicht_foto)}"
+                    class="detailFoto"
+                    loading="lazy"
+                    onclick="openFotoLightbox('${haalOpenbareUrl(item.overzicht_foto)}')"
+                >
+                `
+                :
+                ""
+            }
             `
-            :
-            ""
         }
 
     </div>
 
-    <h3>
-        ${item.type || "Case"}
-    </h3>
+    <span class="caseTypeBadge ${isLeverancier ? "caseTypeBadge--leverancier" : "caseTypeBadge--productie"}">
+        ${isLeverancier ? "🚚 Fout van leverancier" : "🏭 Fout in productie"}
+    </span>
 
     <p class="omschrijving">
         ${(item.omschrijving || "").replace(/\n/g,"<br>")}
     </p>
+
+    ${
+        isLeverancier && item.leveranciersbon_url
+        ?
+        `
+        <a
+            class="bonKnop"
+            href="${haalOpenbareUrl(item.leveranciersbon_url)}"
+            target="_blank"
+            rel="noopener">
+
+            📄 Bon bekijken
+
+        </a>
+        `
+        :
+        ""
+    }
+
+    ${
+        isLeverancier
+        ?
+        `
+        <button
+            type="button"
+            class="rapportKnop"
+            onclick="genereerKlachtenRapport('${item.id}', this)">
+
+            📑 Klachtenrapport genereren
+
+        </button>
+        `
+        :
+        ""
+    }
 
     <small class="fotoInfo">
 
@@ -489,7 +524,7 @@ async function verwijderCase(id, knop){
     const {data:item,error:zoekError} =
         await supabaseClient
             .from("eigen_data")
-            .select("foto,overzicht_foto")
+            .select("foto,overzicht_foto,fotos,leveranciersbon_url")
             .eq("id",id)
             .single();
 
@@ -527,6 +562,20 @@ async function verwijderCase(id, knop){
             bestanden.push(pad);
         }
 
+    }
+
+    (item.fotos || []).forEach(foto => {
+        const pad = haalOpslagPad(foto);
+        if(pad){
+            bestanden.push(pad);
+        }
+    });
+
+    if(item.leveranciersbon_url){
+        const pad = haalOpslagPad(item.leveranciersbon_url);
+        if(pad){
+            bestanden.push(pad);
+        }
     }
 
     if(bestanden.length){

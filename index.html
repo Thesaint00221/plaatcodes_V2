@@ -161,35 +161,101 @@ DETAILPAGINA
 
     <div id="uploadKaart">
 
-        <button
-            id="detailKnop"
-            class="uploadKnop detail">
+        <div class="caseTypeKeuze">
 
-            🔍 Detailfoto
+            <button
+                type="button"
+                id="typeProductieKnop"
+                class="caseTypeKnop actief">
 
-        </button>
+                🏭 Fout in productie
 
-        <button
-            id="overzichtKnop"
-            class="uploadKnop overzicht">
+            </button>
 
-            🖼 Overzichtsfoto
+            <button
+                type="button"
+                id="typeLeverancierKnop"
+                class="caseTypeKnop">
 
-        </button>
+                🚚 Fout van leverancier
 
-        <input
-            type="file"
-            id="detailBestand"
-            accept="image/*"
-            capture="environment"
-            hidden>
+            </button>
 
-        <input
-            type="file"
-            id="overzichtBestand"
-            accept="image/*"
-            capture="environment"
-            hidden>
+        </div>
+
+        <div id="productieVelden" class="uploadButtons">
+
+            <button
+                id="detailKnop"
+                class="uploadKnop detail">
+
+                🔍 Detailfoto
+
+            </button>
+
+            <button
+                id="overzichtKnop"
+                class="uploadKnop overzicht">
+
+                🖼 Overzichtsfoto
+
+            </button>
+
+            <input
+                type="file"
+                id="detailBestand"
+                accept="image/*"
+                capture="environment"
+                hidden>
+
+            <input
+                type="file"
+                id="overzichtBestand"
+                accept="image/*"
+                capture="environment"
+                hidden>
+
+        </div>
+
+        <div id="leverancierVelden" class="uploadButtons hidden">
+
+            <button
+                type="button"
+                id="leverancierFotosKnop"
+                class="uploadKnop detail">
+
+                📷 Foto's toevoegen (max. 10)
+
+            </button>
+
+            <input
+                type="file"
+                id="leverancierFotosBestand"
+                accept="image/*"
+                multiple
+                hidden>
+
+            <button
+                type="button"
+                id="leverancierBonKnop"
+                class="uploadKnop overzicht">
+
+                📄 Leveranciersbon (PDF)
+
+            </button>
+
+            <input
+                type="file"
+                id="leverancierBonBestand"
+                accept="application/pdf"
+                hidden>
+
+        </div>
+
+        <small class="uploadHint">
+            De bon is optioneel, maar wordt aangeraden bij een klacht
+            richting de leverancier.
+        </small>
 
         <div class="uploadForm">
 
@@ -252,6 +318,7 @@ SCRIPTS
 <script src="js/auth.js"></script>
 <script src="js/catalogus.js"></script>
 <script src="js/detail.js"></script>
+<script src="js/rapport.js"></script>
 <script src="js/foto.js"></script>
 <script src="js/upload.js"></script>
 <script src="js/opslag.js"></script>

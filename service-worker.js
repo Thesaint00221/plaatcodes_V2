@@ -17,6 +17,7 @@ const SHELL_BESTANDEN = [
     "js/auth.js",
     "js/catalogus.js",
     "js/detail.js",
+    "js/rapport.js",
     "js/foto.js",
     "js/upload.js",
     "js/opslag.js",

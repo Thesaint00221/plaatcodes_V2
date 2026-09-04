@@ -31,6 +31,7 @@ Controleer dit in Supabase → **Authentication → Policies** en
 - [ ] `SELECT` (lezen/weergeven van foto's): publiek, want de site toont foto's zonder login.
 - [ ] `INSERT` (uploaden): enkel ingelogde gebruikers.
 - [ ] `DELETE`: enkel eigenaar van de case of beheerder — zelfde risico als bij `eigen_data`: `verwijderCase()` en het opschoon-script roepen storage-delete rechtstreeks aan vanuit de browser.
+- [ ] **MIME-type restrictie**: als de bucket beperkt is tot afbeeldingen, voeg `application/pdf` toe — anders lukt de upload van leveranciersbonnen (map `bonnen/`) niet. Zie `supabase/migratie_leverancier_cases.sql`.
 
 ## 5. Snelle test
 Open de browserconsole op de live site (uitgelogd) en probeer:

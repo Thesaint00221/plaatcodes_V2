@@ -164,7 +164,7 @@ if (controleKnop) {
             } =
                 await supabaseClient
                     .from("eigen_data")
-                    .select("foto, overzicht_foto");
+                    .select("foto, overzicht_foto, fotos, leveranciersbon_url");
 
             if (error) {
 
@@ -189,6 +189,17 @@ if (controleKnop) {
 
                 if (item.overzicht_foto) {
                     gebruikt.push(item.overzicht_foto);
+                }
+
+                // Leverancier-cases: meerdere foto's + optionele bon
+                (item.fotos || []).forEach(pad => {
+                    if (pad) {
+                        gebruikt.push(pad);
+                    }
+                });
+
+                if (item.leveranciersbon_url) {
+                    gebruikt.push(item.leveranciersbon_url);
                 }
 
             });

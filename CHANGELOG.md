@@ -67,3 +67,58 @@ in Supabase is gewijzigd — enkel de front-end.
 - `js/beheer.js`: het aantal platen op het dashboard komt nu rechtstreeks
   uit de Supabase-tabel `platen` i.p.v. het verouderde `data.json`
   (zie de eerdere opruimronde — dat bestand kan afwijken van de live data).
+
+---
+
+# Ronde 3 — Productie- vs leverancierscases
+
+## Wat is er nodig in Supabase (éénmalig, door jou uit te voeren)
+- **Voer `supabase/migratie_leverancier_cases.sql` uit** in de SQL Editor.
+  Dit voegt de kolommen `fotos` (jsonb) en `leveranciersbon_url` (text) toe
+  aan `eigen_data`, en hergebruikt de bestaande (voorheen ongebruikte)
+  kolom `type` om `productie` en `leverancier` te onderscheiden.
+- **Controleer de MIME-restrictie** op de bucket `plaatfotos` (zie
+  RLS-CHECKLIST.md, punt 4) — PDF's moeten toegelaten zijn.
+
+## Nieuw bij het toevoegen van een case
+- Keuzeknoppen bovenaan: "🏭 Fout in productie" (ongewijzigd gedrag) of
+  "🚚 Fout van leverancier" (nieuw).
+- Bij "Leverancier": tot 10 foto's tegelijk selecteren (elk automatisch
+  verkleind zoals de rest) + optioneel een PDF van de leveranciersbon.
+  Minstens 1 foto is verplicht, de bon niet.
+- **Test:** voeg een leverancierscase toe met 3 foto's + een PDF, en
+  controleer in Supabase Storage dat alles onder `plaatfotos/{code}/` en
+  `plaatfotos/bonnen/{code}/` terechtkomt.
+
+## Detailpagina
+- Elke case toont een badge ("🏭 Fout in productie" / "🚚 Fout van
+  leverancier").
+- Leverancierscases tonen een fotogalerij (i.p.v. de vaste detail-/
+  overzichtsfoto) en, indien aanwezig, een "📄 Bon bekijken"-knop die de
+  PDF in een nieuw tabblad opent.
+
+## Klachtenrapport (PDF, client-side)
+- Nieuwe knop "📑 Klachtenrapport genereren" op elke leverancierscase.
+- Genereert lokaal in de browser een PDF met de plaat- en case-gegevens,
+  de foto's (indien ze zonder CORS-probleem opgehaald kunnen worden —
+  anders wordt gewoon een link naar de foto in het rapport gezet) en een
+  link naar de bon.
+- De PDF-bibliotheek (jsPDF) wordt pas geladen bij de eerste klik op deze
+  knop, niet standaard bij elk paginabezoek.
+- **Test:** genereer een rapport en controleer of de foto's mee in de PDF
+  staan. Als je een `CORS`-foutmelding in de browserconsole ziet bij het
+  ophalen van de foto's, moet je in Supabase Storage → `plaatfotos` →
+  instellingen de CORS-origins van je site toevoegen; het rapport blijft
+  ondertussen wel werken (met links i.p.v. ingebedde foto's).
+
+## Opschoon-tool bijgewerkt
+- `js/opschonen.js` en `js/beheer.js` hielden enkel rekening met `foto`
+  en `overzicht_foto` bij het opsporen van "ongebruikte" bestanden in de
+  storage-bucket. Zonder aanpassing zouden alle leverancier-foto's en
+  -bonnen daar foutief als "ongebruikt" getoond zijn. Dit is gecorrigeerd.
+
+## Nog manueel te doen
+- De SQL-migratie uitvoeren (zie boven) — zonder die stap blijven nieuwe
+  leverancierscases mislukken met een databasefout, want de kolommen
+  bestaan dan nog niet.
+
