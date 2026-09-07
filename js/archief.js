@@ -77,7 +77,7 @@ async function laadArchief(){
         <button
             onclick="terugActief('${plaat.code}', this)">
 
-            ♻️ Terugzetten
+            ${icoon("herstel")} Terugzetten
 
         </button>
 

@@ -7,11 +7,13 @@
 
 let geselecteerdeDetailFoto = null;
 let geselecteerdeOverzichtFoto = null;
-let geselecteerdeLeverancierFotos = [];
+let geselecteerdeLeverancierFotos = [null, null, null, null, null];
 let geselecteerdeLeverancierBon = null;
 let huidigCaseType = "productie";
 
-const MAX_LEVERANCIER_FOTOS = 10;
+const MAX_LEVERANCIER_FOTOS = 5;
+
+const OPSLAAN_KNOP_HTML = `${icoon("vink")} Opslaan`;
 
 
 const detailKnop =
@@ -41,11 +43,11 @@ const productieVelden =
 const leverancierVelden =
     document.getElementById("leverancierVelden");
 
-const leverancierFotosKnop =
-    document.getElementById("leverancierFotosKnop");
+const leverancierFotoKnoppen =
+    document.querySelectorAll(".leverancierFotoKnop");
 
-const leverancierFotosBestand =
-    document.getElementById("leverancierFotosBestand");
+const leverancierFotoBestanden =
+    document.querySelectorAll(".leverancierFotoBestand");
 
 const leverancierBonKnop =
     document.getElementById("leverancierBonKnop");
@@ -100,7 +102,7 @@ detailBestand?.addEventListener(
     if(geselecteerdeDetailFoto){
 
         detailKnop.innerHTML =
-            "✅ DETAILFOTO GEKOZEN";
+            `${icoon("vink")} DETAILFOTO GEKOZEN`;
 
     }
 
@@ -130,7 +132,7 @@ overzichtBestand?.addEventListener(
     if(geselecteerdeOverzichtFoto){
 
         overzichtKnop.innerHTML =
-            "✅ OVERZICHTSFOTO GEKOZEN";
+            `${icoon("vink")} OVERZICHTSFOTO GEKOZEN`;
 
     }
 
@@ -139,28 +141,35 @@ overzichtBestand?.addEventListener(
 
 // ============================================
 // Foto's + bon selectie (leverancier)
+// Vijf losse kaders (Foto 1..5) i.p.v. één multi-select-veld: dat werkt
+// betrouwbaar op elk toestel/app (o.a. OneDrive), waar een multi-select
+// input niet overal ondersteund wordt.
 // ============================================
 
-leverancierFotosKnop?.addEventListener("click", () => {
-    leverancierFotosBestand.click();
+leverancierFotoKnoppen.forEach(knop => {
+    knop.addEventListener("click", () => {
+        const index = knop.dataset.index;
+        document.querySelector(`.leverancierFotoBestand[data-index="${index}"]`)?.click();
+    });
 });
 
-leverancierFotosBestand?.addEventListener("change", () => {
+leverancierFotoBestanden.forEach(input => {
+    input.addEventListener("change", () => {
 
-    let bestanden = Array.from(leverancierFotosBestand.files);
+        const index = Number(input.dataset.index);
+        const bestand = input.files[0] || null;
 
-    if(bestanden.length > MAX_LEVERANCIER_FOTOS){
-        alert(`Je kan maximaal ${MAX_LEVERANCIER_FOTOS} foto's tegelijk toevoegen. De eerste ${MAX_LEVERANCIER_FOTOS} worden gebruikt.`);
-        bestanden = bestanden.slice(0, MAX_LEVERANCIER_FOTOS);
-    }
+        geselecteerdeLeverancierFotos[index] = bestand;
 
-    geselecteerdeLeverancierFotos = bestanden;
+        const knop = document.querySelector(`.leverancierFotoKnop[data-index="${index}"]`);
 
-    if(bestanden.length > 0){
-        leverancierFotosKnop.innerHTML =
-            `✅ ${bestanden.length} FOTO${bestanden.length > 1 ? "'S" : ""} GEKOZEN`;
-    }
+        if(knop){
+            knop.innerHTML = bestand
+                ? `${icoon("vink")} Foto ${index + 1} gekozen`
+                : `${icoon("foto")} Foto ${index + 1}`;
+        }
 
+    });
 });
 
 leverancierBonKnop?.addEventListener("click", () => {
@@ -180,7 +189,7 @@ leverancierBonBestand?.addEventListener("change", () => {
     geselecteerdeLeverancierBon = bestand || null;
 
     if(geselecteerdeLeverancierBon){
-        leverancierBonKnop.innerHTML = "✅ BON GEKOZEN";
+        leverancierBonKnop.innerHTML = `${icoon("vink")} Bon gekozen`;
     }
 
 });
@@ -215,7 +224,7 @@ knop.disabled = true;
 
 
 knop.innerHTML =
-    "⏳ Bezig met uploaden...";
+    `${icoon("vink")} Bezig met uploaden...`;
 
 
 
@@ -234,7 +243,7 @@ alert(
 
 knop.disabled=false;
 
-knop.innerHTML="✔ Opslaan";
+knop.innerHTML=OPSLAAN_KNOP_HTML;
 
 
 return;
@@ -271,7 +280,7 @@ alert(
 
 knop.disabled=false;
 
-knop.innerHTML="✔ Opslaan";
+knop.innerHTML=OPSLAAN_KNOP_HTML;
 
 
 return;
@@ -368,7 +377,7 @@ console.error(error);
 
 knop.disabled=false;
 
-knop.innerHTML="✔ Opslaan";
+knop.innerHTML=OPSLAAN_KNOP_HTML;
 
 return;
 
@@ -422,7 +431,7 @@ console.error(error);
 
 knop.disabled=false;
 
-knop.innerHTML="✔ Opslaan";
+knop.innerHTML=OPSLAAN_KNOP_HTML;
 
 return;
 
@@ -484,7 +493,7 @@ alert(
 
 knop.disabled=false;
 
-knop.innerHTML="✔ Opslaan";
+knop.innerHTML=OPSLAAN_KNOP_HTML;
 
 
 return;
@@ -497,7 +506,7 @@ return;
 
 
 knop.innerHTML =
-"✅ Opgeslagen";
+`${icoon("vink")} Opgeslagen`;
 
 
 
@@ -518,10 +527,14 @@ location.reload();
 
 async function slaLeverancierCaseOp(knop, plaat){
 
-    if(geselecteerdeLeverancierFotos.length === 0){
+    const gekozenFotos = geselecteerdeLeverancierFotos
+        .map((bestand, index) => ({bestand, index}))
+        .filter(item => item.bestand);
+
+    if(gekozenFotos.length === 0){
         alert("Kies minstens één foto van de fout.");
         knop.disabled = false;
-        knop.innerHTML = "✔ Opslaan";
+        knop.innerHTML = OPSLAAN_KNOP_HTML;
         return;
     }
 
@@ -539,12 +552,12 @@ async function slaLeverancierCaseOp(knop, plaat){
 
     const fotoPaden = [];
 
-    for(let i = 0; i < geselecteerdeLeverancierFotos.length; i++){
+    for(let i = 0; i < gekozenFotos.length; i++){
 
-        knop.innerHTML = `⏳ Foto ${i + 1}/${geselecteerdeLeverancierFotos.length} uploaden...`;
+        knop.innerHTML = `⏳ Foto ${i + 1}/${gekozenFotos.length} uploaden...`;
 
-        const foto = await verkleinFoto(geselecteerdeLeverancierFotos[i]);
-        const pad = `${plaat.code}/${Date.now()}_leverancier_${i}_${foto.name}`;
+        const foto = await verkleinFoto(gekozenFotos[i].bestand);
+        const pad = `${plaat.code}/${Date.now()}_leverancier_${gekozenFotos[i].index}_${foto.name}`;
 
         const {error} =
             await supabaseClient.storage.from("plaatfotos").upload(pad, foto);
@@ -553,7 +566,7 @@ async function slaLeverancierCaseOp(knop, plaat){
             console.error(error);
             alert(`Upload van foto ${i + 1} mislukt.`);
             knop.disabled = false;
-            knop.innerHTML = "✔ Opslaan";
+            knop.innerHTML = OPSLAAN_KNOP_HTML;
             return;
         }
 
@@ -601,11 +614,11 @@ async function slaLeverancierCaseOp(knop, plaat){
         console.error(error);
         alert("Case opslaan mislukt");
         knop.disabled = false;
-        knop.innerHTML = "✔ Opslaan";
+        knop.innerHTML = OPSLAAN_KNOP_HTML;
         return;
     }
 
-    knop.innerHTML = "✅ Opgeslagen";
+    knop.innerHTML = `${icoon("vink")} Opgeslagen`;
 
     setTimeout(() => {
         location.reload();

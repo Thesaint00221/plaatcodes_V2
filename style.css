@@ -31,6 +31,34 @@
 }
 
 /* ==========================================================
+ICONEN
+========================================================== */
+
+.icoon{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    vertical-align:-0.15em;
+
+    margin-right:.4em;
+
+}
+
+.icoon svg{
+
+    width:1em;
+
+    height:1em;
+
+    display:block;
+
+}
+
+/* ==========================================================
 RESET
 ========================================================== */
 
@@ -986,6 +1014,34 @@ FOTOKNOPPEN
 
 }
 
+.uploadKnop .icoon{
+
+    font-size:1em;
+
+    color:inherit;
+
+    margin-right:0;
+
+}
+
+.uploadButtonsFotos{
+
+    grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+
+    gap:12px;
+
+}
+
+.uploadButtonsFotos .uploadKnop{
+
+    min-height:90px;
+
+    font-size:13px;
+
+    gap:6px;
+
+}
+
 .uploadKnop:hover{
 
     border-color:var(--primary);
@@ -1553,6 +1609,20 @@ BEHEER
 .rapportKnop { display: inline-flex; align-items: center; gap: 6px; margin: 10px 8px 0 0; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font-weight: 700; cursor: pointer; transition: var(--transition); }
 .rapportKnop:hover { border-color: var(--primary); color: var(--primary); }
 .rapportKnop:disabled { opacity: .6; cursor: default; }
+
+.bewerkFoto, .verwijderFoto { display: inline-flex; align-items: center; gap: 6px; margin: 0 8px 0 0; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border); background: white; font-weight: 700; cursor: pointer; transition: var(--transition); }
+.bewerkFoto { color: var(--text); }
+.bewerkFoto:hover { border-color: var(--primary); color: var(--primary); }
+.verwijderFoto { color: var(--danger); }
+.verwijderFoto:hover { border-color: var(--danger); background: #fef2f2; }
+.verwijderFoto:disabled, .bewerkFoto:disabled { opacity: .6; cursor: default; }
+
+.bewerkOpslaan, .bewerkAnnuleren { display: inline-flex; align-items: center; gap: 6px; margin: 10px 8px 0 0; padding: 8px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: var(--transition); border: 1px solid var(--border); }
+.bewerkOpslaan { background: var(--primary); color: white; border-color: var(--primary); }
+.bewerkOpslaan:hover { background: var(--primary-hover); }
+.bewerkOpslaan:disabled { opacity: .6; cursor: default; }
+.bewerkAnnuleren { background: white; color: var(--text-light); }
+.bewerkAnnuleren:hover { border-color: var(--text-light); }
 
 #fotoLightbox { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, .88); }
 #fotoLightbox.actief { display: flex; }

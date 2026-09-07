@@ -21,14 +21,14 @@ async function controleerToegang() {
 
     if (!gebruiker) {
 
-        status.innerHTML = "❌ Geen toegang";
+        status.innerHTML = `${icoon("fout")} Geen toegang`;
         return false;
 
     }
 
     if (gebruiker.rol !== "beheerder") {
 
-        status.innerHTML = "❌ Alleen beheerders hebben toegang";
+        status.innerHTML = `${icoon("fout")} Alleen beheerders hebben toegang`;
         return false;
 
     }
@@ -171,7 +171,7 @@ if (controleKnop) {
                 console.error(error);
 
                 veld.innerHTML =
-                    "❌ Fout bij ophalen cases";
+                    `${icoon("fout")} Fout bij ophalen cases`;
 
                 controleKnop.disabled = false;
 
@@ -215,17 +215,17 @@ if (controleKnop) {
             veld.innerHTML = `
 
 <p>
-📸 Bestanden in bucket:
+${icoon("foto")} Bestanden in bucket:
 <b>${bestanden.length}</b>
 </p>
 
 <p>
-📄 Foto's gekoppeld aan cases:
+${icoon("document")} Foto's gekoppeld aan cases:
 <b>${gebruikt.length}</b>
 </p>
 
 <p>
-⚠️ Ongebruikte foto's:
+${icoon("waarschuwing")} Ongebruikte foto's:
 <b>${ongebruikt.length}</b>
 </p>
 

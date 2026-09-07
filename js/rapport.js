@@ -1,10 +1,22 @@
 // ============================================
 // rapport.js
 // Klachtenrapport-PDF voor leverancier-cases
-// jsPDF wordt pas geladen bij het eerste gebruik (niet standaard meegeladen)
+// jsPDF + pdf-lib worden pas geladen bij het eerste gebruik
+// (niet standaard meegeladen op elke pagina)
 // ============================================
 
 let jsPdfGeladen = null;
+let pdfLibGeladen = null;
+
+function laadScript(src){
+    return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error(`Kon script niet laden: ${src}`));
+        document.head.appendChild(script);
+    });
+}
 
 function laadJsPdf(){
 
@@ -12,23 +24,29 @@ function laadJsPdf(){
         return jsPdfGeladen;
     }
 
-    jsPdfGeladen = new Promise((resolve, reject) => {
-
-        if(window.jspdf){
-            resolve(window.jspdf);
-            return;
-        }
-
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js";
-        script.onload = () => resolve(window.jspdf);
-        script.onerror = () => reject(new Error("jsPDF kon niet geladen worden."));
-
-        document.head.appendChild(script);
-
-    });
+    jsPdfGeladen = window.jspdf
+        ? Promise.resolve(window.jspdf)
+        : laadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js")
+            .then(() => window.jspdf);
 
     return jsPdfGeladen;
+
+}
+
+// pdf-lib wordt enkel gebruikt om de bon-PDF als extra pagina's achteraan
+// het rapport te plakken (echte samenvoeging, geen los linkje meer).
+function laadPdfLib(){
+
+    if(pdfLibGeladen){
+        return pdfLibGeladen;
+    }
+
+    pdfLibGeladen = window.PDFLib
+        ? Promise.resolve(window.PDFLib)
+        : laadScript("https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js")
+            .then(() => window.PDFLib);
+
+    return pdfLibGeladen;
 
 }
 
@@ -59,6 +77,30 @@ async function fotoAlsDataUrl(url){
 
 }
 
+// Haalt de bon-PDF als ruwe bytes op, nodig om ze in het rapport te
+// plakken. Lukt dit niet (CORS, bestand weg, ...), dan geven we null
+// terug en valt het rapport terug op een klikbare link naar de bon.
+async function bonAlsBytes(url){
+
+    try{
+
+        const response = await fetch(url);
+
+        if(!response.ok){
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        return await response.arrayBuffer();
+
+    }catch(error){
+
+        console.error("Leveranciersbon ophalen voor rapport mislukt:", url, error);
+        return null;
+
+    }
+
+}
+
 async function genereerKlachtenRapport(caseId, knop){
 
     const item = window.laatstGeladenCases?.[caseId];
@@ -77,6 +119,26 @@ async function genereerKlachtenRapport(caseId, knop){
     }
 
     try{
+
+        const bonUrl = item.leveranciersbon_url
+            ? haalOpenbareUrl(item.leveranciersbon_url)
+            : null;
+
+        // Bon-bytes vooraf ophalen: zo weten we, vóór we de tekstpagina
+        // schrijven, of de bon effectief ingevoegd kan worden of dat we
+        // moeten terugvallen op een link.
+        let bonBytes = null;
+
+        if(bonUrl){
+            if(knop){
+                knop.innerHTML = "⏳ Bon ophalen...";
+            }
+            bonBytes = await bonAlsBytes(bonUrl);
+        }
+
+        if(knop){
+            knop.innerHTML = "⏳ Rapport maken...";
+        }
 
         const {jsPDF} = await laadJsPdf();
         const doc = new jsPDF();
@@ -157,15 +219,19 @@ async function genereerKlachtenRapport(caseId, knop){
 
         y += 5;
 
-        if(item.leveranciersbon_url){
+        if(bonUrl){
 
             nieuwePaginaIndienNodig(10);
             doc.setFont(undefined, "bold");
             doc.text("Leveranciersbon:", marge, y);
             doc.setFont(undefined, "normal");
 
-            const bonUrl = haalOpenbareUrl(item.leveranciersbon_url);
-            doc.textWithLink("Bekijk de bon online", marge + 45, y, {url: bonUrl});
+            if(bonBytes){
+                doc.text("zie bijlage (laatste pagina's van dit document)", marge + 45, y);
+            }else{
+                doc.textWithLink("Bekijk de bon online", marge + 45, y, {url: bonUrl});
+            }
+
             y += 10;
 
         }
@@ -215,7 +281,60 @@ async function genereerKlachtenRapport(caseId, knop){
         }
 
         const bestandsnaam = `Klachtenrapport_${plaat.code}_${Date.now()}.pdf`;
-        doc.save(bestandsnaam);
+
+        if(!bonBytes){
+
+            // Geen bon om samen te voegen: gewoon het rapport downloaden.
+            doc.save(bestandsnaam);
+
+        }else{
+
+            // Bon-PDF echt samenvoegen als extra pagina's achteraan het
+            // rapport, i.p.v. enkel een link te plaatsen.
+            if(knop){
+                knop.innerHTML = "⏳ Bon samenvoegen...";
+            }
+
+            try{
+
+                const PDFLib = await laadPdfLib();
+                const reportBytes = doc.output("arraybuffer");
+
+                const samengevoegd = await PDFLib.PDFDocument.create();
+
+                const reportDoc = await PDFLib.PDFDocument.load(reportBytes);
+                const reportPaginas = await samengevoegd.copyPages(reportDoc, reportDoc.getPageIndices());
+                reportPaginas.forEach(pagina => samengevoegd.addPage(pagina));
+
+                const bonDoc = await PDFLib.PDFDocument.load(bonBytes);
+                const bonPaginas = await samengevoegd.copyPages(bonDoc, bonDoc.getPageIndices());
+                bonPaginas.forEach(pagina => samengevoegd.addPage(pagina));
+
+                const samengevoegdeBytes = await samengevoegd.save();
+
+                const blob = new Blob([samengevoegdeBytes], {type: "application/pdf"});
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = bestandsnaam;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+
+                URL.revokeObjectURL(url);
+
+            }catch(samenvoegFout){
+
+                // De bon kon niet samengevoegd worden (bv. geen geldige
+                // PDF) -- dan valt het rapport terug op het gewone
+                // jsPDF-bestand zonder bijlage, met de link als fallback.
+                console.error("Bon samenvoegen mislukt:", samenvoegFout);
+                doc.save(bestandsnaam);
+
+            }
+
+        }
 
     }catch(fout){
 

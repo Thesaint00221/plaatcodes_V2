@@ -155,7 +155,7 @@ beheer.innerHTML += `
 <div id="opschoonResultaat" class="opschoonKaart">
 
 <h3>
-🧹 Ongebruikte foto's
+${icoon("bezem")} Ongebruikte foto's
 </h3>
 
 <p>
@@ -172,7 +172,7 @@ ${lijst}
 
 <button id="verwijderOngebruikte">
 
-🗑 Verwijder geselecteerde
+${icoon("vuilbak")} Verwijder geselecteerde
 
 </button>
 
@@ -254,7 +254,7 @@ alert(
 );
 
 verwijderKnop.disabled = false;
-verwijderKnop.innerHTML = "🗑 Verwijder geselecteerde";
+verwijderKnop.innerHTML = `${icoon("vuilbak")} Verwijder geselecteerde`;
 
 return;
 

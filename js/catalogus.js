@@ -238,20 +238,29 @@ function toonPlaten(lijst){
         kaart.addEventListener("click", () => toonDetail(plaat));
 
         const eersteFoto = haalPlaatFotoUrl(plaat.photos[0]);
+        const fotoIconHtml = icoon("foto");
 
         kaart.innerHTML = `
             <div class="kaartFoto">
                 ${eersteFoto
-                    ? `<img src="${eersteFoto}" alt="${plaat.naam}" loading="lazy" onerror="this.parentElement.innerHTML='📷';">`
-                    : '<div class="geenFoto">📷</div>'}
+                    ? `<img src="${eersteFoto}" alt="${plaat.naam}" loading="lazy">`
+                    : `<div class="geenFoto">${fotoIconHtml}</div>`}
             </div>
             <div class="kaartBody">
                 <div class="kaartTitel">${plaat.naam}</div>
                 <div class="kaartCode">${plaat.code}</div>
                 <div class="kaartLeverancier">${plaat.leverancier}</div>
-                <button class="detailKnop" type="button">Bekijk details →</button>
+                <button class="detailKnop" type="button">Bekijk details ${icoon("pijl-rechts")}</button>
             </div>
         `;
+
+        // Los van een inline onerror-attribuut (geeft escaping-problemen
+        // met de aanhalingstekens in de SVG): gewone event listener.
+        const kaartImg = kaart.querySelector(".kaartFoto img");
+
+        kaartImg?.addEventListener("error", () => {
+            kaartImg.parentElement.innerHTML = `<div class="geenFoto">${fotoIconHtml}</div>`;
+        }, {once:true});
 
         resultaten.appendChild(kaart);
     });

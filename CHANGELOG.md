@@ -122,3 +122,68 @@ in Supabase is gewijzigd — enkel de front-end.
   leverancierscases mislukken met een databasefout, want de kolommen
   bestaan dan nog niet.
 
+---
+
+# Ronde 4 — Iconen, cases bewerken, 5 foto-kaders, bon in rapport
+
+## 1. Consistente iconenset
+- **Bestand (nieuw):** `js/icons.js`
+- Alle losse emoji's (📦 🗑 🚚 🏭 ✔ ✅ ← → 📷 📄 👤 📅 🛠 🔍 🧹 ⚠️ ❌ 📸 📋 🗂 ♻️ 🚪 🔐 ▼ ...) zijn vervangen door
+  één consistente set inline SVG-lijniconen (24 stuks), overal met dezelfde
+  stijl (stroke, geen fill, currentColor — dus ze volgen automatisch de
+  tekstkleur van de knop/context).
+- Twee gebruikswijzen: `<span data-icon="naam">` in statische HTML
+  (automatisch gevuld bij het laden) en `${icoon("naam")}` in
+  JS-gegenereerde HTML.
+- `⏳` (bezig-status) is bewust **niet** aangepast: dat werd al overal
+  consistent gebruikt.
+- **Test:** loop de site door (catalogus, detail, archief, beheer,
+  login-menu) en kijk of alle iconen er verzorgd/gelijkaardig uitzien.
+
+## 2. Cases bewerken (nieuw)
+- **Bestand (nieuw):** `js/bewerken.js`
+- Knop "Bewerken" naast "Verwijderen" bij elke case (zelfde rechten:
+  eigenaar of beheerder). Opent een inline formulier (titel + opmerking),
+  met Opslaan/Annuleren.
+- **Beperking:** enkel titel/opmerking zijn aanpasbaar, geen foto's of
+  van case-type wisselen — dat leek me voor nu voldoende en beperkt het
+  risico op databestanden die niet meer kloppen. Laat het weten als
+  foto's vervangen ook nodig is.
+- **Test:** bewerk een case, herlaad de pagina, controleer dat de
+  wijziging bewaard is gebleven.
+
+## 3. Vijf losse foto-kaders i.p.v. multi-select (leverancierscase)
+- **Bestand:** `index.html`, `js/upload.js`
+- "Foto's toevoegen (max. 10)" met multi-select is vervangen door 5 losse
+  kaders "Foto 1" t.e.m. "Foto 5", elk met een eigen bestandskeuze — net
+  als Detailfoto/Overzichtsfoto. Dit werkt betrouwbaar met OneDrive en
+  andere cloud-bronnen, waar multi-select niet overal ondersteund wordt.
+  Enkel ingevulde kaders worden opgeslagen; leeg is toegestaan zolang er
+  minstens 1 foto is.
+- Het maximum is dus nu **5** foto's per leverancierscase (was 10) —
+  gewijzigd omdat 10 losse kaders te veel scrollen zou vragen. Zeg het
+  als je liever bij 10 blijft, dat kan ook met dit patroon.
+
+## 4. `capture="environment"` weggehaald
+- **Bestand:** `index.html`
+- Dit attribuut dwong op sommige toestellen de bestandenkiezer naar
+  **camera-only**, waardoor cloud-bronnen zoals OneDrive niet meer als
+  optie verschenen. Weggehaald bij Detailfoto, Overzichtsfoto én de 5
+  nieuwe foto-kaders — nu opent overal gewoon de normale "kies
+  bestand"-picker met alles wat je toestel aanbiedt.
+- **Test:** dit was de kern van je meldingen over OneDrive — graag
+  specifiek controleren of dit nu overal lukt.
+
+## 5. Leveranciersbon écht samengevoegd in het klachtenrapport
+- **Bestand:** `js/rapport.js`
+- Nieuwe bibliotheek **pdf-lib** (lui geladen, enkel bij gebruik) voegt de
+  bon-PDF nu als extra pagina's toe achteraan het gegenereerde rapport,
+  i.p.v. enkel een klikbare link.
+- Als de bon om een of andere reden niet opgehaald/samengevoegd kan
+  worden (CORS, verwijderd bestand, geen geldige PDF, ...), valt het
+  rapport automatisch terug op de vorige aanpak (klikbare link) — je
+  krijgt hoe dan ook een bruikbaar rapport.
+- **Test:** genereer een rapport bij een case mét bon, en controleer dat
+  de bon-pagina('s) effectief achteraan het PDF-bestand staan.
+
+

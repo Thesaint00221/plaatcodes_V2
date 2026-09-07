@@ -71,7 +71,7 @@ HEADER
             class="primary"
             style="display:none;">
 
-            ➕ Nieuwe plaat
+            <span class="icoon" data-icon="plus"></span> Nieuwe plaat
 
         </button>
 
@@ -80,7 +80,7 @@ HEADER
     class="secundaireKnop"
     style="display:none;">
 
-    📦 Archief
+    <span class="icoon" data-icon="archief"></span> Archief
 
 </button>
     </div>
@@ -139,7 +139,7 @@ CATALOGUS
 
     <button id="sluitArchief">
 
-        ← Terug
+        <span class="icoon" data-icon="pijl-links"></span> Terug
 
     </button>
 
@@ -156,7 +156,7 @@ DETAILPAGINA
 
     <button id="terug">
 
-        ← Terug
+        <span class="icoon" data-icon="pijl-links"></span> Terug
 
     </button>
 
@@ -171,7 +171,7 @@ DETAILPAGINA
                 id="typeProductieKnop"
                 class="caseTypeKnop actief">
 
-                🏭 Fout in productie
+                <span class="icoon" data-icon="fabriek"></span> Fout in productie
 
             </button>
 
@@ -180,7 +180,7 @@ DETAILPAGINA
                 id="typeLeverancierKnop"
                 class="caseTypeKnop">
 
-                🚚 Fout van leverancier
+                <span class="icoon" data-icon="vrachtwagen"></span> Fout van leverancier
 
             </button>
 
@@ -192,7 +192,7 @@ DETAILPAGINA
                 id="detailKnop"
                 class="uploadKnop detail">
 
-                🔍 Detailfoto
+                <span class="icoon" data-icon="zoek"></span> Detailfoto
 
             </button>
 
@@ -200,7 +200,7 @@ DETAILPAGINA
                 id="overzichtKnop"
                 class="uploadKnop overzicht">
 
-                🖼 Overzichtsfoto
+                <span class="icoon" data-icon="foto"></span> Overzichtsfoto
 
             </button>
 
@@ -208,42 +208,74 @@ DETAILPAGINA
                 type="file"
                 id="detailBestand"
                 accept="image/*"
-                capture="environment"
                 hidden>
 
             <input
                 type="file"
                 id="overzichtBestand"
                 accept="image/*"
-                capture="environment"
                 hidden>
 
         </div>
 
-        <div id="leverancierVelden" class="uploadButtons hidden">
+        <div id="leverancierVelden" class="uploadButtons uploadButtonsFotos hidden">
 
             <button
                 type="button"
-                id="leverancierFotosKnop"
-                class="uploadKnop detail">
+                class="uploadKnop detail leverancierFotoKnop"
+                data-index="0">
 
-                📷 Foto's toevoegen (max. 10)
+                <span class="icoon" data-icon="foto"></span> Foto 1
 
             </button>
+            <input type="file" class="leverancierFotoBestand" data-index="0" accept="image/*" hidden>
 
-            <input
-                type="file"
-                id="leverancierFotosBestand"
-                accept="image/*"
-                multiple
-                hidden>
+            <button
+                type="button"
+                class="uploadKnop detail leverancierFotoKnop"
+                data-index="1">
+
+                <span class="icoon" data-icon="foto"></span> Foto 2
+
+            </button>
+            <input type="file" class="leverancierFotoBestand" data-index="1" accept="image/*" hidden>
+
+            <button
+                type="button"
+                class="uploadKnop detail leverancierFotoKnop"
+                data-index="2">
+
+                <span class="icoon" data-icon="foto"></span> Foto 3
+
+            </button>
+            <input type="file" class="leverancierFotoBestand" data-index="2" accept="image/*" hidden>
+
+            <button
+                type="button"
+                class="uploadKnop detail leverancierFotoKnop"
+                data-index="3">
+
+                <span class="icoon" data-icon="foto"></span> Foto 4
+
+            </button>
+            <input type="file" class="leverancierFotoBestand" data-index="3" accept="image/*" hidden>
+
+            <button
+                type="button"
+                class="uploadKnop detail leverancierFotoKnop"
+                data-index="4">
+
+                <span class="icoon" data-icon="foto"></span> Foto 5
+
+            </button>
+            <input type="file" class="leverancierFotoBestand" data-index="4" accept="image/*" hidden>
 
             <button
                 type="button"
                 id="leverancierBonKnop"
                 class="uploadKnop overzicht">
 
-                📄 Leveranciersbon (PDF)
+                <span class="icoon" data-icon="document"></span> Leveranciersbon (PDF)
 
             </button>
 
@@ -256,8 +288,8 @@ DETAILPAGINA
         </div>
 
         <small class="uploadHint">
-            De bon is optioneel, maar wordt aangeraden bij een klacht
-            richting de leverancier.
+            Minstens 1 foto is verplicht. De bon is optioneel, maar wordt
+            aangeraden bij een klacht richting de leverancier.
         </small>
 
         <div class="uploadForm">
@@ -289,7 +321,7 @@ DETAILPAGINA
 
             <button id="opslaanFoto">
 
-                ✔ Opslaan
+                <span class="icoon" data-icon="vink"></span> Opslaan
 
             </button>
 
@@ -303,7 +335,7 @@ DETAILPAGINA
 
         <button id="opschonenButton">
 
-            🧹 Opschonen opslag
+            <span class="icoon" data-icon="bezem"></span> Opschonen opslag
 
         </button>
 
@@ -317,10 +349,12 @@ SCRIPTS
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="js/icons.js"></script>
 <script src="js/supabase.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/catalogus.js"></script>
 <script src="js/detail.js"></script>
+<script src="js/bewerken.js"></script>
 <script src="js/rapport.js"></script>
 <script src="js/foto.js"></script>
 <script src="js/upload.js"></script>

@@ -134,7 +134,7 @@ const basisFoto =
                 :
                 `
                 <div class="geenFotoGroot">
-                    📷
+                    ${icoon("foto")}
                 </div>
                 `
             }
@@ -150,7 +150,7 @@ ${
             class="archiveerKnop"
             onclick="archiveerPlaat('${plaat.code}', this)">
 
-            📦 Archiveren
+            ${icoon("archief")} Archiveren
 
         </button>
 
@@ -366,8 +366,10 @@ async function toonFotos(plaat){
 
     </div>
 
+    <div class="caseKaartInhoud" data-case-id="${item.id}">
+
     <span class="caseTypeBadge ${isLeverancier ? "caseTypeBadge--leverancier" : "caseTypeBadge--productie"}">
-        ${isLeverancier ? "🚚 Fout van leverancier" : "🏭 Fout in productie"}
+        ${isLeverancier ? icoon("vrachtwagen") + " Fout van leverancier" : icoon("fabriek") + " Fout in productie"}
     </span>
 
     <p class="omschrijving">
@@ -384,7 +386,7 @@ async function toonFotos(plaat){
             target="_blank"
             rel="noopener">
 
-            📄 Bon bekijken
+            ${icoon("document")} Bon bekijken
 
         </a>
         `
@@ -401,7 +403,7 @@ async function toonFotos(plaat){
             class="rapportKnop"
             onclick="genereerKlachtenRapport('${item.id}', this)">
 
-            📑 Klachtenrapport genereren
+            ${icoon("rapport")} Klachtenrapport genereren
 
         </button>
         `
@@ -411,11 +413,11 @@ async function toonFotos(plaat){
 
     <small class="fotoInfo">
 
-        👤 ${naam}
+        ${icoon("gebruiker")} ${naam}
 
         <br>
 
-        📅 ${
+        ${icoon("kalender")} ${
             item.datum
             ? new Date(item.datum).toLocaleDateString("nl-BE")
             : ""
@@ -430,16 +432,27 @@ async function toonFotos(plaat){
         <br><br>
 
         <button
+            type="button"
+            class="bewerkFoto"
+            onclick="bewerkCase('${item.id}', this)">
+
+            ${icoon("tools")} Bewerken
+
+        </button>
+
+        <button
             class="verwijderFoto"
             onclick="verwijderCase('${item.id}', this)">
 
-            🗑 Verwijderen
+            ${icoon("vuilbak")} Verwijderen
 
         </button>
         `
         :
         ""
     }
+
+    </div>
 
 </div>
 

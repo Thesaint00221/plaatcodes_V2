@@ -199,7 +199,7 @@ async function updateLoginStatus(){
             class="beheerKnop"
             id="beheerButton">
 
-                🛠 Beheer
+                ${icoon("tools")} Beheer
 
             </button>
 
@@ -226,13 +226,13 @@ async function updateLoginStatus(){
             aria-controls="userDropdown">
 
 
-                👤 ${naam}
+                ${icoon("gebruiker")} ${naam}
 
                 <span class="gebruikersRol">
                     · ${rol}
                 </span>
 
-                ▼
+                ${icoon("chevron")}
 
 
             </button>
@@ -251,7 +251,7 @@ async function updateLoginStatus(){
                 id="logoutButton"
                 class="logoutKlein">
 
-                    🚪 Afmelden
+                    ${icoon("uitloggen")} Afmelden
 
                 </button>
 
@@ -350,7 +350,7 @@ async function updateLoginStatus(){
             id="loginButton"
             type="submit">
 
-                🔐 Aanmelden
+                ${icoon("slot")} Aanmelden
 
             </button>
 
