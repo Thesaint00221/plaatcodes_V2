@@ -265,6 +265,46 @@ if(huidigCaseType === "productie"){
 // Case type: productie (detail + overzichtsfoto)
 // ============================================
 
+// ============================================
+// Formulier resetten na een geslaagde case (i.p.v. de pagina te herladen,
+// zo blijf je gewoon op dezelfde plaat-detailpagina staan)
+// ============================================
+
+function resetUploadForm(){
+
+    const titelVeld = document.getElementById("fotoTitel");
+    const beschrijvingVeld = document.getElementById("fotoBeschrijving");
+
+    if(titelVeld) titelVeld.value = "";
+    if(beschrijvingVeld) beschrijvingVeld.value = "";
+
+    geselecteerdeDetailFoto = null;
+    geselecteerdeOverzichtFoto = null;
+
+    if(detailBestand) detailBestand.value = "";
+    if(overzichtBestand) overzichtBestand.value = "";
+    if(detailKnop) detailKnop.innerHTML = `${icoon("zoek")} Detailfoto`;
+    if(overzichtKnop) overzichtKnop.innerHTML = `${icoon("foto")} Overzichtsfoto`;
+
+    geselecteerdeLeverancierFotos = [null, null, null, null, null];
+
+    leverancierFotoBestanden.forEach(input => {
+        input.value = "";
+    });
+
+    leverancierFotoKnoppen.forEach(knop => {
+        const index = Number(knop.dataset.index);
+        knop.innerHTML = `${icoon("foto")} Foto ${index + 1}`;
+    });
+
+    geselecteerdeLeverancierBon = null;
+
+    if(leverancierBonBestand) leverancierBonBestand.value = "";
+    if(leverancierBonKnop) leverancierBonKnop.innerHTML = `${icoon("document")} Leveranciersbon (PDF)`;
+
+}
+
+
 async function slaProductieCaseOp(knop, plaat){
 
 if(
@@ -502,23 +542,25 @@ return;
 }
 
 
-
-
-
 knop.innerHTML =
 `${icoon("vink")} Opgeslagen`;
 
 
-
-setTimeout(()=>{
-
-
-location.reload();
+setTimeout(async ()=>{
 
 
-},1200);
+resetUploadForm();
+
+knop.disabled = false;
+knop.innerHTML = OPSLAAN_KNOP_HTML;
+
+await toonFotos(plaat);
+
+
+},800);
 
 }
+
 
 
 // ============================================
@@ -620,8 +662,11 @@ async function slaLeverancierCaseOp(knop, plaat){
 
     knop.innerHTML = `${icoon("vink")} Opgeslagen`;
 
-    setTimeout(() => {
-        location.reload();
-    }, 1200);
+    setTimeout(async () => {
+        resetUploadForm();
+        knop.disabled = false;
+        knop.innerHTML = OPSLAAN_KNOP_HTML;
+        await toonFotos(plaat);
+    }, 800);
 
 }

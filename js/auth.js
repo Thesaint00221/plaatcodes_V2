@@ -93,9 +93,12 @@ async function login(){
 
 async function logout(){
 
+    // scope:'local' -> enkel dit toestel/tabblad wordt afgemeld.
+    // Zonder deze optie logt Supabase je standaard OVERAL tegelijk uit
+    // (alle toestellen), wat verrassend en ongewenst gedrag was.
     await supabaseClient
     .auth
-    .signOut();
+    .signOut({ scope: "local" });
 
 
     updateLoginStatus();
