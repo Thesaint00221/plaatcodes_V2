@@ -63,34 +63,43 @@ HEADER
         <div id="loginBox" class="loginArea"></div>
 
 
+        <!-- ACTIES-MENU: Nieuwe plaat / Plaat aanpassen / Archief / Cases overzicht -->
 
-        <!-- NIEUWE PLAAT -->
+        <div class="actiesMenu">
 
-        <button
-            id="nieuwePlaatKnop"
-            class="primary"
-            style="display:none;">
+            <button
+                id="actiesKnop"
+                class="secundaireKnop"
+                type="button"
+                aria-expanded="false"
+                aria-controls="actiesDropdown">
 
-            <span class="icoon" data-icon="plus"></span> Nieuwe plaat
+                <span class="icoon" data-icon="lagen"></span> Menu <span class="icoon" data-icon="chevron"></span>
 
-        </button>
+            </button>
 
-<button
-    id="archiefKnop"
-    class="secundaireKnop"
-    style="display:none;">
+            <div id="actiesDropdown" class="dropdown hidden">
 
-    <span class="icoon" data-icon="archief"></span> Archief
+                <button id="nieuwePlaatKnop" type="button" style="display:none;">
+                    <span class="icoon" data-icon="plus"></span> Nieuwe plaat
+                </button>
 
-</button>
+                <button id="plaatAanpassenKnop" type="button" style="display:none;">
+                    <span class="icoon" data-icon="tools"></span> Plaat aanpassen
+                </button>
 
-<a
-    href="overzicht.html"
-    class="secundaireKnop">
+                <button id="archiefKnop" type="button" style="display:none;">
+                    <span class="icoon" data-icon="archief"></span> Archief
+                </button>
 
-    <span class="icoon" data-icon="lagen"></span> Cases overzicht
+                <a href="overzicht.html">
+                    <span class="icoon" data-icon="lagen"></span> Cases overzicht
+                </a>
 
-</a>
+            </div>
+
+        </div>
+
     </div>
 
 
@@ -119,9 +128,14 @@ CATALOGUS
             <div>
                 <p class="beheerEyebrow">Beheer</p>
                 <h2 id="plaatModalTitel">Nieuwe plaat toevoegen</h2>
-                <p>De plaat wordt onmiddellijk in de catalogus opgeslagen.</p>
+                <p id="plaatModalOmschrijving">De plaat wordt onmiddellijk in de catalogus opgeslagen.</p>
             </div>
             <button id="sluitPlaatModal" class="modalSluiten" type="button" aria-label="Sluiten">×</button>
+        </div>
+
+        <div id="plaatZoekVeld" class="plaatZoekVeld hidden">
+            <label>Zoek plaat<input id="plaatZoekInput" type="text" placeholder="Naam, code of leverancier..."></label>
+            <div id="plaatZoekResultaten" class="plaatZoekResultaten"></div>
         </div>
 
         <div class="plaatFormGrid">
@@ -131,7 +145,7 @@ CATALOGUS
             <label>Referentie<input id="plaatReferentie" type="text"></label>
             <label>Kleur<input id="plaatKleur" type="text"></label>
             <label>Kleurnummer<input id="plaatKleurnummer" type="number" step="1"></label>
-            <label class="plaatFotoVeld">Foto <input id="plaatFoto" type="file" accept="image/*"></label>
+            <label id="plaatFotoLabel" class="plaatFotoVeld"><span class="plaatFotoLabelTekst">Foto</span> <input id="plaatFoto" type="file" accept="image/*"></label>
         </div>
 
         <p id="plaatFormMelding" class="plaatFormMelding" aria-live="polite"></p>
@@ -360,6 +374,7 @@ SCRIPTS
 <script src="js/icons.js"></script>
 <script src="js/supabase.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/menu.js"></script>
 <script src="js/catalogus.js"></script>
 <script src="js/detail.js"></script>
 <script src="js/bewerken.js"></script>

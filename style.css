@@ -1533,6 +1533,7 @@ BEHEER
 }
 
 .gebruikersMenu { position: relative; }
+.actiesMenu { position: relative; }
 .gebruikerNaam { display: flex; align-items: center; gap: 7px; }
 .gebruikersRol { color: #dbeafe; font-size: 13px; font-weight: 600; }
 
@@ -1545,8 +1546,10 @@ BEHEER
     box-shadow: 0 18px 40px rgba(15, 23, 42, .18);
 }
 
-.dropdown button {
+.dropdown button,
+.dropdown a {
     display: block;
+    width: 100%;
     border: 0;
     border-radius: 9px;
     padding: 10px 12px;
@@ -1555,10 +1558,13 @@ BEHEER
     font: inherit;
     font-weight: 650;
     text-align: left;
+    text-decoration: none;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
-.dropdown button:hover { background: var(--surface-2); }
+.dropdown button:hover,
+.dropdown a:hover { background: var(--surface-2); }
 .dropdown .logoutKlein { color: var(--danger); }
 
 .kaart {
@@ -1594,6 +1600,22 @@ BEHEER
 .archiveerKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
 .archiveerKnop:hover { border-color: var(--warning); color: #b45309; background: #fffbeb; }
 .archiveerKnop:disabled { opacity: .6; cursor: default; }
+
+.bewerkPlaatKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; margin-right: 10px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
+.bewerkPlaatKnop:hover { border-color: var(--primary); color: var(--primary); background: #eff6ff; }
+.bewerkPlaatKnop:disabled { opacity: .6; cursor: default; }
+
+/* ==========================================================
+PLAAT ZOEKEN (binnen "Plaat aanpassen")
+========================================================== */
+
+.plaatZoekVeld { margin-bottom: 10px; }
+.plaatZoekResultaten { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; max-height: 320px; overflow-y: auto; }
+
+.plaatZoekItem { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: white; text-align: left; cursor: pointer; font: inherit; transition: var(--transition); }
+.plaatZoekItem:hover { border-color: var(--primary); background: #f5f8ff; }
+.plaatZoekItem strong { font-size: 14px; }
+.plaatZoekItem span { font-size: 13px; color: var(--text-light); }
 
 .caseKaart { margin-top: 18px; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface-2); }
 .caseFotos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px; }
@@ -1755,6 +1777,7 @@ body.lightboxOpen { overflow: hidden; }
 .plaatFormGrid label { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 14px; font-weight: 700; }
 .plaatFormGrid input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fbfdff; color: var(--text); font: inherit; }
 .plaatFormGrid input:focus { outline: 2px solid rgba(37, 99, 235, .25); border-color: var(--primary); }
+.plaatFormGrid input:disabled { background: var(--surface-2); color: var(--text-light); cursor: not-allowed; }
 .plaatFotoVeld { grid-column: 1 / -1; }
 .plaatFormMelding { min-height: 22px; color: var(--text-light); font-size: 14px; }
 .plaatFormActies { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
