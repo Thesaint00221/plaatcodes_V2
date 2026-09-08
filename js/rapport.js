@@ -155,8 +155,19 @@ async function genereerKlachtenRapport(caseId, knop){
             }
         };
 
+        // Logo bovenaan (zelfde-origin bestand, dus geen CORS-risico
+        // zoals bij de Supabase-opslag-foto's verderop).
+        const logoDataUrl = await fotoAlsDataUrl("images/logo-detremmerie.png");
+
+        if(logoDataUrl){
+            const logoBreedte = 40;
+            const logoHoogte = logoBreedte * (424 / 1494);
+            doc.addImage(logoDataUrl, "PNG", marge, y, logoBreedte, logoHoogte);
+            y += logoHoogte + 10;
+        }
+
         doc.setFontSize(18);
-        doc.text("Klachtenrapport - fout van leverancier", marge, y);
+        doc.text("Rapport leveranciersklacht", marge, y);
         y += 10;
 
         doc.setFontSize(10);
@@ -280,7 +291,7 @@ async function genereerKlachtenRapport(caseId, knop){
 
         }
 
-        const bestandsnaam = `Klachtenrapport_${plaat.code}_${Date.now()}.pdf`;
+        const bestandsnaam = `Rapport-leveranciersklacht_${plaat.code}_${Date.now()}.pdf`;
 
         if(!bonBytes){
 

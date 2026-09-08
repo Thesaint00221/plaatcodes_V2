@@ -401,7 +401,7 @@ async function toonFotos(plaat){
             class="rapportKnop"
             onclick="genereerKlachtenRapport('${item.id}', this)">
 
-            ${icoon("rapport")} Klachtenrapport genereren
+            ${icoon("rapport")} Rapport leveranciersklacht genereren
 
         </button>
         `
