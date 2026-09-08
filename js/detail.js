@@ -140,25 +140,7 @@ const basisFoto =
             }
 
         </div>
-${
-    window.huidigeGebruiker?.rol === "beheerder"
-    ?
-    `
-    <div class="beheerKnoppen">
 
-        <button
-            class="archiveerKnop"
-            onclick="archiveerPlaat('${plaat.code}', this)">
-
-            ${icoon("archief")} Archiveren
-
-        </button>
-
-    </div>
-    `
-    :
-    ""
-}
         <div class="detailInfo">
 
             <span class="detailBadge">
@@ -225,6 +207,22 @@ ${
                 }
 
             </table>
+
+            ${
+                window.huidigeGebruiker?.rol === "beheerder"
+                ?
+                `
+                <button
+                    class="archiveerKnop"
+                    onclick="archiveerPlaat('${plaat.code}', this)">
+
+                    ${icoon("archief")} Archiveren
+
+                </button>
+                `
+                :
+                ""
+            }
 
         </div>
 

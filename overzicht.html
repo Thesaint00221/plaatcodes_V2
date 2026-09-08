@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cases overzicht | Plaatcodes</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#2563eb">
+
+<link rel="stylesheet" href="style.min.css">
+
+</head>
+
+
+<body class="beheerPagina">
+
+<header class="beheerTopbar">
+    <a class="beheerMerk" href="index.html">
+        <img
+            src="images/logo-detremmerie.png"
+            alt="Detremmerie"
+            class="merkLogo">
+        <span>Plaatcodes</span>
+    </a>
+    <div id="loginBox" class="loginArea"></div>
+</header>
+
+<main class="beheer-container">
+
+
+<div class="beheerIntro">
+    <p class="beheerEyebrow">Geschiedenis</p>
+    <h1><span class="icoon" data-icon="lagen"></span> Cases overzicht</h1>
+    <p>Alle cases op één plek, nieuwste eerst — zonder te moeten zoeken in de catalogus.</p>
+</div>
+
+
+<div class="caseTypeKeuze" id="overzichtFilter">
+
+    <button type="button" class="caseTypeKnop actief" data-filter="">
+        Alle cases
+    </button>
+
+    <button type="button" class="caseTypeKnop" data-filter="productie">
+        <span class="icoon" data-icon="fabriek"></span> Productie
+    </button>
+
+    <button type="button" class="caseTypeKnop" data-filter="leverancier">
+        <span class="icoon" data-icon="vrachtwagen"></span> Leverancier
+    </button>
+
+</div>
+
+
+<div id="casesLijst"></div>
+
+<div id="casesLaadMeer" class="laadMeer hidden">Meer cases laden...</div>
+
+
+<a class="beheerTerug" href="index.html"><span class="icoon" data-icon="pijl-links"></span> Terug naar catalogus</a>
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/icons.js"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script src="js/overzicht.js"></script>
+
+<script src="js/pwa.js"></script>
+
+
+</body>
+
+</html>
