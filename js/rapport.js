@@ -193,7 +193,7 @@ async function genereerKlachtenRapport(caseId, knop){
             ["Plaat", plaat.naam],
             ["Code", plaat.code],
             ["Leverancier", plaat.leverancier],
-            ["Referentie", plaat.info?.Referentie || "-"],
+            ["Kleurnummer", plaat.info?.Kleurnummer || "-"],
             ["Kleur", plaat.info?.Kleur || "-"],
             ["Datum case", item.datum ? new Date(item.datum).toLocaleDateString("nl-BE") : "-"],
             ["Toegevoegd door", gebruikersNaam(item.toegevoegd_door)]
