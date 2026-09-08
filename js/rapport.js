@@ -101,6 +101,17 @@ async function bonAlsBytes(url){
 
 }
 
+// Haalt de natuurlijke afmetingen van een data-URL op, nodig om foto's
+// verhoudingsgetrouw in een vast rastervakje te passen.
+function laadAfbeeldingAfmetingen(dataUrl){
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve({breedte: img.naturalWidth, hoogte: img.naturalHeight});
+        img.onerror = () => reject(new Error("Afbeelding kon niet gelezen worden."));
+        img.src = dataUrl;
+    });
+}
+
 async function genereerKlachtenRapport(caseId, knop){
 
     const item = window.laatstGeladenCases?.[caseId];
@@ -259,34 +270,68 @@ async function genereerKlachtenRapport(caseId, knop){
             y += 8;
             doc.setFont(undefined, "normal");
 
+            const kolommen = 2;
+            const tussenruimte = 8;
+            const kolomBreedte = (paginaBreedte - marge * 2 - tussenruimte * (kolommen - 1)) / kolommen;
+            const celHoogte = 65;
+
+            let kolom = 0;
+
             for(const url of fotoUrls){
+
+                // Bij het begin van een nieuwe rij: vooraf checken of
+                // die nog op de huidige pagina past.
+                if(kolom === 0){
+                    nieuwePaginaIndienNodig(celHoogte + tussenruimte);
+                }
+
+                const x = marge + kolom * (kolomBreedte + tussenruimte);
+
+                doc.setDrawColor(219, 227, 236);
+                doc.rect(x, y, kolomBreedte, celHoogte);
 
                 const dataUrl = await fotoAlsDataUrl(url);
 
                 if(dataUrl){
 
-                    const afbeeldingBreedte = 80;
-                    const afbeeldingHoogte = 60;
-
-                    nieuwePaginaIndienNodig(afbeeldingHoogte + 10);
-
                     try{
-                        doc.addImage(dataUrl, "JPEG", marge, y, afbeeldingBreedte, afbeeldingHoogte);
+
+                        const {breedte: natBreedte, hoogte: natHoogte} =
+                            await laadAfbeeldingAfmetingen(dataUrl);
+
+                        // Verhoudingsgetrouw laten passen binnen het vakje
+                        // (net als "object-fit: contain"), en centreren.
+                        const schaal = Math.min(kolomBreedte / natBreedte, celHoogte / natHoogte);
+                        const afbBreedte = natBreedte * schaal;
+                        const afbHoogte = natHoogte * schaal;
+                        const offsetX = x + (kolomBreedte - afbBreedte) / 2;
+                        const offsetY = y + (celHoogte - afbHoogte) / 2;
+
+                        doc.addImage(dataUrl, "JPEG", offsetX, offsetY, afbBreedte, afbHoogte);
+
                     }catch(fout){
                         console.error("Foto invoegen in PDF mislukt:", fout);
-                        doc.textWithLink(url, marge, y + 5, {url});
+                        doc.textWithLink(url, x + 3, y + celHoogte / 2, {url});
                     }
-
-                    y += afbeeldingHoogte + 8;
 
                 }else{
 
-                    nieuwePaginaIndienNodig(8);
-                    doc.textWithLink(url, marge, y, {url});
-                    y += 8;
+                    doc.textWithLink(url, x + 3, y + celHoogte / 2, {url});
 
                 }
 
+                kolom++;
+
+                if(kolom === kolommen){
+                    kolom = 0;
+                    y += celHoogte + tussenruimte;
+                }
+
+            }
+
+            // Laatste rij niet volledig gevuld -> toch doorschuiven
+            if(kolom !== 0){
+                y += celHoogte + tussenruimte;
             }
 
         }
