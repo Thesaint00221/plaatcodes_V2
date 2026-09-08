@@ -10,11 +10,19 @@ function toonBeheerKnoppen(isBeheerder){
     const nieuwePlaatKnop =
         document.getElementById("nieuwePlaatKnop");
 
+    const plaatAanpassenKnop =
+        document.getElementById("plaatAanpassenKnop");
+
     const archiefKnop =
         document.getElementById("archiefKnop");
 
     if(nieuwePlaatKnop){
         nieuwePlaatKnop.style.display =
+            isBeheerder ? "" : "none";
+    }
+
+    if(plaatAanpassenKnop){
+        plaatAanpassenKnop.style.display =
             isBeheerder ? "" : "none";
     }
 

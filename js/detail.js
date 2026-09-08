@@ -213,6 +213,14 @@ const basisFoto =
                 ?
                 `
                 <button
+                    class="bewerkPlaatKnop"
+                    onclick="openPlaatModalBewerken(window.geselecteerdePlaat)">
+
+                    ${icoon("tools")} Bewerken
+
+                </button>
+
+                <button
                     class="archiveerKnop"
                     onclick="archiveerPlaat('${plaat.code}', this)">
 
