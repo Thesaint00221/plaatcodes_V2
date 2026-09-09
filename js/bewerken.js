@@ -26,28 +26,29 @@ function bewerkCase(id, knop){
 
     inhoud.dataset.oorspronkelijkeInhoud = inhoud.innerHTML;
 
+    // ✅ HTML zonder onclick-attributen
     inhoud.innerHTML = `
 
         <div class="uploadVeld">
-            <label for="bewerkTitel-${id}">Titel</label>
+            <label for="bewerkTitel-${escapeHtml(id)}">Titel</label>
             <input
-                id="bewerkTitel-${id}"
+                id="bewerkTitel-${escapeHtml(id)}"
                 type="text"
                 maxlength="80"
-                value="${(titelOud || "").replace(/"/g,"&quot;")}">
+                value="${escapeHtml(titelOud || "")}">
         </div>
 
         <div class="uploadVeld">
-            <label for="bewerkOpmerking-${id}">Opmerking</label>
+            <label for="bewerkOpmerking-${escapeHtml(id)}">Opmerking</label>
             <textarea
-                id="bewerkOpmerking-${id}"
-                rows="4">${opmerkingOud}</textarea>
+                id="bewerkOpmerking-${escapeHtml(id)}"
+                rows="4">${escapeHtml(opmerkingOud)}</textarea>
         </div>
 
         <button
             type="button"
             class="bewerkOpslaan"
-            onclick="slaBewerkingOp('${id}', this)">
+            data-case-id="${escapeHtml(id)}">
 
             ${icoon("vink")} Opslaan
 
@@ -56,13 +57,29 @@ function bewerkCase(id, knop){
         <button
             type="button"
             class="bewerkAnnuleren"
-            onclick="annuleerBewerking('${id}', this)">
+            data-case-id="${escapeHtml(id)}">
 
             Annuleren
 
         </button>
 
     `;
+
+    // ✅ Voeg event listeners toe ÁNA HTML
+    const opslaarKnop = inhoud.querySelector('.bewerkOpslaan');
+    const annuleerKnop = inhoud.querySelector('.bewerkAnnuleren');
+
+    if(opslaarKnop) {
+        opslaarKnop.addEventListener('click', async () => {
+            await slaBewerkingOp(id, opslaarKnop);
+        });
+    }
+
+    if(annuleerKnop) {
+        annuleerKnop.addEventListener('click', () => {
+            annuleerBewerking(id, annuleerKnop);
+        });
+    }
 
 }
 
@@ -82,6 +99,11 @@ async function slaBewerkingOp(id, knop){
     const titelVeld = document.getElementById(`bewerkTitel-${id}`);
     const opmerkingVeld = document.getElementById(`bewerkOpmerking-${id}`);
 
+    if(!titelVeld || !opmerkingVeld) {
+        alert("Kon de invoervelden niet vinden.");
+        return;
+    }
+
     const titel = titelVeld.value.trim() || "Geen titel";
     const opmerking = opmerkingVeld.value.trim() || "Geen opmerking";
 
@@ -99,8 +121,8 @@ async function slaBewerkingOp(id, knop){
             .eq("id", id);
 
     if(error){
-        console.error(error);
-        alert("Opslaan mislukt.");
+        console.error("Bewerking opslaan mislukt:", error);
+        alert("Opslaan mislukt. Probeer het later opnieuw.");
         knop.disabled = false;
         knop.innerHTML = oorspronkelijkeTekst;
         return;
