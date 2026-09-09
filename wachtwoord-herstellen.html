@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wachtwoord herstellen — Plaatcatalogus</title>
+<style>
+    :root{
+        --kleur-primair: #1f5eab;
+        --kleur-primair-donker: #164782;
+        --kleur-fout: #c0392b;
+        --kleur-succes: #1e8449;
+        --kleur-tekst: #22303f;
+        --kleur-tekst-zwak: #6b7885;
+        --kleur-rand: #dfe4ea;
+        --kleur-achtergrond: #f4f6f8;
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--kleur-achtergrond);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        color: var(--kleur-tekst);
+        padding: 20px;
+    }
+
+    .kaart{
+        width: 100%;
+        max-width: 400px;
+        background: #fff;
+        border: 1px solid var(--kleur-rand);
+        border-radius: 12px;
+        padding: 32px 28px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .logo{
+        display: block;
+        max-height: 48px;
+        margin: 0 auto 20px;
+    }
+
+    h1{
+        font-size: 20px;
+        margin: 0 0 6px;
+        text-align: center;
+    }
+
+    p.uitleg{
+        margin: 0 0 24px;
+        font-size: 14px;
+        color: var(--kleur-tekst-zwak);
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    label{
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    input[type="password"]{
+        width: 100%;
+        padding: 11px 12px;
+        border: 1px solid var(--kleur-rand);
+        border-radius: 8px;
+        font-size: 15px;
+        margin-bottom: 16px;
+    }
+
+    input[type="password"]:focus{
+        outline: none;
+        border-color: var(--kleur-primair);
+    }
+
+    button{
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: var(--kleur-primair);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    button:hover{ background: var(--kleur-primair-donker); }
+
+    button:disabled{
+        background: #a9b6c3;
+        cursor: not-allowed;
+    }
+
+    .melding{
+        font-size: 13.5px;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 16px;
+        line-height: 1.4;
+        display: none;
+    }
+
+    .melding--fout{
+        background: #fdecea;
+        color: var(--kleur-fout);
+        display: block;
+    }
+
+    .melding--succes{
+        background: #eafaf1;
+        color: var(--kleur-succes);
+        display: block;
+    }
+
+    .status{
+        text-align: center;
+        font-size: 14px;
+        color: var(--kleur-tekst-zwak);
+    }
+
+    a.terugLink{
+        display: block;
+        text-align: center;
+        margin-top: 16px;
+        font-size: 13.5px;
+        color: var(--kleur-primair);
+        text-decoration: none;
+    }
+
+    a.terugLink:hover{ text-decoration: underline; }
+
+    .verborgen{ display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="kaart">
+
+    <img src="img/logo.png" alt="" class="logo" onerror="this.style.display='none'">
+
+    <h1>Nieuw wachtwoord instellen</h1>
+    <p class="uitleg">Kies hieronder een nieuw wachtwoord voor je account.</p>
+
+    <div id="meldingLink" class="melding melding--fout">
+        Deze link is ongeldig of verlopen. Vraag een nieuwe herstelmail aan en probeer opnieuw.
+    </div>
+
+    <p id="statusControle" class="status">Link wordt gecontroleerd...</p>
+
+    <form id="herstelForm" class="verborgen">
+
+        <div id="meldingForm" class="melding"></div>
+
+        <label for="wachtwoord1">Nieuw wachtwoord</label>
+        <input type="password" id="wachtwoord1" autocomplete="new-password" minlength="6" required>
+
+        <label for="wachtwoord2">Bevestig wachtwoord</label>
+        <input type="password" id="wachtwoord2" autocomplete="new-password" minlength="6" required>
+
+        <button type="submit" id="verzendKnop">Wachtwoord opslaan</button>
+
+    </form>
+
+    <div id="succesBlok" class="verborgen">
+        <div class="melding melding--succes">Je wachtwoord is aangepast. Je wordt doorgestuurd...</div>
+    </div>
+
+    <a href="index.html" class="terugLink">Terug naar inloggen</a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/wachtwoord-herstellen.js"></script>
+
+</body>
+</html>
