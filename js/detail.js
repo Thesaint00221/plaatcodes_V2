@@ -29,7 +29,9 @@ async function laadGebruikersNamen(emails){
             .in("email", onbekend);
 
     if(error){
-        console.error(error);
+        console.error("Gebruikersnamen laden mislukt:", error);
+        // Toon fout in console, maar zet geen lege waarden in cache
+        // (users zien dit niet direct, maar we voorkomen dat de app breekt)
     }
 
     (data || []).forEach(rij => {
@@ -75,6 +77,63 @@ function haalOpenbareUrl(pad){
 window.laatstGeladenCases = {};
 
 // ============================================
+// Lightbox (herbruikbaar, niet elke keer opnieuw gebouwd)
+// ============================================
+
+let lightboxElement = null;
+
+function initLightbox() {
+    if (lightboxElement) return;
+
+    lightboxElement = document.createElement("div");
+    lightboxElement.id = "fotoLightbox";
+    lightboxElement.innerHTML = `
+        <div class="lightboxBinnen">
+            <button class="lightboxSluiten" type="button" aria-label="Foto sluiten">×</button>
+            <img id="lightboxImg" src="" alt="Vergrote foto">
+        </div>
+    `;
+    document.body.appendChild(lightboxElement);
+
+    // Event listeners eénmalig toevoegen
+    lightboxElement.querySelector(".lightboxSluiten")
+        .addEventListener("click", sluitLightbox);
+
+    lightboxElement.addEventListener("click", (e) => {
+        if(e.target === lightboxElement) {
+            sluitLightbox();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if(e.key === "Escape" && lightboxElement?.classList.contains("actief")) {
+            sluitLightbox();
+        }
+    });
+}
+
+function openFotoLightbox(url) {
+    if(!url) return;
+
+    initLightbox();
+
+    // ✅ Wijzig alleen de src (geen DOM-repaint)
+    const img = lightboxElement.querySelector("#lightboxImg");
+    img.src = url;
+    img.alt = "Vergrote foto";
+
+    lightboxElement.classList.add("actief");
+    document.body.classList.add("lightboxOpen");
+}
+
+function sluitLightbox() {
+    if(lightboxElement) {
+        lightboxElement.classList.remove("actief");
+        document.body.classList.remove("lightboxOpen");
+    }
+}
+
+// ============================================
 // Elementen
 // ============================================
 
@@ -117,7 +176,7 @@ const basisFoto =
 
     <div class="detailHeader">
 
-        <div class="detailFotoGroot">
+        <div class="detailFotoGroot" id="detailFotoGroot">
 
             ${
                 basisFoto
@@ -126,9 +185,9 @@ const basisFoto =
                 <img
                     id="groteFoto"
                     src="${basisFoto}"
-                    alt="${plaat.naam}"
+                    alt="${escapeHtml(plaat.naam)}"
                     loading="lazy"
-                    onclick="openFotoLightbox('${basisFoto}')"
+                    class="groteFotoImg"
                 >
                 `
                 :
@@ -144,27 +203,27 @@ const basisFoto =
         <div class="detailInfo">
 
             <span class="detailBadge">
-                ${plaat.leverancier}
+                ${escapeHtml(plaat.leverancier)}
             </span>
 
             <h1>
-                ${plaat.naam}
+                ${escapeHtml(plaat.naam)}
             </h1>
 
             <div class="detailCode">
-                ${plaat.code}
+                ${escapeHtml(plaat.code)}
             </div>
 
             <table class="detailTable">
 
                 <tr>
                     <td>Leverancier</td>
-                    <td>${plaat.leverancier}</td>
+                    <td>${escapeHtml(plaat.leverancier)}</td>
                 </tr>
 
                 <tr>
                     <td>Code</td>
-                    <td>${plaat.code}</td>
+                    <td>${escapeHtml(plaat.code)}</td>
                 </tr>
 
                 ${
@@ -173,7 +232,7 @@ const basisFoto =
                     `
                     <tr>
                         <td>Referentie</td>
-                        <td>${plaat.info.Referentie}</td>
+                        <td>${escapeHtml(plaat.info.Referentie)}</td>
                     </tr>
                     `
                     :
@@ -186,7 +245,7 @@ const basisFoto =
                     `
                     <tr>
                         <td>Kleur</td>
-                        <td>${plaat.info.Kleur}</td>
+                        <td>${escapeHtml(plaat.info.Kleur)}</td>
                     </tr>
                     `
                     :
@@ -199,7 +258,7 @@ const basisFoto =
                     `
                     <tr>
                         <td>Kleurnummer</td>
-                        <td>${plaat.info.Kleurnummer}</td>
+                        <td>${escapeHtml(String(plaat.info.Kleurnummer))}</td>
                     </tr>
                     `
                     :
@@ -214,7 +273,8 @@ const basisFoto =
                 `
                 <button
                     class="bewerkPlaatKnop"
-                    onclick="openPlaatModalBewerken(window.geselecteerdePlaat)">
+                    id="bewerkPlaatBtn"
+                    type="button">
 
                     ${icoon("tools")} Bewerken
 
@@ -222,7 +282,8 @@ const basisFoto =
 
                 <button
                     class="archiveerKnop"
-                    onclick="archiveerPlaat('${plaat.code}', this)">
+                    id="archiveerPlaatBtn"
+                    type="button">
 
                     ${icoon("archief")} Archiveren
 
@@ -245,6 +306,23 @@ const basisFoto =
 </div>
 
 `;
+
+    // ✅ Voeg event listeners toe ÁNA innerHTML
+    const bewerkBtn = detailContent.querySelector("#bewerkPlaatBtn");
+    if(bewerkBtn) {
+        bewerkBtn.addEventListener("click", () => openPlaatModalBewerken(plaat));
+    }
+
+    const archiveerBtn = detailContent.querySelector("#archiveerPlaatBtn");
+    if(archiveerBtn) {
+        archiveerBtn.addEventListener("click", () => archiveerPlaat(plaat.code, archiveerBtn));
+    }
+
+    // ✅ Klik op grote foto -> lightbox
+    const groteFoto = detailContent.querySelector("#groteFoto");
+    if(groteFoto && basisFoto) {
+        groteFoto.addEventListener("click", () => openFotoLightbox(basisFoto));
+    }
 
     toonFotos(plaat);
 
@@ -279,10 +357,10 @@ async function toonFotos(plaat){
 
     if(error){
 
-        console.error(error);
+        console.error("Cases laden mislukt:", error);
 
         galerij.innerHTML += `
-            <p>Fout bij laden van de cases.</p>
+            <p>Fout bij laden van de cases. Probeer het later opnieuw.</p>
         `;
 
         return;
@@ -318,7 +396,7 @@ async function toonFotos(plaat){
 
         html += `
 
-<div class="caseKaart">
+<div class="caseKaart" data-case-id="${item.id}">
 
     <div class="caseFotos${isLeverancier ? " caseFotosGalerij" : ""}">
 
@@ -328,12 +406,13 @@ async function toonFotos(plaat){
             (item.fotos || [])
                 .map(pad => haalOpenbareUrl(pad))
                 .filter(Boolean)
-                .map(url => `
+                .map((url, idx) => `
                     <img
                         src="${url}"
                         class="detailFoto"
                         loading="lazy"
-                        onclick="openFotoLightbox('${url}')"
+                        data-foto-url="${escapeHtml(url)}"
+                        data-foto-index="${idx}"
                     >
                 `)
                 .join("")
@@ -347,7 +426,7 @@ async function toonFotos(plaat){
                     src="${haalOpenbareUrl(item.foto)}"
                     class="detailFoto"
                     loading="lazy"
-                    onclick="openFotoLightbox('${haalOpenbareUrl(item.foto)}')"
+                    data-foto-url="${escapeHtml(haalOpenbareUrl(item.foto))}"
                 >
                 `
                 :
@@ -361,7 +440,7 @@ async function toonFotos(plaat){
                     src="${haalOpenbareUrl(item.overzicht_foto)}"
                     class="detailFoto"
                     loading="lazy"
-                    onclick="openFotoLightbox('${haalOpenbareUrl(item.overzicht_foto)}')"
+                    data-foto-url="${escapeHtml(haalOpenbareUrl(item.overzicht_foto))}"
                 >
                 `
                 :
@@ -379,7 +458,7 @@ async function toonFotos(plaat){
     </span>
 
     <p class="omschrijving">
-        ${(item.omschrijving || "").replace(/\n/g,"<br>")}
+        ${escapeHtml(item.omschrijving || "").replace(/\n/g,"<br>")}
     </p>
 
     ${
@@ -407,7 +486,7 @@ async function toonFotos(plaat){
         <button
             type="button"
             class="rapportKnop"
-            onclick="genereerKlachtenRapport('${item.id}', this)">
+            id="rapport-${item.id}">
 
             ${icoon("rapport")} Rapport leveranciersklacht genereren
 
@@ -419,7 +498,7 @@ async function toonFotos(plaat){
 
     <small class="fotoInfo">
 
-        ${icoon("gebruiker")} ${naam}
+        ${icoon("gebruiker")} ${escapeHtml(naam)}
 
         <br>
 
@@ -440,7 +519,7 @@ async function toonFotos(plaat){
         <button
             type="button"
             class="bewerkFoto"
-            onclick="bewerkCase('${item.id}', this)">
+            id="bewerk-${item.id}">
 
             ${icoon("tools")} Bewerken
 
@@ -448,7 +527,7 @@ async function toonFotos(plaat){
 
         <button
             class="verwijderFoto"
-            onclick="verwijderCase('${item.id}', this)">
+            id="verwijder-${item.id}">
 
             ${icoon("vuilbak")} Verwijderen
 
@@ -467,6 +546,29 @@ async function toonFotos(plaat){
     }
 
     galerij.innerHTML += html;
+
+    // ✅ Voeg event listeners toe ÁNA HTML
+    galerij.querySelectorAll(".detailFoto").forEach(img => {
+        img.addEventListener("click", () => {
+            const url = img.dataset.fotoUrl;
+            if(url) openFotoLightbox(url);
+        });
+    });
+
+    galerij.querySelectorAll(".rapportKnop").forEach(btn => {
+        const caseId = btn.id.replace("rapport-", "");
+        btn.addEventListener("click", () => genereerKlachtenRapport(caseId, btn));
+    });
+
+    galerij.querySelectorAll(".bewerkFoto").forEach(btn => {
+        const caseId = btn.id.replace("bewerk-", "");
+        btn.addEventListener("click", () => bewerkCase(caseId, btn));
+    });
+
+    galerij.querySelectorAll(".verwijderFoto").forEach(btn => {
+        const caseId = btn.id.replace("verwijder-", "");
+        btn.addEventListener("click", () => verwijderCase(caseId, btn));
+    });
 
 }
 // ============================================
@@ -549,9 +651,9 @@ async function verwijderCase(id, knop){
 
     if(zoekError){
 
-        console.error(zoekError);
+        console.error("Case ophalen voor verwijdering mislukt:", zoekError);
 
-        alert("Case ophalen mislukt.");
+        alert("Case ophalen mislukt. Probeer het later opnieuw.");
 
         herstelKnop();
 
@@ -607,10 +709,10 @@ async function verwijderCase(id, knop){
 
         if(storageError){
 
-            console.error(storageError);
+            console.error("Foto's verwijderen mislukt:", storageError);
 
             alert(
-                "Foto's verwijderen mislukt."
+                "Foto's verwijderen mislukt. De case is niet verwijderd."
             );
 
             herstelKnop();
@@ -629,10 +731,10 @@ async function verwijderCase(id, knop){
 
     if(error){
 
-        console.error(error);
+        console.error("Case verwijderen mislukt:", error);
 
         alert(
-            "Case verwijderen mislukt."
+            "Case verwijderen mislukt. Probeer het later opnieuw."
         );
 
         herstelKnop();
@@ -680,10 +782,10 @@ async function archiveerPlaat(code, knop){
 
     if(error){
 
-        console.error(error);
+        console.error("Archiveren mislukt:", error);
 
         alert(
-            "Archiveren mislukt."
+            "Archiveren mislukt. Probeer het later opnieuw."
         );
 
         if(knop){
@@ -708,81 +810,6 @@ async function archiveerPlaat(code, knop){
 
 
     await initCatalogus();
-
-}
-// ============================================
-// Lightbox
-// ============================================
-
-function openFotoLightbox(url){
-
-    if(!url){
-        return;
-    }
-
-    let lightbox =
-        document.getElementById(
-            "fotoLightbox"
-        );
-
-    if(!lightbox){
-
-        lightbox =
-            document.createElement("div");
-
-        lightbox.id =
-            "fotoLightbox";
-
-        document.body.appendChild(
-            lightbox
-        );
-
-    }
-
-    lightbox.innerHTML = `
-
-        <div class="lightboxBinnen">
-
-            <button
-                class="lightboxSluiten"
-                type="button"
-                aria-label="Foto sluiten">
-                ×
-            </button>
-
-            <img
-                src="${url}"
-                alt="Foto"
-            >
-
-        </div>
-
-    `;
-
-    lightbox.classList.add("actief");
-
-    const sluitLightbox = function(){
-        lightbox.classList.remove("actief");
-        document.body.classList.remove("lightboxOpen");
-    };
-
-    document.body.classList.add("lightboxOpen");
-
-    lightbox.onclick = function(event){
-        if(event.target === lightbox){
-            sluitLightbox();
-        }
-    };
-
-    lightbox
-        .querySelector(".lightboxSluiten")
-        .addEventListener("click", sluitLightbox);
-
-    document.onkeydown = function(event){
-        if(event.key === "Escape"){
-            sluitLightbox();
-        }
-    };
 
 }
 
