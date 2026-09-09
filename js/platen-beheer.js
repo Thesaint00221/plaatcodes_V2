@@ -154,7 +154,13 @@ plaatZoekInput?.addEventListener("input", () => {
             return;
         }
 
-        const veiligeTerm = term.replace(/[,()%]/g, "");
+        // ✅ Gebruik saniteerZoekterm() uit security-utils.js voor betere veiligheid
+        const veiligeTerm = saniteerZoekterm(term);
+
+        if(!veiligeTerm) {
+            plaatZoekResultaten.innerHTML = '<p class="geenResultaat">Voer geldige zoektermen in.</p>';
+            return;
+        }
 
         const {data, error} = await supabaseClient
             .from("platen")
@@ -163,8 +169,8 @@ plaatZoekInput?.addEventListener("input", () => {
             .limit(8);
 
         if(error){
-            console.error(error);
-            plaatZoekResultaten.innerHTML = '<p class="geenResultaat">Zoeken mislukt.</p>';
+            console.error("Platen zoeken mislukt:", error);
+            plaatZoekResultaten.innerHTML = '<p class="geenResultaat">Zoeken mislukt. Probeer het later opnieuw.</p>';
             return;
         }
 
@@ -183,10 +189,11 @@ plaatZoekInput?.addEventListener("input", () => {
             item.type = "button";
             item.className = "plaatZoekItem";
             item.innerHTML = `
-                <strong>${plaat.naam}</strong>
-                <span>${plaat.code} · ${plaat.leverancier}${plaat.gearchiveerd ? " · gearchiveerd" : ""}</span>
+                <strong>${escapeHtml(plaat.naam)}</strong>
+                <span>${escapeHtml(plaat.code)} · ${escapeHtml(plaat.leverancier)}${plaat.gearchiveerd ? " · gearchiveerd" : ""}</span>
             `;
 
+            // ✅ Voeg event listener toe i.p.v. onclick-attribuut
             item.addEventListener("click", () => openPlaatModalBewerken(plaat));
 
             plaatZoekResultaten.appendChild(item);
@@ -207,7 +214,7 @@ async function codeAlBezet(code){
         .eq("code", code);
 
     if(error){
-        console.error(error);
+        console.error("Code check mislukt:", error);
         // Bij een onzekere check laten we de submit doorgaan; de unieke
         // constraint in de database vangt duplicaten sowieso alsnog op.
         return false;
@@ -233,7 +240,7 @@ nieuwePlaatForm?.addEventListener("submit", async event => {
 
     // Vooraf valideren, vóór er iets geüpload wordt (enkel relevant bij
     // een nieuwe plaat -- bij bewerken staat de code vast)
-    if(!bewerkModus && !PLAATCODE_PATROON.test(code)){
+    if(!bewerkModus && !isValidePlaatcode(code)){
         plaatFormMelding.textContent =
             "Ongeldige plaatcode. Gebruik enkel letters, cijfers, spaties, punten, streepjes of underscores (max. 50 tekens).";
         return;
@@ -311,6 +318,9 @@ nieuwePlaatForm?.addEventListener("submit", async event => {
         nieuwePlaatForm.reset();
         sluitPlaatModal();
 
+        // ✅ Invalideer leveranciers-cache zodat deze opnieuw geladen wordt
+        await invalideerLeveranciersCache();
+
         // Als je net deze plaat aan het bekijken was, die detailpagina
         // meteen verversen i.p.v. terug te vallen op het overzicht.
         if(window.geselecteerdePlaat?.code === bewerkteCode){
@@ -332,10 +342,10 @@ nieuwePlaatForm?.addEventListener("submit", async event => {
         }
 
     }catch(error){
-        console.error(error);
+        console.error("Plaat opslaan mislukt:", error);
         plaatFormMelding.textContent = error.code === "23505"
             ? "Deze plaatcode bestaat al."
-            : "Opslaan mislukt. Controleer je Supabase-instellingen.";
+            : "Opslaan mislukt. Controleer je Supabase-instellingen en probeer het later opnieuw.";
     }finally{
         opslaanKnop.disabled = false;
         opslaanKnop.innerHTML = opslaanKnopTekst;
