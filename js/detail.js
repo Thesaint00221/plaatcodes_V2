@@ -77,63 +77,6 @@ function haalOpenbareUrl(pad){
 window.laatstGeladenCases = {};
 
 // ============================================
-// Lightbox (herbruikbaar, niet elke keer opnieuw gebouwd)
-// ============================================
-
-let lightboxElement = null;
-
-function initLightbox() {
-    if (lightboxElement) return;
-
-    lightboxElement = document.createElement("div");
-    lightboxElement.id = "fotoLightbox";
-    lightboxElement.innerHTML = `
-        <div class="lightboxBinnen">
-            <button class="lightboxSluiten" type="button" aria-label="Foto sluiten">×</button>
-            <img id="lightboxImg" src="" alt="Vergrote foto">
-        </div>
-    `;
-    document.body.appendChild(lightboxElement);
-
-    // Event listeners eénmalig toevoegen
-    lightboxElement.querySelector(".lightboxSluiten")
-        .addEventListener("click", sluitLightbox);
-
-    lightboxElement.addEventListener("click", (e) => {
-        if(e.target === lightboxElement) {
-            sluitLightbox();
-        }
-    });
-
-    document.addEventListener("keydown", (e) => {
-        if(e.key === "Escape" && lightboxElement?.classList.contains("actief")) {
-            sluitLightbox();
-        }
-    });
-}
-
-function openFotoLightbox(url) {
-    if(!url) return;
-
-    initLightbox();
-
-    // ✅ Wijzig alleen de src (geen DOM-repaint)
-    const img = lightboxElement.querySelector("#lightboxImg");
-    img.src = url;
-    img.alt = "Vergrote foto";
-
-    lightboxElement.classList.add("actief");
-    document.body.classList.add("lightboxOpen");
-}
-
-function sluitLightbox() {
-    if(lightboxElement) {
-        lightboxElement.classList.remove("actief");
-        document.body.classList.remove("lightboxOpen");
-    }
-}
-
-// ============================================
 // Elementen
 // ============================================
 
@@ -188,6 +131,7 @@ const basisFoto =
                     alt="${escapeHtml(plaat.naam)}"
                     loading="lazy"
                     class="groteFotoImg"
+                    style="width: 100%; height: 100%; object-fit: contain;"
                 >
                 `
                 :
@@ -316,12 +260,6 @@ const basisFoto =
     const archiveerBtn = detailContent.querySelector("#archiveerPlaatBtn");
     if(archiveerBtn) {
         archiveerBtn.addEventListener("click", () => archiveerPlaat(plaat.code, archiveerBtn));
-    }
-
-    // ✅ Klik op grote foto -> lightbox
-    const groteFoto = detailContent.querySelector("#groteFoto");
-    if(groteFoto && basisFoto) {
-        groteFoto.addEventListener("click", () => openFotoLightbox(basisFoto));
     }
 
     toonFotos(plaat);
@@ -551,7 +489,9 @@ async function toonFotos(plaat){
     galerij.querySelectorAll(".detailFoto").forEach(img => {
         img.addEventListener("click", () => {
             const url = img.dataset.fotoUrl;
-            if(url) openFotoLightbox(url);
+            if(url) {
+                // Geen lightbox meer - foto's zijn al in ware grootte
+            }
         });
     });
 
