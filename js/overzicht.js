@@ -110,7 +110,7 @@ async function laadCasesPagina(reset){
     }
 
     query = query
-        .order("datum", {ascending: false})
+        .order("datum", {ascending: false, nullsFirst: false})
         .range(overzichtOffset, overzichtOffset + CASES_PAGINA_GROOTTE - 1);
 
     const {data, error} = await query;
