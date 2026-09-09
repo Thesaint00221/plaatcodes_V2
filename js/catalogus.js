@@ -18,6 +18,9 @@ let bezigMetLaden = false;
 let allesGeladen = false;
 let opgezet = false;
 
+// Cache voor leveranciers (voorkomen van dubbele queries)
+let leveranciersCache = null;
+
 function normaliseerPlaat(plaat){
     return {
         ...plaat,
@@ -39,11 +42,18 @@ function haalPlaatFotoUrl(foto){
     return foto.startsWith("http") ? foto : `photos/${foto}`;
 }
 
-// PostgREST's .or()-syntax gebruikt , ( ) als scheidingstekens — die
-// verwijderen we uit de zoekterm zodat de query geldig blijft.
-function saniteerZoekterm(term){
-    return term.replace(/[,()%]/g, "").trim();
-}
+// ============================================
+// SQL-VEILIGHEID: Betere sanitatie van zoekinvoer
+// ============================================
+// Oude functie vervangen door de versie uit security-utils.js
+// (die is al geïmporteerd via index.html)
+//
+// De saniteerZoekterm() uit security-utils.js doet:
+// 1. Verwijder alle niet-alfanumerieke karakters behalve veilige interpunctie
+// 2. Extra: verwijder SQL-operators (,()%;'")
+// 3. Max 100 tekens (DOS-preventie)
+//
+// Dit is veel robuuster dan de oude versie die enkel [,()%] verwijderde.
 
 async function initCatalogus(){
 
@@ -90,12 +100,18 @@ async function initCatalogus(){
 }
 
 // ============================================
-// Leveranciers-dropdown vullen
+// Leveranciers-dropdown vullen (met caching)
 // ============================================
 
 async function laadLeveranciers(){
 
     if(!leverancierFilter){
+        return;
+    }
+
+    // ✅ Controleer cache: als leveranciers al geladen zijn, gebruik ze opnieuw
+    if(leveranciersCache !== null){
+        vulLeverancierDropdown(leveranciersCache);
         return;
     }
 
@@ -105,7 +121,11 @@ async function laadLeveranciers(){
         .eq("gearchiveerd", false);
 
     if(error){
-        console.error(error);
+        console.error("Leveranciers laden mislukt:", error);
+        // Toon fout aan gebruiker
+        leverancierFilter.innerHTML = `
+            <option value="">Fout: leveranciers konden niet geladen worden</option>
+        `;
         return;
     }
 
@@ -115,9 +135,21 @@ async function laadLeveranciers(){
             .filter(Boolean)
     )].sort((a, b) => a.localeCompare(b));
 
+    // ✅ Cache de leveranciers zodat we ze niet elke keer opnieuw ophalen
+    leveranciersCache = leveranciers;
+    vulLeverancierDropdown(leveranciers);
+}
+
+function vulLeverancierDropdown(leveranciers){
     leverancierFilter.innerHTML =
         `<option value="">Alle leveranciers</option>` +
-        leveranciers.map(l => `<option value="${l}">${l}</option>`).join("");
+        leveranciers.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join("");
+}
+
+// ✅ Vernieuw cache als platen worden toegevoegd/bewerkt
+async function invalideerLeveranciersCache(){
+    leveranciersCache = null;
+    await laadLeveranciers();
 }
 
 // ============================================
@@ -155,6 +187,7 @@ async function herlaadCatalogus(reset){
         query = query.eq("leverancier", huidigeLeverancier);
     }
 
+    // ✅ Gebruik saniteerZoekterm() uit security-utils.js
     const term = saniteerZoekterm(huidigeZoekterm);
 
     if(term){
@@ -187,12 +220,12 @@ async function herlaadCatalogus(reset){
     }
 
     if(error){
-        console.error(error);
+        console.error("Catalogus laden mislukt:", error);
 
         if(reset){
             resultaten.innerHTML = `
                 <p class="geenResultaat">
-                    De catalogus kon niet geladen worden.
+                    De catalogus kon niet geladen worden. Probeer het later opnieuw.
                 </p>
             `;
         }
@@ -235,32 +268,40 @@ function toonPlaten(lijst){
     lijst.forEach(plaat => {
         const kaart = document.createElement("div");
         kaart.className = "kaart modern-kaart";
-        kaart.addEventListener("click", () => toonDetail(plaat));
 
         const eersteFoto = haalPlaatFotoUrl(plaat.photos[0]);
         const fotoIconHtml = icoon("foto");
+        const uniqueId = `foto-${plaat.code}-${Date.now()}-${Math.random()}`;
 
         kaart.innerHTML = `
             <div class="kaartFoto">
                 ${eersteFoto
-                    ? `<img src="${eersteFoto}" alt="${plaat.naam}" loading="lazy">`
+                    ? `<img 
+                        id="${uniqueId}"
+                        src="${eersteFoto}" 
+                        alt="${escapeHtml(plaat.naam)}" 
+                        loading="lazy"
+                        class="kaartImg">`
                     : `<div class="geenFoto">${fotoIconHtml}</div>`}
             </div>
             <div class="kaartBody">
-                <div class="kaartTitel">${plaat.naam}</div>
-                <div class="kaartCode">${plaat.code}</div>
-                <div class="kaartLeverancier">${plaat.leverancier}</div>
+                <div class="kaartTitel">${escapeHtml(plaat.naam)}</div>
+                <div class="kaartCode">${escapeHtml(plaat.code)}</div>
+                <div class="kaartLeverancier">${escapeHtml(plaat.leverancier)}</div>
                 <button class="detailKnop" type="button">Bekijk details ${icoon("pijl-rechts")}</button>
             </div>
         `;
 
-        // Los van een inline onerror-attribuut (geeft escaping-problemen
-        // met de aanhalingstekens in de SVG): gewone event listener.
-        const kaartImg = kaart.querySelector(".kaartFoto img");
+        // ✅ Voeg event listener toe ÁNA innerHTML (niet via onclick-attribuut)
+        kaart.addEventListener("click", () => toonDetail(plaat));
 
-        kaartImg?.addEventListener("error", () => {
-            kaartImg.parentElement.innerHTML = `<div class="geenFoto">${fotoIconHtml}</div>`;
-        }, {once:true});
+        // ✅ Foutafhandeling voor foto's via event listener
+        const kaartImg = kaart.querySelector(".kaartImg");
+        if(kaartImg){
+            kaartImg.addEventListener("error", () => {
+                kaartImg.parentElement.innerHTML = `<div class="geenFoto">${fotoIconHtml}</div>`;
+            }, {once: true});
+        }
 
         resultaten.appendChild(kaart);
     });
