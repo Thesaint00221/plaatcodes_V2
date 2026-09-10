@@ -1778,10 +1778,12 @@ body.lightboxOpen { overflow: hidden; }
 .gebruikerRijMeta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--text-light); }
 .gebruikerRijMeta .icoon { margin-right: 3px; }
 
-.gebruikerRolSelect { padding: 8px 12px; border: 2px solid var(--border); border-radius: 10px; font: inherit; font-weight: 700; font-size: 13px; background: white; flex-shrink: 0; cursor: pointer; transition: .25s; }
+.gebruikerRolSelect { padding: 6px 14px 6px 12px; border: 2px solid var(--border); border-radius: 999px; font: inherit; font-weight: 750; font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; background: #f1f5f9; color: var(--text-light); flex-shrink: 0; cursor: pointer; transition: .25s; }
 .gebruikerRolSelect:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,.12); }
 .gebruikerRolSelect:disabled { opacity: .6; cursor: default; }
-.gebruikerRolSelect--beheerder { border-color: var(--primary); color: var(--primary); }
+.gebruikerRolSelect--beheerder { border-color: var(--primary); background: #eef4ff; color: var(--primary); }
+
+.gbNieuweGebruikerKnop { margin: 6px 0 4px; display: inline-flex; align-items: center; gap: 6px; }
 
 .gebruikerZelf { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 3px 8px; border-radius: 999px; background: #f1f5f9; }
 
@@ -1809,6 +1811,9 @@ body.lightboxOpen { overflow: hidden; }
 .plaatFormGrid input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fbfdff; color: var(--text); font: inherit; }
 .plaatFormGrid input:focus { outline: 2px solid rgba(37, 99, 235, .25); border-color: var(--primary); }
 .plaatFormGrid input:disabled { background: var(--surface-2); color: var(--text-light); cursor: not-allowed; }
+
+.plaatFormGrid select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fbfdff; color: var(--text); font: inherit; cursor: pointer; }
+.plaatFormGrid select:focus { outline: 2px solid rgba(37, 99, 235, .25); border-color: var(--primary); }
 .plaatFotoVeld { grid-column: 1 / -1; }
 .plaatFormMelding { min-height: 22px; color: var(--text-light); font-size: 14px; }
 .plaatFormActies { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
