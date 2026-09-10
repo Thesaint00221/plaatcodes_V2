@@ -152,9 +152,126 @@ document.addEventListener("DOMContentLoaded", async () => {
         if(gbLijst){
             gbLijst.innerHTML = "";
         }
+        const nieuweGebruikerKnop = document.getElementById("gbNieuweGebruikerKnop");
+        if(nieuweGebruikerKnop){
+            nieuweGebruikerKnop.style.display = "none";
+        }
         return;
     }
 
     gbLaadGebruikers();
+
+});
+
+
+// ============================================
+// Nieuwe gebruiker toevoegen (modal)
+// ============================================
+
+const ngModal = document.getElementById("nieuweGebruikerModal");
+const ngForm = document.getElementById("nieuweGebruikerForm");
+const ngMelding = document.getElementById("ngMelding");
+const ngVerzendKnop = document.getElementById("ngVerzendKnop");
+
+function ngToonMelding(tekst, isFout){
+    if(!ngMelding){
+        return;
+    }
+    ngMelding.innerHTML = tekst
+        ? `${icoon(isFout ? "fout" : "vink")} ${tekst}`
+        : "";
+}
+
+function ngOpenen(){
+    if(!ngModal){
+        return;
+    }
+    ngForm.reset();
+    ngToonMelding("", false);
+    ngModal.classList.remove("hidden");
+    document.getElementById("ngEmail")?.focus();
+}
+
+function ngSluiten(){
+    ngModal?.classList.add("hidden");
+}
+
+document.getElementById("gbNieuweGebruikerKnop")?.addEventListener("click", ngOpenen);
+document.getElementById("sluitNieuweGebruikerModal")?.addEventListener("click", ngSluiten);
+document.getElementById("ngAnnuleren")?.addEventListener("click", ngSluiten);
+
+// Sluiten bij klikken op de donkere achtergrond (buiten het formulier)
+ngModal?.addEventListener("click", (event) => {
+    if(event.target === ngModal){
+        ngSluiten();
+    }
+});
+
+ngForm?.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const email = document.getElementById("ngEmail")?.value.trim();
+    const wachtwoord = document.getElementById("ngWachtwoord")?.value || "";
+    const rol = document.getElementById("ngRol")?.value;
+
+    if(!email || !wachtwoord || !rol){
+        ngToonMelding("Vul alle velden in.", true);
+        return;
+    }
+
+    if(wachtwoord.length < 8){
+        ngToonMelding("Wachtwoord moet minstens 8 tekens bevatten.", true);
+        return;
+    }
+
+    ngVerzendKnop.disabled = true;
+    ngToonMelding("Bezig met aanmaken...", false);
+
+    try{
+
+        const {data: sessionData} = await supabaseClient.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+
+        if(!accessToken){
+            ngToonMelding("Je bent niet (meer) ingelogd. Meld je opnieuw aan.", true);
+            ngVerzendKnop.disabled = false;
+            return;
+        }
+
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({email, password: wachtwoord, rol})
+        });
+
+        const result = await response.json();
+
+        if(!response.ok){
+            ngToonMelding(result.error || "Aanmaken van gebruiker mislukt.", true);
+            ngVerzendKnop.disabled = false;
+            return;
+        }
+
+        ngSluiten();
+        gbToonMelding(`Gebruiker ${email} is aangemaakt met rol "${rol}".`, false);
+
+        // Lijst en dropdown (wachtwoordbeheer) verversen met de nieuwe gebruiker
+        gbLaadGebruikers();
+        if(typeof wbLaadGebruikers === "function"){
+            wbLaadGebruikers();
+        }
+
+    }catch(fout){
+
+        console.error("Gebruiker aanmaken mislukt:", fout);
+        ngToonMelding("Er ging iets mis. Probeer opnieuw.", true);
+
+    }
+
+    ngVerzendKnop.disabled = false;
 
 });
