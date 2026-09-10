@@ -77,6 +77,56 @@ function haalOpenbareUrl(pad){
 window.laatstGeladenCases = {};
 
 // ============================================
+// Lightbox (foto vergroten)
+// ============================================
+
+const fotoLightbox = document.getElementById("fotoLightbox");
+const lightboxAfbeelding = document.getElementById("lightboxAfbeelding");
+const lightboxSluitenKnop = document.getElementById("lightboxSluitenKnop");
+
+function openLightbox(url, alt){
+
+    if(!fotoLightbox || !lightboxAfbeelding){
+        return;
+    }
+
+    lightboxAfbeelding.src = url;
+    lightboxAfbeelding.alt = alt || "";
+
+    fotoLightbox.classList.add("actief");
+    document.body.classList.add("lightboxOpen");
+
+}
+
+function sluitLightbox(){
+
+    if(!fotoLightbox){
+        return;
+    }
+
+    fotoLightbox.classList.remove("actief");
+    document.body.classList.remove("lightboxOpen");
+    lightboxAfbeelding.src = "";
+
+}
+
+lightboxSluitenKnop?.addEventListener("click", sluitLightbox);
+
+// Sluiten bij klikken op de donkere achtergrond (buiten de foto)
+fotoLightbox?.addEventListener("click", (event) => {
+    if(event.target === fotoLightbox){
+        sluitLightbox();
+    }
+});
+
+// Sluiten met Escape
+document.addEventListener("keydown", (event) => {
+    if(event.key === "Escape" && fotoLightbox?.classList.contains("actief")){
+        sluitLightbox();
+    }
+});
+
+// ============================================
 // Elementen
 // ============================================
 
@@ -490,7 +540,7 @@ async function toonFotos(plaat){
         img.addEventListener("click", () => {
             const url = img.dataset.fotoUrl;
             if(url) {
-                // Geen lightbox meer - foto's zijn al in ware grootte
+                openLightbox(url, img.alt || "");
             }
         });
     });

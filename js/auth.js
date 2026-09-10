@@ -257,6 +257,15 @@ async function updateLoginStatus(){
 
                 ${beheerKnop}
 
+                <button
+                id="mijnWachtwoordButton"
+                class="mijnWachtwoordKnop"
+                type="button">
+
+                    ${icoon("slot")} Wachtwoord wijzigen
+
+                </button>
+
 
                 <button
                 id="logoutButton"
@@ -282,6 +291,21 @@ async function updateLoginStatus(){
         ?.addEventListener(
             "click",
             logout
+        );
+
+
+
+        document
+        .getElementById("mijnWachtwoordButton")
+        ?.addEventListener(
+            "click",
+            ()=>{
+
+                if(typeof openMijnWachtwoordModal === "function"){
+                    openMijnWachtwoordModal();
+                }
+
+            }
         );
 
 
