@@ -75,6 +75,7 @@ async function laadArchief(){
         </div>
 
         <button
+            class="secundaireKnop"
             onclick="terugActief('${plaat.code}', this)">
 
             ${icoon("herstel")} Terugzetten
