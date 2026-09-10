@@ -1785,6 +1785,14 @@ body.lightboxOpen { overflow: hidden; }
 
 .gbNieuweGebruikerKnop { margin: 6px 0 4px; display: inline-flex; align-items: center; gap: 6px; }
 
+/* Wachtwoord tonen/verbergen */
+.wachtwoordVeld { position: relative; display: flex; align-items: center; }
+.wachtwoordVeld input { padding-right: 42px !important; }
+
+.wachtwoordToggleKnop { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: transparent; color: var(--text-light); cursor: pointer; border-radius: 8px; transition: var(--transition); }
+.wachtwoordToggleKnop:hover { background: var(--surface-2); color: var(--text); }
+.wachtwoordToggleKnop .icoon { width: 19px; height: 19px; }
+
 .gebruikerZelf { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 3px 8px; border-radius: 999px; background: #f1f5f9; }
 
 @media (max-width: 640px) {
