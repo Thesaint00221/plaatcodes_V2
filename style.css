@@ -1763,6 +1763,33 @@ body.lightboxOpen { overflow: hidden; }
 .beheerTerug { display: inline-flex; margin-top: 28px; color: var(--primary); font-weight: 750; text-decoration: none; }
 .beheerTerug:hover { text-decoration: underline; }
 
+/* Gebruikersbeheer */
+.gebruikersLijst { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+
+.gebruikerRij { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 14px; border: 1px solid var(--border); background: white; transition: var(--transition); }
+.gebruikerRij:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+
+.gebruikerRijIcoon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #eef4ff; flex-shrink: 0; margin-right: 0 !important; }
+
+.gebruikerRijInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.gebruikerRijInfo strong { font-size: 15px; }
+.gebruikerRijEmail { font-weight: 400; color: var(--text-light); font-size: 13px; }
+
+.gebruikerRijMeta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--text-light); }
+.gebruikerRijMeta .icoon { margin-right: 3px; }
+
+.gebruikerRolSelect { padding: 8px 12px; border: 2px solid var(--border); border-radius: 10px; font: inherit; font-weight: 700; font-size: 13px; background: white; flex-shrink: 0; cursor: pointer; transition: .25s; }
+.gebruikerRolSelect:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,.12); }
+.gebruikerRolSelect:disabled { opacity: .6; cursor: default; }
+.gebruikerRolSelect--beheerder { border-color: var(--primary); color: var(--primary); }
+
+.gebruikerZelf { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 3px 8px; border-radius: 999px; background: #f1f5f9; }
+
+@media (max-width: 640px) {
+    .gebruikerRij { flex-wrap: wrap; }
+    .gebruikerRijMeta { padding-left: 52px; width: 100%; }
+}
+
 @media (max-width: 720px) {
     .beheerTopbar { align-items: flex-start; flex-direction: column; }
     .beheerTopbar .loginArea { width: 100%; }

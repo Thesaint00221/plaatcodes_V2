@@ -128,6 +128,22 @@ Nog geen controle uitgevoerd.
 <div class="beheerActies">
 
 <h2>
+<span class="icoon" data-icon="gebruiker"></span> Gebruikersbeheer
+</h2>
+
+<p>Alle geregistreerde gebruikers, met e-mailadres, aanmaakdatum, laatste login en rol. Enkel beheerders kunnen rollen wijzigen.</p>
+
+<p id="gbMelding" class="plaatFormMelding" aria-live="polite"></p>
+
+<div id="gbLijst" class="gebruikersLijst">
+    <p class="loader">Gebruikers laden...</p>
+</div>
+
+</div>
+
+<div class="beheerActies">
+
+<h2>
 <span class="icoon" data-icon="slot"></span> Wachtwoordbeheer
 </h2>
 
@@ -180,6 +196,8 @@ Nog geen controle uitgevoerd.
 <script src="js/opslag.js"></script>
 
 <script src="js/beheer.js"></script>
+
+<script src="js/gebruikers-beheer.js"></script>
 
 <script src="js/wachtwoord-beheer.js"></script>
 
