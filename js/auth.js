@@ -404,6 +404,8 @@ async function updateLoginStatus(){
             login();
         });
 
+        voegWachtwoordToggleToe("wachtwoord");
+
 
     }
 
