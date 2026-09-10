@@ -1689,7 +1689,8 @@ body.lightboxOpen { overflow: hidden; }
 
 @media (max-width: 900px) {
     .loginCompact { flex-wrap: wrap; }
-    .loginCompact input { flex: 1 1 130px; }
+    .loginCompact input,
+    .loginCompact .wachtwoordVeld { flex: 1 1 130px; }
     .detailHeader { grid-template-columns: 1fr; }
 }
 
