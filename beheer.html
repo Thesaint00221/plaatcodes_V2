@@ -125,6 +125,44 @@ Nog geen controle uitgevoerd.
 </div>
 
 
+<div class="beheerActies">
+
+<h2>
+<span class="icoon" data-icon="slot"></span> Wachtwoordbeheer
+</h2>
+
+<p>Stel rechtstreeks een nieuw wachtwoord in voor een gebruiker (bv. als de herstelmail niet aankomt).</p>
+
+<form id="wachtwoordBeheerForm" class="uploadForm">
+
+    <div class="uploadVeld">
+        <label for="wbGebruiker">Gebruiker</label>
+        <select id="wbGebruiker" required>
+            <option value="">Gebruiker laden...</option>
+        </select>
+    </div>
+
+    <div class="uploadVeld">
+        <label for="wbWachtwoord1">Nieuw wachtwoord</label>
+        <input type="password" id="wbWachtwoord1" autocomplete="new-password" minlength="8" required>
+        <small>Minstens 8 tekens.</small>
+    </div>
+
+    <div class="uploadVeld">
+        <label for="wbWachtwoord2">Bevestig wachtwoord</label>
+        <input type="password" id="wbWachtwoord2" autocomplete="new-password" minlength="8" required>
+    </div>
+
+    <p id="wbMelding" class="plaatFormMelding" aria-live="polite"></p>
+
+    <button id="wbVerzendKnop" class="beheerPrimaireKnop" type="submit">
+        <span class="icoon" data-icon="vink"></span> Wachtwoord instellen
+    </button>
+
+</form>
+
+</div>
+
 <a class="beheerTerug" href="index.html"><span class="icoon" data-icon="pijl-links"></span> Terug naar catalogus</a>
 
 </main>
@@ -142,6 +180,8 @@ Nog geen controle uitgevoerd.
 <script src="js/opslag.js"></script>
 
 <script src="js/beheer.js"></script>
+
+<script src="js/wachtwoord-beheer.js"></script>
 
 <script src="js/pwa.js"></script>
 

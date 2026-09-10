@@ -1169,6 +1169,7 @@ FORMULIER
 }
 
 .uploadVeld input,
+.uploadVeld select,
 .uploadVeld textarea{
 
     width:100%;
@@ -1198,6 +1199,7 @@ FORMULIER
 }
 
 .uploadVeld input:focus,
+.uploadVeld select:focus,
 .uploadVeld textarea:focus{
 
     outline:none;
@@ -1713,12 +1715,14 @@ body.lightboxOpen { overflow: hidden; }
 .uploadFormKop p { margin-top: 6px; color: var(--text-light); line-height: 1.5; }
 
 .uploadVeld input,
+.uploadVeld select,
 .uploadVeld textarea {
     border-color: var(--border);
     background: #fbfdff;
 }
 
 .uploadVeld input:hover,
+.uploadVeld select:hover,
 .uploadVeld textarea:hover { border-color: #b7c7dc; }
 
 /* Beheerdashboard */
