@@ -173,6 +173,8 @@ const ngForm = document.getElementById("nieuweGebruikerForm");
 const ngMelding = document.getElementById("ngMelding");
 const ngVerzendKnop = document.getElementById("ngVerzendKnop");
 
+voegWachtwoordToggleToe("ngWachtwoord");
+
 function ngToonMelding(tekst, isFout){
     if(!ngMelding){
         return;

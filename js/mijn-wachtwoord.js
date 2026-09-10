@@ -50,6 +50,9 @@ function mwInjecteerModal(){
 
     document.body.appendChild(wrapper);
 
+    voegWachtwoordToggleToe("mwWachtwoord1");
+    voegWachtwoordToggleToe("mwWachtwoord2");
+
     document.getElementById("sluitMijnWachtwoordModal")?.addEventListener("click", sluitMijnWachtwoordModal);
     document.getElementById("mwAnnuleren")?.addEventListener("click", sluitMijnWachtwoordModal);
 

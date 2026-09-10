@@ -9,6 +9,9 @@ const wbForm = document.getElementById("wachtwoordBeheerForm");
 const wbMelding = document.getElementById("wbMelding");
 const wbVerzendKnop = document.getElementById("wbVerzendKnop");
 
+voegWachtwoordToggleToe("wbWachtwoord1");
+voegWachtwoordToggleToe("wbWachtwoord2");
+
 function wbToonMelding(tekst, isFout){
     if(!wbMelding){
         return;
