@@ -54,9 +54,21 @@
                 <textarea id="akOplossing" rows="3" maxlength="1000"></textarea>
             </div>
             <div class="uploadVeld">
-                <label for="akFotos">Foto's</label>
-                <input id="akFotos" type="file" accept="image/*" multiple>
-                <small>Maximaal 5 foto's.</small>
+                <label>Foto's</label>
+                <div class="akFotoKeuze" id="akFotoKeuze">
+                    <button type="button" class="akFotoVak" data-index="0"><span class="icoon" data-icon="foto"></span><span>Foto 1</span></button>
+                    <input class="akFotoBestand" data-index="0" type="file" accept="image/*" hidden>
+                    <button type="button" class="akFotoVak" data-index="1"><span class="icoon" data-icon="foto"></span><span>Foto 2</span></button>
+                    <input class="akFotoBestand" data-index="1" type="file" accept="image/*" hidden>
+                    <button type="button" class="akFotoVak" data-index="2"><span class="icoon" data-icon="foto"></span><span>Foto 3</span></button>
+                    <input class="akFotoBestand" data-index="2" type="file" accept="image/*" hidden>
+                    <button type="button" class="akFotoVak" data-index="3"><span class="icoon" data-icon="foto"></span><span>Foto 4</span></button>
+                    <input class="akFotoBestand" data-index="3" type="file" accept="image/*" hidden>
+                    <button type="button" class="akFotoVak" data-index="4"><span class="icoon" data-icon="foto"></span><span>Foto 5</span></button>
+                    <input class="akFotoBestand" data-index="4" type="file" accept="image/*" hidden>
+                </div>
+                <input id="akFotos" type="file" accept="image/*" multiple hidden>
+                <small>Maximaal 5 foto's. Klik per kader om een foto te kiezen.</small>
             </div>
             <div class="uploadVeld">
                 <label for="akBon">Leveranciersbon (PDF)</label>
@@ -85,5 +97,54 @@
 <script src="js/rapport.js"></script>
 <script src="js/aankoopklachten.js"></script>
 <script src="js/pwa.js"></script>
+<script>
+(() => {
+    const master = document.getElementById("akFotos");
+    const vakken = [...document.querySelectorAll(".akFotoVak")];
+    const bestanden = [...document.querySelectorAll(".akFotoBestand")];
+    const gekozen = Array(5).fill(null);
+
+    function synchroniseer(){
+        const dt = new DataTransfer();
+        gekozen.filter(Boolean).forEach(file => dt.items.add(file));
+        master.files = dt.files;
+    }
+
+    function toonVoorbeeld(vak, file){
+        vak.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.alt = file.name;
+        vak.appendChild(img);
+        const naam = document.createElement("span");
+        naam.textContent = "Foto " + (Number(vak.dataset.index) + 1);
+        vak.appendChild(naam);
+    }
+
+    vakken.forEach(vak => {
+        vak.addEventListener("click", () => bestanden[Number(vak.dataset.index)].click());
+    });
+
+    bestanden.forEach(input => {
+        input.addEventListener("change", () => {
+            const index = Number(input.dataset.index);
+            const file = input.files?.[0] || null;
+            gekozen[index] = file;
+            if(file) toonVoorbeeld(vakken[index], file);
+            synchroniseer();
+        });
+    });
+
+    document.getElementById("aankoopKlachtForm")?.addEventListener("reset", () => {
+        gekozen.fill(null);
+        bestanden.forEach(input => input.value = "");
+        vakken.forEach((vak, index) => {
+            vak.innerHTML = '<span class="icoon" data-icon="foto"></span><span>Foto ' + (index + 1) + '</span>';
+        });
+        synchroniseer();
+        if(window.renderIconen) window.renderIconen();
+    });
+})();
+</script>
 </body>
 </html>
