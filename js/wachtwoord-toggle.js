@@ -6,7 +6,64 @@
 // aanroepen nadat het veld in de DOM staat.
 // ============================================
 
+function voegLoginStijlToe(){
+
+    if(document.getElementById("loginVisueleStijl")){
+        return;
+    }
+
+    const stijl = document.createElement("style");
+    stijl.id = "loginVisueleStijl";
+    stijl.textContent = `
+        .loginCompact button{
+            background:white !important;
+            color:var(--primary) !important;
+            border:1px solid var(--border) !important;
+            box-shadow:none !important;
+        }
+
+        .loginCompact button:hover{
+            background:var(--surface-2) !important;
+            border-color:var(--primary) !important;
+        }
+
+        .wachtwoordVeld{
+            position:relative;
+            width:100%;
+        }
+
+        .wachtwoordVeld input{
+            padding-right:42px !important;
+            margin-bottom:0 !important;
+        }
+
+        .wachtwoordToggleKnop{
+            position:absolute;
+            right:6px;
+            top:50%;
+            transform:translateY(-50%);
+            width:32px;
+            height:32px;
+            padding:0 !important;
+            border:0 !important;
+            border-radius:8px !important;
+            background:transparent !important;
+            color:var(--text-light) !important;
+            box-shadow:none !important;
+        }
+
+        .wachtwoordToggleKnop:hover{
+            background:var(--surface-2) !important;
+            color:var(--primary) !important;
+        }
+    `;
+
+    document.head.appendChild(stijl);
+}
+
 function voegWachtwoordToggleToe(inputId){
+
+    voegLoginStijlToe();
 
     const input = document.getElementById(inputId);
 
