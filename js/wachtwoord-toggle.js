@@ -33,20 +33,21 @@ function voegLoginStijlToe(){
         }
 
         .wachtwoordVeld input{
-            padding-right:42px !important;
+            padding-right:34px !important;
             margin-bottom:0 !important;
         }
 
         .wachtwoordToggleKnop{
             position:absolute;
-            right:6px;
+            right:4px;
             top:50%;
             transform:translateY(-50%);
-            width:32px;
-            height:32px;
+            width:26px;
+            height:26px;
+            min-height:26px !important;
             padding:0 !important;
             border:0 !important;
-            border-radius:8px !important;
+            border-radius:6px !important;
             background:transparent !important;
             color:var(--text-light) !important;
             box-shadow:none !important;
