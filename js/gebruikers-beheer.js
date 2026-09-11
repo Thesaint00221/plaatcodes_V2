@@ -19,24 +19,18 @@ function gbToonMelding(tekst, isFout){
 }
 
 function gbFormatteerDatum(iso){
-
     if(!iso){
         return "Nooit ingelogd";
     }
-
     return new Date(iso).toLocaleString("nl-BE", {
         dateStyle: "medium",
         timeStyle: "short"
     });
-
 }
 
 function gbRijHtml(gebruiker, isZelf){
-
     return `
-
         <span class="icoon gebruikerRijIcoon" data-icon="gebruiker"></span>
-
         <div class="gebruikerRijInfo">
             <strong>
                 ${escapeHtml(gebruiker.naam || gebruiker.email)}
@@ -48,7 +42,6 @@ function gbRijHtml(gebruiker, isZelf){
                 <span>${icoon("slot")} Laatste login: ${gbFormatteerDatum(gebruiker.laatste_login)}</span>
             </span>
         </div>
-
         <select
             class="gebruikerRolSelect ${gebruiker.rol === "beheerder" ? "gebruikerRolSelect--beheerder" : ""}"
             data-id="${gebruiker.id}"
@@ -57,13 +50,10 @@ function gbRijHtml(gebruiker, isZelf){
             <option value="gebruiker" ${gebruiker.rol === "gebruiker" ? "selected" : ""}>gebruiker</option>
             <option value="beheerder" ${gebruiker.rol === "beheerder" ? "selected" : ""}>beheerder</option>
         </select>
-
     `;
-
 }
 
 async function gbLaadGebruikers(){
-
     if(!gbLijst){
         return;
     }
@@ -93,11 +83,9 @@ async function gbLaadGebruikers(){
     gbLijst.querySelectorAll(".gebruikerRolSelect").forEach(select => {
         select.addEventListener("change", gbWijzigRol);
     });
-
 }
 
 async function gbWijzigRol(event){
-
     const select = event.target;
     const gebruikerId = select.dataset.id;
     const email = select.dataset.email;
@@ -123,7 +111,6 @@ async function gbWijzigRol(event){
     }
 
     if(!data || data.length === 0){
-        // RLS blokkeerde de wijziging stil (bv. laatste beheerder zou verdwijnen)
         gbToonMelding(
             "Deze wijziging is niet toegestaan — waarschijnlijk omdat dit de laatste beheerder zou zijn.",
             true
@@ -135,17 +122,13 @@ async function gbWijzigRol(event){
     select.classList.toggle("gebruikerRolSelect--beheerder", nieuweRol === "beheerder");
     gbToonMelding(`Rol van ${email} aangepast naar "${nieuweRol}".`, false);
 
-    // Als je je eigen rol wijzigt, herlaad de pagina zodat menu/toegang
-    // overal correct opnieuw geëvalueerd wordt.
     if(email === window.huidigeGebruiker?.email){
         gbToonMelding(`Je eigen rol is aangepast naar "${nieuweRol}". Pagina wordt herladen...`, false);
         setTimeout(() => window.location.reload(), 1800);
     }
-
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     const toegang = await controleerToegang();
 
     if(!toegang){
@@ -160,7 +143,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     gbLaadGebruikers();
-
 });
 
 
@@ -202,7 +184,6 @@ document.getElementById("gbNieuweGebruikerKnop")?.addEventListener("click", ngOp
 document.getElementById("sluitNieuweGebruikerModal")?.addEventListener("click", ngSluiten);
 document.getElementById("ngAnnuleren")?.addEventListener("click", ngSluiten);
 
-// Sluiten bij klikken op de donkere achtergrond (buiten het formulier)
 ngModal?.addEventListener("click", (event) => {
     if(event.target === ngModal){
         ngSluiten();
@@ -210,15 +191,15 @@ ngModal?.addEventListener("click", (event) => {
 });
 
 ngForm?.addEventListener("submit", async (event) => {
-
     event.preventDefault();
 
     const email = document.getElementById("ngEmail")?.value.trim();
+    const naam = document.getElementById("ngNaam")?.value.trim() || null;
     const wachtwoord = document.getElementById("ngWachtwoord")?.value || "";
     const rol = document.getElementById("ngRol")?.value;
 
     if(!email || !wachtwoord || !rol){
-        ngToonMelding("Vul alle velden in.", true);
+        ngToonMelding("Vul alle verplichte velden in.", true);
         return;
     }
 
@@ -231,7 +212,6 @@ ngForm?.addEventListener("submit", async (event) => {
     ngToonMelding("Bezig met aanmaken...", false);
 
     try{
-
         const {data: sessionData} = await supabaseClient.auth.getSession();
         const accessToken = sessionData?.session?.access_token;
 
@@ -247,7 +227,7 @@ ngForm?.addEventListener("submit", async (event) => {
                 Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({email, password: wachtwoord, rol})
+            body: JSON.stringify({email, password: wachtwoord, rol, naam})
         });
 
         const result = await response.json();
@@ -259,21 +239,16 @@ ngForm?.addEventListener("submit", async (event) => {
         }
 
         ngSluiten();
-        gbToonMelding(`Gebruiker ${email} is aangemaakt met rol "${rol}".`, false);
-
-        // Lijst en dropdown (wachtwoordbeheer) verversen met de nieuwe gebruiker
+        gbToonMelding(`Gebruiker ${naam || email} is aangemaakt met rol "${rol}".`, false);
         gbLaadGebruikers();
         if(typeof wbLaadGebruikers === "function"){
             wbLaadGebruikers();
         }
 
     }catch(fout){
-
         console.error("Gebruiker aanmaken mislukt:", fout);
         ngToonMelding("Er ging iets mis. Probeer opnieuw.", true);
-
     }
 
     ngVerzendKnop.disabled = false;
-
 });
