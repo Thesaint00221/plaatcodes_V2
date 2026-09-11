@@ -1,261 +1,81 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Beheer Plaatcatalogus</title>
-
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/favicon.ico">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="theme-color" content="#2563eb">
-
 <link rel="stylesheet" href="style.min.css">
-
+<link rel="stylesheet" href="phase3.css">
 </head>
-
-
 <body class="beheerPagina">
-
 <header class="beheerTopbar">
     <a class="beheerMerk" href="index.html">
-        <img
-            src="images/logo-detremmerie.png"
-            alt="Detremmerie"
-            class="merkLogo">
+        <img src="images/logo-detremmerie.png" alt="Detremmerie" class="merkLogo">
         <span>Plaatcodes</span>
     </a>
     <div id="loginBox" class="loginArea"></div>
 </header>
-
 <main class="beheer-container">
-
-
 <div class="beheerIntro">
     <p class="beheerEyebrow">Beheeromgeving</p>
     <h1><span class="icoon" data-icon="tools"></span> Beheer Plaatcatalogus</h1>
     <p>Overzicht van je catalogus, cases en opgeslagen foto's.</p>
 </div>
-
-
-<div id="beheerStatus">
-
-Controleren...
-
-</div>
-
-
-
+<div id="beheerStatus">Controleren...</div>
 <div class="beheerKaarten">
-
-
-<div class="beheerKaart">
-
-<h3>
-<span class="icoon" data-icon="klembord"></span> Platen
-</h3>
-
-<p id="aantalPlaten">
--
-</p>
-
+<div class="beheerKaart"><h3><span class="icoon" data-icon="klembord"></span> Platen</h3><p id="aantalPlaten">-</p></div>
+<div class="beheerKaart"><h3><span class="icoon" data-icon="lagen"></span> Cases</h3><p id="aantalCases">-</p></div>
+<div class="beheerKaart"><h3><span class="icoon" data-icon="foto"></span> Foto's</h3><p id="aantalFotos">-</p></div>
 </div>
-
-
-
-<div class="beheerKaart">
-
-<h3>
-<span class="icoon" data-icon="lagen"></span> Cases
-</h3>
-
-<p id="aantalCases">
--
-</p>
-
-</div>
-
-
-
-<div class="beheerKaart">
-
-<h3>
-<span class="icoon" data-icon="foto"></span> Foto's
-</h3>
-
-<p id="aantalFotos">
--
-</p>
-
-</div>
-
-
-</div>
-
-
-
 <div class="beheerActies">
-
-
-<h2>
-<span class="icoon" data-icon="map"></span> Opslagbeheer
-</h2>
-
-
-<button
-id="controleerOpslag"
-class="beheerPrimaireKnop">
-
-<span class="icoon" data-icon="zoek"></span> Controleer opslag
-
-</button>
-
-
-<div id="opslagControle">
-
-Nog geen controle uitgevoerd.
-
+<h2><span class="icoon" data-icon="map"></span> Opslagbeheer</h2>
+<button id="controleerOpslag" class="beheerPrimaireKnop"><span class="icoon" data-icon="zoek"></span> Controleer opslag</button>
+<div id="opslagControle">Nog geen controle uitgevoerd.</div>
 </div>
-
-
-</div>
-
-
 <div class="beheerActies">
-
-<h2>
-<span class="icoon" data-icon="gebruiker"></span> Gebruikersbeheer
-</h2>
-
+<h2><span class="icoon" data-icon="gebruiker"></span> Gebruikersbeheer</h2>
 <p>Alle geregistreerde gebruikers, met e-mailadres, aanmaakdatum, laatste login en rol. Enkel beheerders kunnen rollen wijzigen of gebruikers toevoegen.</p>
-
-<button id="gbNieuweGebruikerKnop" class="primary gbNieuweGebruikerKnop" type="button">
-    <span class="icoon" data-icon="plus"></span> Gebruiker toevoegen
-</button>
-
+<button id="gbNieuweGebruikerKnop" class="primary gbNieuweGebruikerKnop" type="button"><span class="icoon" data-icon="plus"></span> Gebruiker toevoegen</button>
 <p id="gbMelding" class="plaatFormMelding" aria-live="polite"></p>
-
-<div id="gbLijst" class="gebruikersLijst">
-    <p class="loader">Gebruikers laden...</p>
+<div id="gbLijst" class="gebruikersLijst"><p class="loader">Gebruikers laden...</p></div>
 </div>
-
-</div>
-
 <div class="beheerActies">
-
-<h2>
-<span class="icoon" data-icon="slot"></span> Wachtwoordbeheer
-</h2>
-
+<h2><span class="icoon" data-icon="slot"></span> Wachtwoordbeheer</h2>
 <p>Stel rechtstreeks een nieuw wachtwoord in voor een gebruiker (bv. als de herstelmail niet aankomt).</p>
-
 <form id="wachtwoordBeheerForm" class="uploadForm">
-
-    <div class="uploadVeld">
-        <label for="wbGebruiker">Gebruiker</label>
-        <select id="wbGebruiker" required>
-            <option value="">Gebruiker laden...</option>
-        </select>
-    </div>
-
-    <div class="uploadVeld">
-        <label for="wbWachtwoord1">Nieuw wachtwoord</label>
-        <input type="password" id="wbWachtwoord1" autocomplete="new-password" minlength="8" required>
-        <small>Minstens 8 tekens.</small>
-    </div>
-
-    <div class="uploadVeld">
-        <label for="wbWachtwoord2">Bevestig wachtwoord</label>
-        <input type="password" id="wbWachtwoord2" autocomplete="new-password" minlength="8" required>
-    </div>
-
-    <p id="wbMelding" class="plaatFormMelding" aria-live="polite"></p>
-
-    <button id="wbVerzendKnop" class="beheerPrimaireKnop" type="submit">
-        <span class="icoon" data-icon="vink"></span> Wachtwoord instellen
-    </button>
-
+<div class="uploadVeld"><label for="wbGebruiker">Gebruiker</label><select id="wbGebruiker" required><option value="">Gebruiker laden...</option></select></div>
+<div class="uploadVeld"><label for="wbWachtwoord1">Nieuw wachtwoord</label><input type="password" id="wbWachtwoord1" autocomplete="new-password" minlength="8" required><small>Minstens 8 tekens.</small></div>
+<div class="uploadVeld"><label for="wbWachtwoord2">Bevestig wachtwoord</label><input type="password" id="wbWachtwoord2" autocomplete="new-password" minlength="8" required></div>
+<p id="wbMelding" class="plaatFormMelding" aria-live="polite"></p>
+<button id="wbVerzendKnop" class="beheerPrimaireKnop" type="submit"><span class="icoon" data-icon="vink"></span> Wachtwoord instellen</button>
 </form>
-
 </div>
-
 <a class="beheerTerug" href="index.html"><span class="icoon" data-icon="pijl-links"></span> Terug naar catalogus</a>
-
 </main>
-
-
-<section
-    id="nieuweGebruikerModal"
-    class="plaatModal hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="nieuweGebruikerTitel">
-
-    <form id="nieuweGebruikerForm" class="plaatForm">
-
-        <div class="plaatFormKop">
-            <div>
-                <p class="beheerEyebrow">Beheer</p>
-                <h2 id="nieuweGebruikerTitel">Gebruiker toevoegen</h2>
-                <p>Het account is direct actief. Er wordt geen e-mail verstuurd.</p>
-            </div>
-            <button id="sluitNieuweGebruikerModal" class="modalSluiten" type="button" aria-label="Sluiten">×</button>
-        </div>
-
-        <div class="plaatFormGrid">
-            <label>E-mailadres<input id="ngEmail" type="email" autocomplete="off" required></label>
-            <label>Wachtwoord<input id="ngWachtwoord" type="password" autocomplete="new-password" minlength="8" required></label>
-            <label>Rol
-                <select id="ngRol" required>
-                    <option value="gebruiker">gebruiker</option>
-                    <option value="beheerder">beheerder</option>
-                </select>
-            </label>
-        </div>
-
-        <p id="ngMelding" class="plaatFormMelding" aria-live="polite"></p>
-
-        <div class="plaatFormActies">
-            <button id="ngAnnuleren" class="secundaireKnop" type="button">Annuleren</button>
-            <button id="ngVerzendKnop" class="primary" type="submit">Gebruiker toevoegen</button>
-        </div>
-
-    </form>
-
+<section id="nieuweGebruikerModal" class="plaatModal hidden" role="dialog" aria-modal="true" aria-labelledby="nieuweGebruikerTitel">
+<form id="nieuweGebruikerForm" class="plaatForm">
+<div class="plaatFormKop"><div><p class="beheerEyebrow">Beheer</p><h2 id="nieuweGebruikerTitel">Gebruiker toevoegen</h2><p>Het account is direct actief. Er wordt geen e-mail verstuurd.</p></div><button id="sluitNieuweGebruikerModal" class="modalSluiten" type="button" aria-label="Sluiten">×</button></div>
+<div class="plaatFormGrid"><label>E-mailadres<input id="ngEmail" type="email" autocomplete="off" required></label><label>Wachtwoord<input id="ngWachtwoord" type="password" autocomplete="new-password" minlength="8" required></label><label>Rol<select id="ngRol" required><option value="gebruiker">gebruiker</option><option value="beheerder">beheerder</option></select></label></div>
+<p id="ngMelding" class="plaatFormMelding" aria-live="polite"></p>
+<div class="plaatFormActies"><button id="ngAnnuleren" class="secundaireKnop" type="button">Annuleren</button><button id="ngVerzendKnop" class="primary" type="submit">Gebruiker toevoegen</button></div>
+</form>
 </section>
-
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="js/security-utils.js"></script>
-
 <script src="js/icons.js"></script>
-
 <script src="js/wachtwoord-toggle.js"></script>
-
 <script src="js/dropdown-sluiten.js"></script>
-
 <script src="js/supabase.js"></script>
-
 <script src="js/auth.js"></script>
-
 <script src="js/mijn-wachtwoord.js"></script>
-
 <script src="js/opslag.js"></script>
-
 <script src="js/beheer.js"></script>
-
 <script src="js/gebruikers-beheer.js"></script>
-
 <script src="js/wachtwoord-beheer.js"></script>
-
 <script src="js/pwa.js"></script>
-
-
 </body>
-
 </html>
