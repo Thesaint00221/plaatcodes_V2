@@ -135,9 +135,6 @@ async function genereerKlachtenRapport(caseId, knop){
             ? haalOpenbareUrl(item.leveranciersbon_url)
             : null;
 
-        // Bon-bytes vooraf ophalen: zo weten we, vóór we de tekstpagina
-        // schrijven, of de bon effectief ingevoegd kan worden of dat we
-        // moeten terugvallen op een link.
         let bonBytes = null;
 
         if(bonUrl){
@@ -166,8 +163,6 @@ async function genereerKlachtenRapport(caseId, knop){
             }
         };
 
-        // Logo bovenaan (zelfde-origin bestand, dus geen CORS-risico
-        // zoals bij de Supabase-opslag-foto's verderop).
         const logoDataUrl = await fotoAlsDataUrl("images/logo-detremmerie.png");
 
         if(logoDataUrl){
@@ -191,7 +186,7 @@ async function genereerKlachtenRapport(caseId, knop){
 
         const info = [
             ["Plaat", plaat.naam],
-            ["Code", plaat.code],
+            ["Referentie", plaat.info?.Referentie || "-"],
             ["Leverancier", plaat.leverancier],
             ["Kleurnummer", plaat.info?.Kleurnummer || "-"],
             ["Kleur", plaat.info?.Kleur || "-"],
@@ -279,8 +274,6 @@ async function genereerKlachtenRapport(caseId, knop){
 
             for(const url of fotoUrls){
 
-                // Bij het begin van een nieuwe rij: vooraf checken of
-                // die nog op de huidige pagina past.
                 if(kolom === 0){
                     nieuwePaginaIndienNodig(celHoogte + tussenruimte);
                 }
@@ -299,8 +292,6 @@ async function genereerKlachtenRapport(caseId, knop){
                         const {breedte: natBreedte, hoogte: natHoogte} =
                             await laadAfbeeldingAfmetingen(dataUrl);
 
-                        // Verhoudingsgetrouw laten passen binnen het vakje
-                        // (net als "object-fit: contain"), en centreren.
                         const schaal = Math.min(kolomBreedte / natBreedte, celHoogte / natHoogte);
                         const afbBreedte = natBreedte * schaal;
                         const afbHoogte = natHoogte * schaal;
@@ -329,7 +320,6 @@ async function genereerKlachtenRapport(caseId, knop){
 
             }
 
-            // Laatste rij niet volledig gevuld -> toch doorschuiven
             if(kolom !== 0){
                 y += celHoogte + tussenruimte;
             }
@@ -339,14 +329,9 @@ async function genereerKlachtenRapport(caseId, knop){
         const bestandsnaam = `Rapport-leveranciersklacht_${plaat.code}_${Date.now()}.pdf`;
 
         if(!bonBytes){
-
-            // Geen bon om samen te voegen: gewoon het rapport downloaden.
             doc.save(bestandsnaam);
-
         }else{
 
-            // Bon-PDF echt samenvoegen als extra pagina's achteraan het
-            // rapport, i.p.v. enkel een link te plaatsen.
             if(knop){
                 knop.innerHTML = "⏳ Bon samenvoegen...";
             }
@@ -381,13 +366,8 @@ async function genereerKlachtenRapport(caseId, knop){
                 URL.revokeObjectURL(url);
 
             }catch(samenvoegFout){
-
-                // De bon kon niet samengevoegd worden (bv. geen geldige
-                // PDF) -- dan valt het rapport terug op het gewone
-                // jsPDF-bestand zonder bijlage, met de link als fallback.
                 console.error("Bon samenvoegen mislukt:", samenvoegFout);
                 doc.save(bestandsnaam);
-
             }
 
         }
