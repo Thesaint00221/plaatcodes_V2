@@ -248,6 +248,7 @@ ngForm?.addEventListener("submit", async (event) => {
                 console.error("Gebruikersnaam opslaan mislukt:", naamError);
                 ngToonMelding("Gebruiker is aangemaakt, maar de gebruikersnaam kon niet worden opgeslagen.", true);
                 gbLaadGebruikers();
+                ngVerzendKnop.disabled = false;
                 return;
             }
         }
