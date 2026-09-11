@@ -168,3 +168,215 @@
     .plaatNaam{ font-size:19px; }
     .plaatInfo{ padding:15px; }
 }
+
+/* ==========================================================
+   FASE 2 - UITSTRALING EN VISUELE HIËRARCHIE
+========================================================== */
+
+:root{
+    --primary:#1f4e79;
+    --primary-hover:#163a5c;
+    --bg:#f5f7fa;
+    --surface:#ffffff;
+    --surface-2:#f8fafc;
+    --text:#172033;
+    --text-light:#64748b;
+    --border:#e2e8f0;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+}
+
+/* Zoekvelden: rustiger en minder 'pill'-achtig */
+#search,
+#leverancierFilter{
+    border-radius:9px;
+    border-color:var(--border);
+}
+
+#search:focus,
+#leverancierFilter:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(31,78,121,.12);
+}
+
+/* Kaarten: code eerst, daarna naam en leverancier */
+.plaatCard{
+    border:1px solid var(--border);
+    background:var(--surface);
+    box-shadow:0 4px 16px rgba(15,23,42,.06);
+}
+
+.plaatCard:hover{
+    box-shadow:0 10px 24px rgba(15,23,42,.09);
+}
+
+.plaatCode{
+    background:#eaf2f8;
+    color:var(--primary);
+    font-size:13px;
+    font-weight:700;
+}
+
+.plaatNaam{
+    font-size:20px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.plaatLeverancier{
+    color:var(--text-light);
+    font-size:14px;
+}
+
+.badge{
+    background:#f1f5f9;
+    color:#475569;
+    font-weight:600;
+}
+
+/* Uniforme fotoverhouding */
+.plaatFoto,
+.geenFoto{
+    height:auto;
+    aspect-ratio:4 / 3;
+}
+
+.plaatFoto img{
+    object-fit:cover;
+}
+
+/* Detailpagina rustiger en compacter */
+#detail{
+    max-width:1280px;
+    margin:28px auto;
+    padding:24px;
+}
+
+#detailContent,
+#uploadKaart{
+    border-radius:14px;
+    box-shadow:0 5px 20px rgba(15,23,42,.06);
+}
+
+#detailContent{
+    padding:24px;
+}
+
+#detailContent h2{
+    font-size:clamp(26px,3vw,32px);
+    color:var(--text);
+}
+
+#detailContent h3{
+    font-size:20px;
+    color:var(--text-light);
+}
+
+.infoItem{
+    border-radius:10px;
+    padding:16px;
+}
+
+.infoItem span{
+    font-size:16px;
+}
+
+.gallery{
+    gap:16px;
+}
+
+.gallery img{
+    height:auto;
+    aspect-ratio:4 / 3;
+    border-radius:12px;
+    box-shadow:0 4px 16px rgba(15,23,42,.07);
+}
+
+.caseCard{
+    border-radius:12px;
+    border-left-width:4px;
+    box-shadow:0 4px 16px rgba(15,23,42,.06);
+}
+
+/* Upload/case-keuze visueel rustiger */
+#uploadKaart{
+    padding:24px;
+}
+
+.caseTypeKnop{
+    border-radius:9px;
+}
+
+.uploadKnop{
+    border-radius:12px;
+}
+
+.uploadKnop:hover{
+    transform:none;
+}
+
+.uploadVeld input,
+.uploadVeld select,
+.uploadVeld textarea{
+    border-radius:9px;
+    border-color:var(--border);
+}
+
+#opslaanFoto{
+    border-radius:9px;
+}
+
+/* Mobiel: nooit horizontaal laten overlopen */
+@media (max-width:900px){
+    #detail{
+        width:100%;
+        max-width:100%;
+        margin:18px auto;
+        padding:16px;
+        box-sizing:border-box;
+    }
+
+    #detailContent,
+    #uploadKaart{
+        width:100%;
+        max-width:100%;
+        box-sizing:border-box;
+    }
+
+    .detailHeader{
+        grid-template-columns:minmax(0,1fr);
+        gap:20px;
+    }
+
+    .infoGrid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .gallery{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width:600px){
+    #detail{
+        padding:12px;
+    }
+
+    #detailContent,
+    #uploadKaart{
+        padding:16px;
+        border-radius:12px;
+    }
+
+    .infoGrid,
+    .gallery{
+        grid-template-columns:1fr;
+    }
+
+    .detailInfo h1{
+        font-size:28px;
+    }
+}
