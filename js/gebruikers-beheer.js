@@ -227,7 +227,7 @@ ngForm?.addEventListener("submit", async (event) => {
                 Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({email, password: wachtwoord, rol, naam})
+            body: JSON.stringify({email, password: wachtwoord, rol})
         });
 
         const result = await response.json();
@@ -236,6 +236,20 @@ ngForm?.addEventListener("submit", async (event) => {
             ngToonMelding(result.error || "Aanmaken van gebruiker mislukt.", true);
             ngVerzendKnop.disabled = false;
             return;
+        }
+
+        if(naam){
+            const {error: naamError} = await supabaseClient
+                .from("gebruikers")
+                .update({naam})
+                .eq("email", email);
+
+            if(naamError){
+                console.error("Gebruikersnaam opslaan mislukt:", naamError);
+                ngToonMelding("Gebruiker is aangemaakt, maar de gebruikersnaam kon niet worden opgeslagen.", true);
+                gbLaadGebruikers();
+                return;
+            }
         }
 
         ngSluiten();
