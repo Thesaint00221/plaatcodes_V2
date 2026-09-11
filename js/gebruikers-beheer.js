@@ -39,8 +39,8 @@ function gbRijHtml(gebruiker, isZelf){
 
         <div class="gebruikerRijInfo">
             <strong>
-                ${gebruiker.naam || gebruiker.email}
-                <span class="gebruikerRijEmail">${gebruiker.email}</span>
+                ${escapeHtml(gebruiker.naam || gebruiker.email)}
+                <span class="gebruikerRijEmail">${escapeHtml(gebruiker.email)}</span>
                 ${isZelf ? '<span class="gebruikerZelf">jij</span>' : ""}
             </strong>
             <span class="gebruikerRijMeta">

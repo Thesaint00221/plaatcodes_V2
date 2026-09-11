@@ -89,8 +89,7 @@ async function laadStatistieken() {
         aantalFotos.innerHTML = fotos.length;
     }
 
-    // aantal platen (rechtstreeks uit Supabase, niet uit het
-    // verouderde data.json dat enkel nog als migratiebron dient)
+    // aantal platen (rechtstreeks uit Supabase)
 
     const aantalPlaten =
         document.getElementById("aantalPlaten");
