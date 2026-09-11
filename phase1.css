@@ -1,20 +1,166 @@
 /* ==========================================================
    PLAATCODES - FASE 1 UX/UI
+   Gerichte visuele verbeteringen zonder bestaande structuur
 ========================================================== */
-.plaatCard{border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.06);transition:box-shadow .2s ease,transform .2s ease}.plaatCard:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.09)}
-.plaatCode{border-radius:7px;padding:5px 9px;margin-bottom:10px}.plaatNaam{font-size:20px;margin-bottom:7px}.badge{border-radius:7px;padding:5px 9px}.cards{gap:18px}
-.primary,.secundaireKnop,#loginBox button,#userButton{min-height:44px;border-radius:9px;box-shadow:none}.primary:hover{transform:none}
-.topbar{gap:16px;padding:14px 24px;box-shadow:0 1px 8px rgba(0,0,0,.07)}
-@media (max-width:900px){
-.topbar{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"logo" "actions" "search";align-items:stretch;gap:10px;padding:12px 16px;box-sizing:border-box;width:100%;max-width:100%;overflow:hidden}
-.logo{grid-area:logo;gap:10px;min-width:0;max-width:100%}.merkLogo{height:36px}.logoTekst h1{font-size:22px}.logoTekst span{font-size:12px}
-.zoekContainer{grid-area:search;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%;min-width:0;max-width:100%;box-sizing:border-box}
-#search,#leverancierFilter{width:100%;min-width:0;max-width:100%;box-sizing:border-box}#search{padding:12px 14px;font-size:16px;border-radius:9px}#leverancierFilter{min-height:44px;padding:0 12px;border-radius:9px}
-.headerButtons{grid-area:actions;justify-content:flex-start;gap:8px;width:100%;min-width:0;max-width:100%;box-sizing:border-box;overflow:hidden}.headerButtons button{min-height:44px}
-#resultaten{padding:20px 15px}.cards{gap:16px}.plaatFoto,.geenFoto{height:auto;aspect-ratio:4/3}
+
+.plaatCard{
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(0,0,0,.06);
+    transition:box-shadow .2s ease, transform .2s ease;
 }
+.plaatCard:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 24px rgba(0,0,0,.09);
+}
+.plaatCode{ border-radius:7px; padding:5px 9px; margin-bottom:10px; }
+.plaatNaam{ font-size:20px; margin-bottom:7px; }
+.badge{ border-radius:7px; padding:5px 9px; }
+.cards{ gap:18px; }
+
+.primary,
+.secundaireKnop,
+#loginBox button,
+#userButton{
+    min-height:44px;
+    border-radius:9px;
+    box-shadow:none;
+}
+.primary:hover{ transform:none; }
+
+.topbar{
+    gap:16px;
+    padding:14px 24px;
+    box-shadow:0 1px 8px rgba(0,0,0,.07);
+}
+
+/* Dropdowns altijd boven de zoek/filterzone */
+.gebruikersMenu,
+.actiesMenu{
+    position:relative;
+    z-index:1000;
+}
+
+.gebruikersMenu .dropdown,
+.actiesMenu .dropdown{
+    z-index:1001;
+}
+
+@media (max-width:900px){
+    .topbar{
+        display:grid;
+        grid-template-columns:minmax(0,1fr);
+        grid-template-areas:
+            "logo"
+            "actions"
+            "search";
+        align-items:stretch;
+        gap:10px;
+        padding:12px 16px;
+        box-sizing:border-box;
+        width:100%;
+        max-width:100%;
+        overflow:visible;
+        position:relative;
+        z-index:10;
+    }
+
+    .logo{ grid-area:logo; gap:10px; min-width:0; max-width:100%; }
+    .merkLogo{ height:36px; }
+    .logoTekst h1{ font-size:22px; }
+    .logoTekst span{ font-size:12px; }
+
+    .zoekContainer{
+        grid-area:search;
+        display:grid;
+        grid-template-columns:minmax(0,1fr);
+        gap:8px;
+        width:100%;
+        min-width:0;
+        max-width:100%;
+        box-sizing:border-box;
+        position:relative;
+        z-index:1;
+    }
+
+    #search{
+        min-width:0;
+        max-width:100%;
+        width:100%;
+        box-sizing:border-box;
+        padding:12px 14px;
+        font-size:16px;
+        border-radius:9px;
+    }
+
+    #leverancierFilter{
+        width:100%;
+        min-width:0;
+        max-width:100%;
+        box-sizing:border-box;
+        min-height:44px;
+        padding:0 12px;
+        border-radius:9px;
+    }
+
+    .headerButtons{
+        grid-area:actions;
+        justify-content:flex-start;
+        gap:8px;
+        width:100%;
+        min-width:0;
+        max-width:100%;
+        box-sizing:border-box;
+        overflow:visible;
+        position:relative;
+        z-index:1000;
+    }
+
+    .headerButtons button{ min-height:44px; }
+    #resultaten{ padding:20px 15px; }
+    .cards{ gap:16px; }
+    .plaatFoto,.geenFoto{ height:auto; aspect-ratio:4 / 3; }
+}
+
 @media (max-width:600px){
-.topbar{gap:8px;padding:10px 12px}.merkLogo{height:32px}.logoTekst h1{font-size:20px}.logoTekst span{display:none}.headerButtons{gap:6px;flex-wrap:wrap}
-.loginArea{min-width:0;max-width:100%;box-sizing:border-box}.loginArea .loginCompact{gap:4px;padding:4px;width:100%;max-width:100%;min-width:0;box-sizing:border-box;flex-wrap:nowrap}.loginArea .loginCompact input{width:auto;min-width:0;max-width:100%;flex:1 1 auto;box-sizing:border-box;padding:8px}.loginArea .loginCompact button{padding:8px 9px;flex:0 1 auto;max-width:100%;box-sizing:border-box}
-.plaatNaam{font-size:19px}.plaatInfo{padding:15px}
+    .topbar{ gap:8px; padding:10px 12px; }
+    .merkLogo{ height:32px; }
+    .logoTekst h1{ font-size:20px; }
+    .logoTekst span{ display:none; }
+
+    .headerButtons{ gap:6px; flex-wrap:wrap; }
+
+    .loginArea{
+        min-width:0;
+        max-width:100%;
+        box-sizing:border-box;
+    }
+
+    .loginArea .loginCompact{
+        gap:4px;
+        padding:4px;
+        width:100%;
+        max-width:100%;
+        min-width:0;
+        box-sizing:border-box;
+        flex-wrap:nowrap;
+    }
+
+    .loginArea .loginCompact input{
+        width:auto;
+        min-width:0;
+        max-width:100%;
+        flex:1 1 auto;
+        box-sizing:border-box;
+        padding:8px;
+    }
+
+    .loginArea .loginCompact button{
+        padding:8px 9px;
+        flex:0 1 auto;
+        max-width:100%;
+        box-sizing:border-box;
+    }
+
+    .plaatNaam{ font-size:19px; }
+    .plaatInfo{ padding:15px; }
 }
