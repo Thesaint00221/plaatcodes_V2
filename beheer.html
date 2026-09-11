@@ -45,13 +45,14 @@
 </div>
 <div class="beheerActies">
 <h2><span class="icoon" data-icon="slot"></span> Wachtwoordbeheer</h2>
-<p>Stel rechtstreeks een nieuw wachtwoord in voor een gebruiker (bv. als de herstelmail niet aankomt).</p>
+<p>Wijzig de gebruikersnaam en/of stel rechtstreeks een nieuw wachtwoord in voor een gebruiker.</p>
 <form id="wachtwoordBeheerForm" class="uploadForm">
 <div class="uploadVeld"><label for="wbGebruiker">Gebruiker</label><select id="wbGebruiker" required><option value="">Gebruiker laden...</option></select></div>
-<div class="uploadVeld"><label for="wbWachtwoord1">Nieuw wachtwoord</label><input type="password" id="wbWachtwoord1" autocomplete="new-password" minlength="8" required><small>Minstens 8 tekens.</small></div>
-<div class="uploadVeld"><label for="wbWachtwoord2">Bevestig wachtwoord</label><input type="password" id="wbWachtwoord2" autocomplete="new-password" minlength="8" required></div>
+<div class="uploadVeld"><label for="wbNaam">Gebruikersnaam</label><input type="text" id="wbNaam" autocomplete="off" maxlength="100"><small>Laat leeg als de gebruiker geen aparte naam wil.</small></div>
+<div class="uploadVeld"><label for="wbWachtwoord1">Nieuw wachtwoord</label><input type="password" id="wbWachtwoord1" autocomplete="new-password" minlength="8"><small>Alleen invullen als het wachtwoord gewijzigd moet worden.</small></div>
+<div class="uploadVeld"><label for="wbWachtwoord2">Bevestig wachtwoord</label><input type="password" id="wbWachtwoord2" autocomplete="new-password" minlength="8"></div>
 <p id="wbMelding" class="plaatFormMelding" aria-live="polite"></p>
-<button id="wbVerzendKnop" class="beheerPrimaireKnop" type="submit"><span class="icoon" data-icon="vink"></span> Wachtwoord instellen</button>
+<button id="wbVerzendKnop" class="beheerPrimaireKnop" type="submit"><span class="icoon" data-icon="vink"></span> Wijzigingen opslaan</button>
 </form>
 </div>
 <a class="beheerTerug" href="index.html"><span class="icoon" data-icon="pijl-links"></span> Terug naar catalogus</a>
@@ -59,7 +60,7 @@
 <section id="nieuweGebruikerModal" class="plaatModal hidden" role="dialog" aria-modal="true" aria-labelledby="nieuweGebruikerTitel">
 <form id="nieuweGebruikerForm" class="plaatForm">
 <div class="plaatFormKop"><div><p class="beheerEyebrow">Beheer</p><h2 id="nieuweGebruikerTitel">Gebruiker toevoegen</h2><p>Het account is direct actief. Er wordt geen e-mail verstuurd.</p></div><button id="sluitNieuweGebruikerModal" class="modalSluiten" type="button" aria-label="Sluiten">×</button></div>
-<div class="plaatFormGrid"><label>E-mailadres<input id="ngEmail" type="email" autocomplete="off" required></label><label>Wachtwoord<input id="ngWachtwoord" type="password" autocomplete="new-password" minlength="8" required></label><label>Rol<select id="ngRol" required><option value="gebruiker">gebruiker</option><option value="beheerder">beheerder</option></select></label></div>
+<div class="plaatFormGrid"><label>E-mailadres<input id="ngEmail" type="email" autocomplete="off" required></label><label>Gebruikersnaam<input id="ngNaam" type="text" autocomplete="off" maxlength="100"></label><label>Wachtwoord<input id="ngWachtwoord" type="password" autocomplete="new-password" minlength="8" required></label><label>Rol<select id="ngRol" required><option value="gebruiker">gebruiker</option><option value="beheerder">beheerder</option></select></label></div>
 <p id="ngMelding" class="plaatFormMelding" aria-live="polite"></p>
 <div class="plaatFormActies"><button id="ngAnnuleren" class="secundaireKnop" type="button">Annuleren</button><button id="ngVerzendKnop" class="primary" type="submit">Gebruiker toevoegen</button></div>
 </form>
