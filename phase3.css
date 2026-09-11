@@ -37,11 +37,49 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 .uploadButtons{gap:16px;margin-bottom:24px;}
 .plaatFormActies{gap:10px;margin-top:18px;}
 
+/* Aankoopklachten: vijf vaste fotovakken, zoals bij een leverancierscase */
+.akFotoKeuze{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(90px,1fr));
+    gap:12px;
+    width:100%;
+}
+.akFotoVak{
+    min-height:120px;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:2px dashed var(--border);
+    border-radius:14px;
+    background:#fafcff;
+    color:var(--text-light);
+    cursor:pointer;
+    font:inherit;
+    font-size:14px;
+    font-weight:600;
+    overflow:hidden;
+}
+.akFotoVak:hover{border-color:var(--primary);background:#eef4ff;transform:translateY(-2px);}
+.akFotoVak .icoon{width:28px;height:28px;margin-right:0;}
+.akFotoVak img{display:block;width:100%;height:78px;object-fit:cover;border-radius:9px;}
+.akFotoVak img + span{font-size:12px;}
+
 /* Gebruikersbeheer */
 .gbGebruikerActies{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
 .gbVerwijderGebruikerKnop{border:1px solid #fecaca;background:#fef2f2;color:var(--danger);padding:12px 18px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;}
 .gbVerwijderGebruikerKnop:hover{background:#fee2e2;border-color:#fca5a5;}
 .gbVerwijderGebruikerKnop:disabled{opacity:.65;cursor:not-allowed;}
+
+/* Dropdown-menu: voldoende ruimte rond iconen en tekst */
+.dropdown button,.dropdown a{min-height:44px;display:flex;align-items:center;gap:6px;}
+.dropdown button .icoon,.dropdown a .icoon{width:18px;height:18px;margin-right:2px;}
+
+@media (max-width:800px){
+    .akFotoKeuze{grid-template-columns:repeat(3,minmax(90px,1fr));}
+}
 
 @media (max-width:600px){
     .headerButtons{gap:6px;}
@@ -49,6 +87,8 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
     .beheer-container{padding-top:20px;padding-bottom:24px;}
     .gbGebruikerActies{display:grid;grid-template-columns:1fr;width:100%;}
     .gbGebruikerActies button{width:100%;min-height:44px;}
+    .akFotoKeuze{grid-template-columns:repeat(2,minmax(100px,1fr));gap:10px;}
+    .akFotoVak{min-height:110px;}
 
     /* Mobiele primaire login: velden leesbaar en aanmelden op een aparte rij */
     .loginArea{width:100%;min-width:0;}
