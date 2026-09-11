@@ -139,10 +139,9 @@
         gekozen.fill(null);
         bestanden.forEach(input => input.value = "");
         vakken.forEach((vak, index) => {
-            vak.innerHTML = '<span class="icoon" data-icon="foto"></span><span>Foto ' + (index + 1) + '</span>';
+            vak.innerHTML = icoon("foto") + "<span>Foto " + (index + 1) + "</span>";
         });
         synchroniseer();
-        if(window.renderIconen) window.renderIconen();
     });
 })();
 </script>
