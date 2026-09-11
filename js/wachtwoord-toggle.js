@@ -42,9 +42,13 @@ function voegLoginStijlToe(){
             right:4px;
             top:50%;
             transform:translateY(-50%);
-            width:26px;
-            height:26px;
+            width:26px !important;
+            min-width:26px !important;
+            max-width:26px !important;
+            height:26px !important;
             min-height:26px !important;
+            max-height:26px !important;
+            flex:0 0 26px !important;
             padding:0 !important;
             border:0 !important;
             border-radius:6px !important;
