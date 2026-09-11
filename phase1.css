@@ -34,15 +34,19 @@
 }
 
 /* Dropdowns altijd boven de zoek/filterzone */
-.gebruikersMenu,
+.gebruikersMenu{
+    position:relative;
+    z-index:1002;
+}
+
 .actiesMenu{
     position:relative;
-    z-index:1000;
+    z-index:1001;
 }
 
 .gebruikersMenu .dropdown,
 .actiesMenu .dropdown{
-    z-index:1001;
+    z-index:1003;
 }
 
 @media (max-width:900px){
