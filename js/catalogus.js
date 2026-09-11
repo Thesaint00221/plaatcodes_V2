@@ -286,7 +286,7 @@ function toonPlaten(lijst){
             </div>
             <div class="kaartBody">
                 <div class="kaartTitel">${escapeHtml(plaat.naam)}</div>
-                <div class="kaartCode">${escapeHtml(plaat.code)}</div>
+                <div class="kaartCode">${escapeHtml(plaat.referentie || "")}</div>
                 <div class="kaartLeverancier">${escapeHtml(plaat.leverancier)}</div>
                 <button class="detailKnop" type="button">Bekijk details ${icoon("pijl-rechts")}</button>
             </div>
