@@ -1,0 +1,151 @@
+/* ==========================================================
+   PLAATCODES - FASE 3
+   Laatste polish: iconen, hover/focus en spacing
+   Geen functionele wijzigingen.
+========================================================== */
+
+/* 9. Iconen finetunen */
+.icoon{
+    width:1.15em;
+    height:1.15em;
+    flex:0 0 auto;
+    margin-right:.35em;
+    vertical-align:-.22em;
+}
+
+.icoon svg{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+button .icoon,
+a .icoon,
+.caseTypeKnop .icoon,
+.uploadKnop .icoon{
+    margin-right:.4em;
+}
+
+/* Iconen in compacte/icon-only knoppen niet laten verschuiven */
+.modalSluiten .icoon,
+.lightboxSluiten .icoon{
+    margin-right:0;
+}
+
+/* 10. Hover/focus states */
+button,
+a,
+select,
+input,
+textarea{
+    transition:background-color .18s ease,
+               border-color .18s ease,
+               box-shadow .18s ease,
+               color .18s ease,
+               transform .18s ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible{
+    outline:3px solid rgba(31,78,121,.22);
+    outline-offset:2px;
+}
+
+.secundaireKnop:hover,
+#userButton:hover,
+.beheerTerug:hover{
+    background:#f1f5f9;
+    border-color:#cbd5e1;
+}
+
+.caseTypeKnop:hover,
+.uploadKnop:hover{
+    border-color:#b8c7d8;
+    background:#f8fafc;
+}
+
+.caseTypeKnop.actief:hover{
+    background:var(--primary-hover);
+    color:#fff;
+}
+
+.primary:hover,
+.beheerPrimaireKnop:hover,
+#opslaanFoto:hover{
+    filter:brightness(.96);
+}
+
+/* Geen hover-effecten op aanraaktoestellen afdwingen */
+@media (hover:none){
+    .plaatCard:hover,
+    .plaatCard:hover .plaatFoto img{
+        transform:none;
+    }
+}
+
+/* 11. Kleine spacing-correcties */
+.headerButtons{
+    gap:10px;
+}
+
+.zoekContainer{
+    gap:8px;
+}
+
+.plaatInfo{
+    padding:16px 18px 18px;
+}
+
+.badges{
+    margin-top:14px;
+}
+
+.beheer-container{
+    padding-top:28px;
+    padding-bottom:32px;
+}
+
+.beheerIntro{
+    margin-bottom:22px;
+}
+
+.beheerActies{
+    margin-top:20px;
+}
+
+.caseTypeKeuze{
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.uploadButtons{
+    gap:16px;
+    margin-bottom:24px;
+}
+
+.uploadVeld + .uploadVeld{
+    margin-top:16px;
+}
+
+.plaatFormActies{
+    gap:10px;
+    margin-top:18px;
+}
+
+@media (max-width:600px){
+    .headerButtons{
+        gap:6px;
+    }
+
+    .plaatInfo{
+        padding:14px 15px 16px;
+    }
+
+    .beheer-container{
+        padding-top:20px;
+        padding-bottom:24px;
+    }
+}
