@@ -1,129 +1,52 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Plaatcatalogus</title>
-
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/favicon.ico">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <meta name="theme-color" content="#2563eb">
-
     <link rel="stylesheet" href="style.min.css">
     <link rel="stylesheet" href="phase1.css">
-
+    <link rel="stylesheet" href="phase3.css">
 </head>
-
 <body>
-
-<!-- =========================
-HEADER
-========================== -->
-
 <header class="topbar">
-
     <div class="logo">
-
-        <img
-            src="images/logo-detremmerie.png"
-            alt="Detremmerie"
-            class="merkLogo">
-
+        <img src="images/logo-detremmerie.png" alt="Detremmerie" class="merkLogo">
         <div class="logoTekst">
-
             <h1>Plaatcodes</h1>
             <span>Alle leveranciers op één plaats</span>
-
         </div>
-
     </div>
-
-
     <div class="zoekContainer">
-
-        <input
-            id="search"
-            type="text"
-            placeholder="Zoek op naam, plaatcode of leverancier">
-
+        <input id="search" type="text" placeholder="Zoek op naam, plaatcode of leverancier">
         <select id="leverancierFilter" aria-label="Filter op leverancier">
             <option value="">Alle leveranciers</option>
         </select>
-
     </div>
-
-
     <div class="headerButtons">
-
-
-        <!-- AANMELDEN / GEBRUIKERSMENU -->
         <div id="loginBox" class="loginArea"></div>
-
-
-        <!-- ACTIES-MENU: Nieuwe plaat / Plaat aanpassen / Archief / Cases overzicht -->
-
         <div class="actiesMenu">
-
-            <button
-                id="actiesKnop"
-                class="secundaireKnop"
-                type="button"
-                aria-expanded="false"
-                aria-controls="actiesDropdown">
-
+            <button id="actiesKnop" class="secundaireKnop" type="button" aria-expanded="false" aria-controls="actiesDropdown">
                 <span class="icoon" data-icon="lagen"></span> Menu <span class="icoon" data-icon="chevron"></span>
-
             </button>
-
             <div id="actiesDropdown" class="dropdown hidden">
-
-                <button id="nieuwePlaatKnop" type="button" style="display:none;">
-                    <span class="icoon" data-icon="plus"></span> Nieuwe plaat
-                </button>
-
-                <button id="plaatAanpassenKnop" type="button" style="display:none;">
-                    <span class="icoon" data-icon="tools"></span> Plaat aanpassen
-                </button>
-
-                <button id="archiefKnop" type="button" style="display:none;">
-                    <span class="icoon" data-icon="archief"></span> Archief
-                </button>
-
-                <a href="overzicht.html">
-                    <span class="icoon" data-icon="lagen"></span> Cases overzicht
-                </a>
-
+                <button id="nieuwePlaatKnop" type="button" style="display:none;"><span class="icoon" data-icon="plus"></span> Nieuwe plaat</button>
+                <button id="plaatAanpassenKnop" type="button" style="display:none;"><span class="icoon" data-icon="tools"></span> Plaat aanpassen</button>
+                <button id="archiefKnop" type="button" style="display:none;"><span class="icoon" data-icon="archief"></span> Archief</button>
+                <a href="overzicht.html"><span class="icoon" data-icon="lagen"></span> Cases overzicht</a>
             </div>
-
         </div>
-
     </div>
-
-
 </header>
-<!-- =========================
-CATALOGUS
-========================== -->
-
 <main>
-
     <div id="resultaten" class="cards"></div>
-
     <div id="laadMeer" class="laadMeer hidden">Meer platen laden...</div>
-
 </main>
-
-<section
-    id="plaatModal"
-    class="plaatModal hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="plaatModalTitel">
-
+<section id="plaatModal" class="plaatModal hidden" role="dialog" aria-modal="true" aria-labelledby="plaatModalTitel">
     <form id="nieuwePlaatForm" class="plaatForm">
         <div class="plaatFormKop">
             <div>
@@ -133,12 +56,10 @@ CATALOGUS
             </div>
             <button id="sluitPlaatModal" class="modalSluiten" type="button" aria-label="Sluiten">×</button>
         </div>
-
         <div id="plaatZoekVeld" class="plaatZoekVeld hidden">
             <label>Zoek plaat<input id="plaatZoekInput" type="text" placeholder="Naam, code of leverancier..."></label>
             <div id="plaatZoekResultaten" class="plaatZoekResultaten"></div>
         </div>
-
         <div class="plaatFormGrid">
             <label>Naam<input id="plaatNaam" type="text" required></label>
             <label>Code<input id="plaatCode" type="text" required></label>
@@ -148,251 +69,79 @@ CATALOGUS
             <label>Kleurnummer<input id="plaatKleurnummer" type="number" step="1"></label>
             <label id="plaatFotoLabel" class="plaatFotoVeld"><span class="plaatFotoLabelTekst">Foto</span> <input id="plaatFoto" type="file" accept="image/*"></label>
         </div>
-
         <p id="plaatFormMelding" class="plaatFormMelding" aria-live="polite"></p>
-
         <div class="plaatFormActies">
             <button id="annuleerPlaat" class="secundaireKnop" type="button">Annuleren</button>
             <button class="primary" type="submit">Plaat opslaan</button>
         </div>
     </form>
 </section>
-
-    <section id="archiefPagina" class="hidden">
-
-    <button id="sluitArchief">
-
-        <span class="icoon" data-icon="pijl-links"></span> Terug
-
-    </button>
-
+<section id="archiefPagina" class="hidden">
+    <button id="sluitArchief"><span class="icoon" data-icon="pijl-links"></span> Terug</button>
     <h2>Gearchiveerde platen</h2>
-
     <div id="archiefResultaten" class="cards"></div>
-
 </section>
-<!-- =========================
-DETAILPAGINA
-========================== -->
-
 <section id="detail" class="hidden">
-
-    <button id="terug">
-
-        <span class="icoon" data-icon="pijl-links"></span> Terug
-
-    </button>
-
+    <button id="terug"><span class="icoon" data-icon="pijl-links"></span> Terug</button>
     <div id="detailContent"></div>
-
     <div id="uploadKaart">
-
         <div class="caseTypeKeuze">
-
-            <button
-                type="button"
-                id="typeProductieKnop"
-                class="caseTypeKnop actief">
-
-                <span class="icoon" data-icon="fabriek"></span> Fout in productie
-
-            </button>
-
-            <button
-                type="button"
-                id="typeLeverancierKnop"
-                class="caseTypeKnop">
-
-                <span class="icoon" data-icon="vrachtwagen"></span> Fout van leverancier
-
-            </button>
-
+            <button type="button" id="typeProductieKnop" class="caseTypeKnop actief"><span class="icoon" data-icon="fabriek"></span> Fout in productie</button>
+            <button type="button" id="typeLeverancierKnop" class="caseTypeKnop"><span class="icoon" data-icon="vrachtwagen"></span> Fout van leverancier</button>
         </div>
-
         <div id="productieVelden" class="uploadButtons">
-
-            <button
-                id="detailKnop"
-                class="uploadKnop detail">
-
-                <span class="icoon" data-icon="zoek"></span> Detailfoto
-
-            </button>
-
-            <button
-                id="overzichtKnop"
-                class="uploadKnop overzicht">
-
-                <span class="icoon" data-icon="foto"></span> Overzichtsfoto
-
-            </button>
-
-            <input
-                type="file"
-                id="detailBestand"
-                accept="image/*"
-                hidden>
-
-            <input
-                type="file"
-                id="overzichtBestand"
-                accept="image/*"
-                hidden>
-
+            <button id="detailKnop" class="uploadKnop detail"><span class="icoon" data-icon="zoek"></span> Detailfoto</button>
+            <button id="overzichtKnop" class="uploadKnop overzicht"><span class="icoon" data-icon="foto"></span> Overzichtsfoto</button>
+            <input type="file" id="detailBestand" accept="image/*" hidden>
+            <input type="file" id="overzichtBestand" accept="image/*" hidden>
         </div>
-
         <div id="leverancierVelden" class="uploadButtons uploadButtonsFotos hidden">
-
-            <button
-                type="button"
-                class="uploadKnop detail leverancierFotoKnop"
-                data-index="0">
-
-                <span class="icoon" data-icon="foto"></span> Foto 1
-
-            </button>
+            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="0"><span class="icoon" data-icon="foto"></span> Foto 1</button>
             <input type="file" class="leverancierFotoBestand" data-index="0" accept="image/*" hidden>
-
-            <button
-                type="button"
-                class="uploadKnop detail leverancierFotoKnop"
-                data-index="1">
-
-                <span class="icoon" data-icon="foto"></span> Foto 2
-
-            </button>
+            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="1"><span class="icoon" data-icon="foto"></span> Foto 2</button>
             <input type="file" class="leverancierFotoBestand" data-index="1" accept="image/*" hidden>
-
-            <button
-                type="button"
-                class="uploadKnop detail leverancierFotoKnop"
-                data-index="2">
-
-                <span class="icoon" data-icon="foto"></span> Foto 3
-
-            </button>
+            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="2"><span class="icoon" data-icon="foto"></span> Foto 3</button>
             <input type="file" class="leverancierFotoBestand" data-index="2" accept="image/*" hidden>
-
-            <button
-                type="button"
-                class="uploadKnop detail leverancierFotoKnop"
-                data-index="3">
-
-                <span class="icoon" data-icon="foto"></span> Foto 4
-
-            </button>
+            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="3"><span class="icoon" data-icon="foto"></span> Foto 4</button>
             <input type="file" class="leverancierFotoBestand" data-index="3" accept="image/*" hidden>
-
-            <button
-                type="button"
-                class="uploadKnop detail leverancierFotoKnop"
-                data-index="4">
-
-                <span class="icoon" data-icon="foto"></span> Foto 5
-
-            </button>
+            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="4"><span class="icoon" data-icon="foto"></span> Foto 5</button>
             <input type="file" class="leverancierFotoBestand" data-index="4" accept="image/*" hidden>
-
-            <button
-                type="button"
-                id="leverancierBonKnop"
-                class="uploadKnop overzicht">
-
-                <span class="icoon" data-icon="document"></span> Leveranciersbon (PDF)
-
-            </button>
-
-            <input
-                type="file"
-                id="leverancierBonBestand"
-                accept="application/pdf"
-                hidden>
-
+            <button type="button" id="leverancierBonKnop" class="uploadKnop overzicht"><span class="icoon" data-icon="document"></span> Leveranciersbon (PDF)</button>
+            <input type="file" id="leverancierBonBestand" accept="application/pdf" hidden>
         </div>
-
-        <small class="uploadHint">
-            Minstens 1 foto is verplicht. De bon is optioneel, maar wordt
-            aangeraden bij een klacht richting de leverancier.
-        </small>
-
+        <small class="uploadHint">Minstens 1 foto is verplicht. De bon is optioneel, maar wordt aangeraden bij een klacht richting de leverancier.</small>
         <div class="uploadForm">
-
-            <div class="uploadFormKop">
-                <h3>Nieuwe case toevoegen</h3>
-            </div>
-
+            <div class="uploadFormKop"><h3>Nieuwe case toevoegen</h3></div>
             <div class="uploadVeld">
-            <label for="fotoTitel">Titel</label>
-
-            <input
-                id="fotoTitel"
-                type="text"
-                maxlength="80"
-                placeholder="Bijvoorbeeld: Brandvlekken, haaksheid, ...">
-            <small>Maximaal 80 tekens.</small>
+                <label for="fotoTitel">Titel</label>
+                <input id="fotoTitel" type="text" maxlength="80" placeholder="Bijvoorbeeld: Brandvlekken, haaksheid, ...">
+                <small>Maximaal 80 tekens.</small>
             </div>
-
             <div class="uploadVeld">
-            <label for="fotoBeschrijving">Opmerking</label>
-
-            <textarea
-                id="fotoBeschrijving"
-                rows="5"
-                placeholder="Beschrijf kort de toepassing, afwerking of bijzonderheden."></textarea>
-            <small>Deze toelichting verschijnt bij de case.</small>
+                <label for="fotoBeschrijving">Opmerking</label>
+                <textarea id="fotoBeschrijving" rows="5" placeholder="Beschrijf kort de toepassing, afwerking of bijzonderheden."></textarea>
+                <small>Deze toelichting verschijnt bij de case.</small>
             </div>
-
-            <button id="opslaanFoto">
-
-                <span class="icoon" data-icon="vink"></span> Opslaan
-
-            </button>
-
+            <button id="opslaanFoto"><span class="icoon" data-icon="vink"></span> Opslaan</button>
         </div>
-
     </div>
-
-    <div
-        id="beheerBox"
-        style="display:none;">
-
-        <button id="opschonenButton">
-
-            <span class="icoon" data-icon="bezem"></span> Opschonen opslag
-
-        </button>
-
+    <div id="beheerBox" style="display:none;">
+        <button id="opschonenButton"><span class="icoon" data-icon="bezem"></span> Opschonen opslag</button>
     </div>
-
 </section>
-
 <div id="fotoLightbox">
-
     <div class="lightboxBinnen">
-
         <button type="button" class="lightboxSluiten" id="lightboxSluitenKnop" aria-label="Sluiten">×</button>
-
         <img id="lightboxAfbeelding" src="" alt="">
-
     </div>
-
 </div>
-
-<!-- =========================
-SCRIPTS
-========================== -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="js/security-utils.js"></script>
 <script src="js/icons.js"></script>
-
 <script src="js/wachtwoord-toggle.js"></script>
-
 <script src="js/dropdown-sluiten.js"></script>
 <script src="js/supabase.js"></script>
 <script src="js/auth.js"></script>
-
 <script src="js/mijn-wachtwoord.js"></script>
 <script src="js/menu.js"></script>
 <script src="js/catalogus.js"></script>
@@ -407,6 +156,5 @@ SCRIPTS
 <script src="js/archief.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pwa.js"></script>
-
 </body>
 </html>
