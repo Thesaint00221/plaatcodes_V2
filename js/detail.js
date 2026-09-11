@@ -822,6 +822,14 @@ if(terug){
             zoekContainer.style.display = "";
         }
 
+        // Verwijder alleen de deeplink-parameter uit de URL.
+        // De rest van de huidige pagina en functionaliteit blijft ongewijzigd.
+        if(window.location.search.includes("plaat=")){
+            const url = new URL(window.location.href);
+            url.searchParams.delete("plaat");
+            window.history.replaceState({},"",url.pathname + (url.search ? url.search : "") + url.hash);
+        }
+
         window.scrollTo({
             top:0,
             behavior:"smooth"
