@@ -164,12 +164,12 @@
     }
 
     .loginArea .loginCompact input{
-        width:110px;
-        padding:8px 9px;
+        width:85px;
+        padding:8px 8px;
     }
 
     .loginArea .loginCompact button{
-        padding:8px 10px;
+        padding:8px 9px;
     }
 
     .plaatNaam{
