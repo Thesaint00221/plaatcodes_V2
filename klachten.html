@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Klachten | Plaatcodes</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/favicon.ico">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="style.min.css">
+    <link rel="stylesheet" href="phase1.css">
+    <link rel="stylesheet" href="phase3.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="logo">
+        <img src="images/logo-detremmerie.png" alt="Detremmerie" class="merkLogo">
+        <div class="logoTekst">
+            <h1>Plaatcodes</h1>
+            <span>Klachten</span>
+        </div>
+    </div>
+    <div class="headerButtons">
+        <div id="loginBox" class="loginArea"></div>
+        <a class="secundaireKnop" href="index.html"><span class="icoon" data-icon="pijl-links"></span> Catalogus</a>
+    </div>
+</header>
+
+<main class="beheer-container">
+    <div class="beheerIntro">
+        <p class="beheerEyebrow">Klachten</p>
+        <h2>Aankoopartikelklacht</h2>
+        <p>Leg een klacht over een aangekocht artikel vast en maak er indien nodig meteen een leveranciersrapport van.</p>
+    </div>
+
+    <section class="beheerActies">
+        <h2>Nieuwe klacht</h2>
+        <form id="aankoopKlachtForm" class="plaatForm">
+            <div class="plaatFormGrid">
+                <label>Artikel / omschrijving<input id="akArtikel" type="text" maxlength="150" required></label>
+                <label>Leverancier<input id="akLeverancier" type="text" maxlength="150" required></label>
+                <label>Artikelnummer / referentie<input id="akReferentie" type="text" maxlength="100"></label>
+                <label>Datum klacht<input id="akDatum" type="date" required></label>
+                <label>Aantal<input id="akAantal" type="number" min="0" step="1"></label>
+                <label>Bestelnummer<input id="akBestelnummer" type="text" maxlength="100"></label>
+            </div>
+            <div class="uploadVeld">
+                <label for="akOmschrijving">Omschrijving klacht</label>
+                <textarea id="akOmschrijving" rows="5" maxlength="3000" required></textarea>
+            </div>
+            <div class="uploadVeld">
+                <label for="akOplossing">Gewenste oplossing</label>
+                <textarea id="akOplossing" rows="3" maxlength="1000"></textarea>
+            </div>
+            <div class="uploadVeld">
+                <label for="akFotos">Foto's</label>
+                <input id="akFotos" type="file" accept="image/*" multiple>
+                <small>Maximaal 5 foto's.</small>
+            </div>
+            <div class="uploadVeld">
+                <label for="akBon">Leveranciersbon (PDF)</label>
+                <input id="akBon" type="file" accept="application/pdf">
+            </div>
+            <p id="akMelding" class="plaatFormMelding" aria-live="polite"></p>
+            <div class="plaatFormActies">
+                <button class="primary" type="submit"><span class="icoon" data-icon="vink"></span> Klacht opslaan</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="beheerActies">
+        <h2>Opgeslagen aankoopklachten</h2>
+        <div id="aankoopKlachtenLijst"><p class="loader">Klachten laden...</p></div>
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/security-utils.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/wachtwoord-toggle.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/foto.js"></script>
+<script src="js/rapport.js"></script>
+<script src="js/aankoopklachten.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>
