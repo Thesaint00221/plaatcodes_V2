@@ -1,7 +1,7 @@
 // ============================================
 // gebruikers-beheer.js
 // Toont alle geregistreerde gebruikers (via de RPC "lijst_gebruikers")
-// en laat een beheerder de rol per gebruiker wijzigen.
+// en laat een beheerder de rol per gebruiker wijzigen of een gebruiker verwijderen.
 // ============================================
 
 const gbLijst = document.getElementById("gbLijst");
@@ -53,6 +53,22 @@ async function gbLaadGebruikers(){
     const eigenEmail = window.huidigeGebruiker?.email;
     gbLijst.innerHTML = data.map(gebruiker => `<div class="gebruikerRij">${gbRijHtml(gebruiker, gebruiker.email === eigenEmail)}</div>`).join("");
     gbLijst.querySelectorAll(".gebruikerRolSelect").forEach(select => select.addEventListener("change", gbWijzigRol));
+    vgVulGebruikers(data);
+}
+
+function gbVulVerwijderSelect(data){
+    const select = document.getElementById("vgGebruiker");
+    if(!select){ return; }
+    const eigenEmail = window.huidigeGebruiker?.email?.toLowerCase();
+    select.innerHTML = '<option value="">Kies een gebruiker...</option>' + data
+        .filter(gebruiker => gebruiker.email?.toLowerCase() !== eigenEmail)
+        .map(gebruiker => `<option value="${escapeHtml(gebruiker.id)}">${escapeHtml(gebruiker.naam || gebruiker.email)} — ${escapeHtml(gebruiker.email)}</option>`)
+        .join("");
+}
+
+function vgVulGebruikers(data){
+    window.gbGebruikersData = data;
+    gbVulVerwijderSelect(data);
 }
 
 async function gbWijzigRol(event){
@@ -88,8 +104,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const toegang = await controleerToegang();
     if(!toegang){
         if(gbLijst){ gbLijst.innerHTML = ""; }
-        const knop = document.getElementById("gbNieuweGebruikerKnop");
-        if(knop){ knop.style.display = "none"; }
+        ["gbNieuweGebruikerKnop", "gbVerwijderGebruikerKnop"].forEach(id => {
+            const knop = document.getElementById(id);
+            if(knop){ knop.style.display = "none"; }
+        });
         return;
     }
     gbLaadGebruikers();
@@ -156,4 +174,65 @@ ngForm?.addEventListener("submit", async event => {
         ngToonMelding("Er ging iets mis. Probeer opnieuw.", true);
     }
     ngVerzendKnop.disabled = false;
+});
+
+// ============================================
+// Gebruiker verwijderen (modal)
+// ============================================
+
+const vgModal = document.getElementById("verwijderGebruikerModal");
+const vgForm = document.getElementById("verwijderGebruikerForm");
+const vgMelding = document.getElementById("vgMelding");
+const vgVerzendKnop = document.getElementById("vgVerzendKnop");
+
+function vgToonMelding(tekst, isFout){
+    if(!vgMelding){ return; }
+    vgMelding.innerHTML = tekst ? `${icoon(isFout ? "fout" : "vink")} ${tekst}` : "";
+}
+
+function vgOpenen(){
+    if(!vgModal){ return; }
+    vgToonMelding("", false);
+    const select = document.getElementById("vgGebruiker");
+    if(select){ select.value = ""; }
+    vgModal.classList.remove("hidden");
+    select?.focus();
+}
+
+function vgSluiten(){ vgModal?.classList.add("hidden"); }
+
+document.getElementById("gbVerwijderGebruikerKnop")?.addEventListener("click", vgOpenen);
+document.getElementById("sluitVerwijderGebruikerModal")?.addEventListener("click", vgSluiten);
+document.getElementById("vgAnnuleren")?.addEventListener("click", vgSluiten);
+vgModal?.addEventListener("click", event => { if(event.target === vgModal){ vgSluiten(); } });
+
+vgForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const gebruikerId = document.getElementById("vgGebruiker")?.value;
+    const gebruiker = window.gbGebruikersData?.find(item => item.id === gebruikerId);
+    if(!gebruiker){ vgToonMelding("Kies eerst een gebruiker.", true); return; }
+    const naamOfEmail = gebruiker.naam || gebruiker.email;
+    if(!confirm(`Gebruiker "${naamOfEmail}" definitief verwijderen?`)){ return; }
+    vgVerzendKnop.disabled = true;
+    vgToonMelding("Bezig met verwijderen...", false);
+    try{
+        const {data: sessionData} = await supabaseClient.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+        if(!accessToken){ vgToonMelding("Je bent niet (meer) ingelogd. Meld je opnieuw aan.", true); vgVerzendKnop.disabled = false; return; }
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/delete-user`, {
+            method:"POST",
+            headers:{Authorization:`Bearer ${accessToken}`, "Content-Type":"application/json"},
+            body:JSON.stringify({id: gebruiker.id, email: gebruiker.email})
+        });
+        const result = await response.json();
+        if(!response.ok){ vgToonMelding(result.error || "Verwijderen van gebruiker mislukt.", true); vgVerzendKnop.disabled = false; return; }
+        vgSluiten();
+        gbToonMelding(`Gebruiker ${naamOfEmail} is verwijderd.`, false);
+        gbLaadGebruikers();
+        if(typeof wbLaadGebruikers === "function"){ wbLaadGebruikers(); }
+    }catch(fout){
+        console.error("Gebruiker verwijderen mislukt:", fout);
+        vgToonMelding("Er ging iets mis. Probeer opnieuw.", true);
+    }
+    vgVerzendKnop.disabled = false;
 });
