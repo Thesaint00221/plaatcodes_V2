@@ -25,6 +25,9 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 .primary:hover,.beheerPrimaireKnop:hover,#opslaanFoto:hover{filter:brightness(.96);}
 @media (hover:none){.plaatCard:hover,.plaatCard:hover .plaatFoto img{transform:none;}}
 
+/* Hoofdlogo: volledige logo-zone is een snelkoppeling naar de hoofdpagina */
+a.logo.logoLink{color:inherit;text-decoration:none;}
+
 /* 11. Kleine spacing-correcties */
 .headerButtons{gap:10px;}
 .zoekContainer{gap:8px;}
