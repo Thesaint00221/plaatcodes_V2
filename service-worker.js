@@ -5,7 +5,7 @@
 // bewust NIET onderschept: de catalogus moet altijd actuele data tonen.
 // ============================================
 
-const CACHE_NAAM = "plaatcodes-shell-v4";
+const CACHE_NAAM = "plaatcodes-shell-v5";
 
 const SHELL_BESTANDEN = [
     "./",
@@ -14,9 +14,13 @@ const SHELL_BESTANDEN = [
     "overzicht.html",
     "style.min.css",
     "manifest.json",
+    "js/security-utils.js",
     "js/supabase.js",
     "js/icons.js",
+    "js/wachtwoord-toggle.js",
+    "js/dropdown-sluiten.js",
     "js/auth.js",
+    "js/mijn-wachtwoord.js",
     "js/menu.js",
     "js/catalogus.js",
     "js/detail.js",
@@ -30,6 +34,8 @@ const SHELL_BESTANDEN = [
     "js/platen-beheer.js",
     "js/archief.js",
     "js/beheer.js",
+    "js/gebruikers-beheer.js",
+    "js/wachtwoord-beheer.js",
     "js/app.js",
     "js/pwa.js",
     "icons/icon-192.png",
