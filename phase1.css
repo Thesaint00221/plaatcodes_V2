@@ -56,16 +56,17 @@
     box-shadow:0 1px 8px rgba(0,0,0,.07);
 }
 
-/* MOBIEL: logo + acties naast elkaar, zoeken eronder */
+/* MOBIEL: logo boven gebruiker/acties, zoeken daaronder */
 @media (max-width:900px){
     .topbar{
         display:grid;
-        grid-template-columns:1fr auto;
+        grid-template-columns:1fr;
         grid-template-areas:
-            "logo actions"
-            "search search";
-        align-items:center;
-        gap:12px 16px;
+            "logo"
+            "actions"
+            "search";
+        align-items:stretch;
+        gap:10px;
         padding:12px 16px;
     }
 
@@ -113,8 +114,9 @@
 
     .headerButtons{
         grid-area:actions;
-        justify-content:flex-end;
+        justify-content:flex-start;
         gap:8px;
+        width:100%;
     }
 
     .headerButtons button{
@@ -138,7 +140,7 @@
 
 @media (max-width:600px){
     .topbar{
-        gap:10px 12px;
+        gap:8px;
         padding:10px 12px;
     }
 
@@ -156,20 +158,26 @@
 
     .headerButtons{
         gap:6px;
+        flex-wrap:wrap;
     }
 
     .loginArea .loginCompact{
         gap:4px;
         padding:4px;
+        width:100%;
+        flex-wrap:nowrap;
     }
 
     .loginArea .loginCompact input{
-        width:85px;
-        padding:8px 8px;
+        width:auto;
+        min-width:0;
+        flex:1;
+        padding:8px;
     }
 
     .loginArea .loginCompact button{
         padding:8px 9px;
+        flex:0 0 auto;
     }
 
     .plaatNaam{
