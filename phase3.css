@@ -76,3 +76,17 @@ body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:v
 .primary{padding:10px 18px;}
 @media (max-width:900px){.topbar{padding:15px 20px;gap:20px;}.zoekContainer{max-width:none;}}
 @media (max-width:600px){.topbar{padding:14px 15px;gap:12px;}.logo{gap:10px;}.merkLogo{height:36px;}.logoTekst h1{font-size:21px;}.logoTekst span{font-size:11px;}.zoekContainer{gap:7px;}#search{font-size:14px;padding:10px 13px;}#leverancierFilter{padding:0 10px;font-size:13px;}.headerButtons{gap:5px;}}
+
+/* ==========================================================
+   FASE 4 - STAP 4
+   Catalogusintro en filterbalk: meer rust en visuele hiërarchie.
+   Alleen presentatie; geen functionele wijzigingen.
+========================================================== */
+#resultaten{padding:48px 40px 52px;}
+#resultaten > h2{margin:0 0 8px;font-size:28px;font-weight:600;letter-spacing:-.45px;line-height:1.2;color:var(--text);}
+#resultaten > p{margin:0 0 26px;color:var(--text-light);font-size:14px;line-height:1.6;}
+.zoekContainer{align-items:center;}
+#search::placeholder{color:#9a9a95;}
+#leverancierFilter{color:#4f4f4b;}
+@media (max-width:900px){#resultaten{padding:38px 20px 44px;}}
+@media (max-width:600px){#resultaten{padding:30px 15px 36px;}#resultaten > h2{font-size:24px;margin-bottom:6px;}#resultaten > p{font-size:13px;margin-bottom:20px;}}
