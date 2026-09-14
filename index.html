@@ -44,14 +44,8 @@
     </div>
 </header>
 <main>
-    <div class="caseTypeKeuze catalogusTabs" role="tablist" aria-label="Plaatcatalogus">
-        <button type="button" id="catalogusTab" class="caseTypeKnop actief" role="tab" aria-selected="true" aria-controls="catalogusPane"><span class="icoon" data-icon="lagen"></span> Plaatcatalogus</button>
-        <button type="button" id="nieuwePlaatTab" class="caseTypeKnop" role="tab" aria-selected="false" aria-controls="nieuwePlaatPane"><span class="icoon" data-icon="plus"></span> Nieuwe plaat</button>
-    </div>
-    <section id="catalogusPane" role="tabpanel" aria-labelledby="catalogusTab">
-        <div id="resultaten" class="cards"></div>
-        <div id="laadMeer" class="laadMeer hidden">Meer platen laden...</div>
-    </section>
+    <div id="resultaten" class="cards"></div>
+    <div id="laadMeer" class="laadMeer hidden">Meer platen laden...</div>
 </main>
 <section id="plaatModal" class="plaatModal hidden" role="dialog" aria-modal="true" aria-labelledby="plaatModalTitel">
     <form id="nieuwePlaatForm" class="plaatForm">
@@ -92,44 +86,57 @@
     <button id="terug"><span class="icoon" data-icon="pijl-links"></span> Terug</button>
     <div id="detailContent"></div>
     <div id="uploadKaart">
-        <div class="caseTypeKeuze">
-            <button type="button" id="typeProductieKnop" class="caseTypeKnop actief"><span class="icoon" data-icon="fabriek"></span> Fout in productie</button>
-            <button type="button" id="typeLeverancierKnop" class="caseTypeKnop"><span class="icoon" data-icon="vrachtwagen"></span> Fout van leverancier</button>
+        <div class="caseTypeKeuze" role="tablist" aria-label="Cases">
+            <button type="button" id="nieuweCaseTab" class="caseTypeKnop actief" role="tab" aria-selected="true" aria-controls="nieuweCasePane"><span class="icoon" data-icon="plus"></span> Nieuwe case</button>
+            <button type="button" id="bestaandeCasesTab" class="caseTypeKnop" role="tab" aria-selected="false" aria-controls="bestaandeCasesPane"><span class="icoon" data-icon="document"></span> Bestaande cases</button>
         </div>
-        <div id="productieVelden" class="uploadButtons">
-            <button id="detailKnop" class="uploadKnop detail"><span class="icoon" data-icon="zoek"></span> Detailfoto</button>
-            <button id="overzichtKnop" class="uploadKnop overzicht"><span class="icoon" data-icon="foto"></span> Overzichtsfoto</button>
-            <input type="file" id="detailBestand" accept="image/*" hidden>
-            <input type="file" id="overzichtBestand" accept="image/*" hidden>
-        </div>
-        <div id="leverancierVelden" class="uploadButtons uploadButtonsFotos hidden">
-            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="0"><span class="icoon" data-icon="foto"></span> Foto 1</button>
-            <input type="file" class="leverancierFotoBestand" data-index="0" accept="image/*" hidden>
-            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="1"><span class="icoon" data-icon="foto"></span> Foto 2</button>
-            <input type="file" class="leverancierFotoBestand" data-index="1" accept="image/*" hidden>
-            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="2"><span class="icoon" data-icon="foto"></span> Foto 3</button>
-            <input type="file" class="leverancierFotoBestand" data-index="2" accept="image/*" hidden>
-            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="3"><span class="icoon" data-icon="foto"></span> Foto 4</button>
-            <input type="file" class="leverancierFotoBestand" data-index="3" accept="image/*" hidden>
-            <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="4"><span class="icoon" data-icon="foto"></span> Foto 5</button>
-            <input type="file" class="leverancierFotoBestand" data-index="4" accept="image/*" hidden>
-            <button type="button" id="leverancierBonKnop" class="uploadKnop overzicht"><span class="icoon" data-icon="document"></span> Leveranciersbon (PDF)</button>
-            <input type="file" id="leverancierBonBestand" accept="application/pdf" hidden>
-        </div>
-        <small class="uploadHint">Minstens 1 foto is verplicht. De bon is optioneel, maar wordt aangeraden bij een klacht richting de leverancier.</small>
-        <div class="uploadForm">
-            <div class="uploadFormKop"><h3>Nieuwe case toevoegen</h3></div>
-            <div class="uploadVeld">
-                <label for="fotoTitel">Titel</label>
-                <input id="fotoTitel" type="text" maxlength="80" placeholder="Bijvoorbeeld: Brandvlekken, haaksheid, ...">
-                <small>Maximaal 80 tekens.</small>
+        <div id="nieuweCasePane" role="tabpanel" aria-labelledby="nieuweCaseTab">
+            <div id="nieuweCaseInhoud">
+                <div class="caseTypeKeuze">
+                    <button type="button" id="typeProductieKnop" class="caseTypeKnop actief"><span class="icoon" data-icon="fabriek"></span> Fout in productie</button>
+                    <button type="button" id="typeLeverancierKnop" class="caseTypeKnop"><span class="icoon" data-icon="vrachtwagen"></span> Fout van leverancier</button>
+                </div>
+                <div id="productieVelden" class="uploadButtons">
+                    <button id="detailKnop" class="uploadKnop detail"><span class="icoon" data-icon="zoek"></span> Detailfoto</button>
+                    <button id="overzichtKnop" class="uploadKnop overzicht"><span class="icoon" data-icon="foto"></span> Overzichtsfoto</button>
+                    <input type="file" id="detailBestand" accept="image/*" hidden>
+                    <input type="file" id="overzichtBestand" accept="image/*" hidden>
+                </div>
+                <div id="leverancierVelden" class="uploadButtons uploadButtonsFotos hidden">
+                    <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="0"><span class="icoon" data-icon="foto"></span> Foto 1</button>
+                    <input type="file" class="leverancierFotoBestand" data-index="0" accept="image/*" hidden>
+                    <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="1"><span class="icoon" data-icon="foto"></span> Foto 2</button>
+                    <input type="file" class="leverancierFotoBestand" data-index="1" accept="image/*" hidden>
+                    <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="2"><span class="icoon" data-icon="foto"></span> Foto 3</button>
+                    <input type="file" class="leverancierFotoBestand" data-index="2" accept="image/*" hidden>
+                    <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="3"><span class="icoon" data-icon="foto"></span> Foto 4</button>
+                    <input type="file" class="leverancierFotoBestand" data-index="3" accept="image/*" hidden>
+                    <button type="button" class="uploadKnop detail leverancierFotoKnop" data-index="4"><span class="icoon" data-icon="foto"></span> Foto 5</button>
+                    <input type="file" class="leverancierFotoBestand" data-index="4" accept="image/*" hidden>
+                    <button type="button" id="leverancierBonKnop" class="uploadKnop overzicht"><span class="icoon" data-icon="document"></span> Leveranciersbon (PDF)</button>
+                    <input type="file" id="leverancierBonBestand" accept="application/pdf" hidden>
+                </div>
+                <small class="uploadHint">Minstens 1 foto is verplicht. De bon is optioneel, maar wordt aangeraden bij een klacht richting de leverancier.</small>
+                <div class="uploadForm">
+                    <div class="uploadFormKop"><h3>Nieuwe case toevoegen</h3></div>
+                    <div class="uploadVeld">
+                        <label for="fotoTitel">Titel</label>
+                        <input id="fotoTitel" type="text" maxlength="80" placeholder="Bijvoorbeeld: Brandvlekken, haaksheid, ...">
+                        <small>Maximaal 80 tekens.</small>
+                    </div>
+                    <div class="uploadVeld">
+                        <label for="fotoBeschrijving">Opmerking</label>
+                        <textarea id="fotoBeschrijving" rows="5" placeholder="Beschrijf kort de toepassing, afwerking of bijzonderheden."></textarea>
+                        <small>Deze toelichting verschijnt bij de case.</small>
+                    </div>
+                    <button id="opslaanFoto"><span class="icoon" data-icon="vink"></span> Opslaan</button>
+                </div>
             </div>
-            <div class="uploadVeld">
-                <label for="fotoBeschrijving">Opmerking</label>
-                <textarea id="fotoBeschrijving" rows="5" placeholder="Beschrijf kort de toepassing, afwerking of bijzonderheden."></textarea>
-                <small>Deze toelichting verschijnt bij de case.</small>
+        </div>
+        <div id="bestaandeCasesPane" class="hidden" role="tabpanel" aria-labelledby="bestaandeCasesTab">
+            <div id="galerij">
+                <h3>Cases & foto's</h3>
             </div>
-            <button id="opslaanFoto"><span class="icoon" data-icon="vink"></span> Opslaan</button>
         </div>
     </div>
     <div id="beheerBox" style="display:none;">
@@ -165,31 +172,26 @@
 <script src="js/pwa.js"></script>
 <script>
 (() => {
-    const catalogusTab = document.getElementById("catalogusTab");
-    const nieuwePlaatTab = document.getElementById("nieuwePlaatTab");
-    const catalogusPane = document.getElementById("catalogusPane");
+    const nieuweCaseTab = document.getElementById("nieuweCaseTab");
+    const bestaandeCasesTab = document.getElementById("bestaandeCasesTab");
+    const nieuweCasePane = document.getElementById("nieuweCasePane");
+    const bestaandeCasesPane = document.getElementById("bestaandeCasesPane");
 
-    function toonNieuwePlaat(){
-        nieuwePlaatTab.classList.add("actief");
-        catalogusTab.classList.remove("actief");
-        nieuwePlaatTab.setAttribute("aria-selected", "true");
-        catalogusTab.setAttribute("aria-selected", "false");
-        document.getElementById("plaatModal")?.classList.remove("hidden");
+    function toonCaseTab(tab){
+        const nieuwe = tab === "nieuw";
+        nieuweCaseTab?.classList.toggle("actief", nieuwe);
+        bestaandeCasesTab?.classList.toggle("actief", !nieuwe);
+        nieuweCaseTab?.setAttribute("aria-selected", String(nieuwe));
+        bestaandeCasesTab?.setAttribute("aria-selected", String(!nieuwe));
+        nieuweCasePane?.classList.toggle("hidden", !nieuwe);
+        bestaandeCasesPane?.classList.toggle("hidden", nieuwe);
     }
 
-    function toonCatalogus(){
-        catalogusTab.classList.add("actief");
-        nieuwePlaatTab.classList.remove("actief");
-        catalogusTab.setAttribute("aria-selected", "true");
-        nieuwePlaatTab.setAttribute("aria-selected", "false");
-        document.getElementById("plaatModal")?.classList.add("hidden");
-    }
+    nieuweCaseTab?.addEventListener("click", () => toonCaseTab("nieuw"));
+    bestaandeCasesTab?.addEventListener("click", () => toonCaseTab("bestaand"));
 
-    nieuwePlaatTab.addEventListener("click", toonNieuwePlaat);
-    catalogusTab.addEventListener("click", toonCatalogus);
-
-    document.getElementById("sluitPlaatModal")?.addEventListener("click", toonCatalogus);
-    document.getElementById("annuleerPlaat")?.addEventListener("click", toonCatalogus);
+    window.toonNieuweCaseTab = () => toonCaseTab("nieuw");
+    toonCaseTab("nieuw");
 })();
 </script>
 </body>
