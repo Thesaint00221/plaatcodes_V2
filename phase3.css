@@ -4,19 +4,10 @@
    Geen functionele wijzigingen.
 ========================================================== */
 
-/* 9. Iconen finetunen */
-.icoon{
-    width:1.15em;
-    height:1.15em;
-    flex:0 0 auto;
-    margin-right:.35em;
-    vertical-align:-.22em;
-}
+.icoon{width:1.15em;height:1.15em;flex:0 0 auto;margin-right:.35em;vertical-align:-.22em;}
 .icoon svg{width:100%;height:100%;display:block;}
 button .icoon,a .icoon,.caseTypeKnop .icoon,.uploadKnop .icoon{margin-right:.4em;}
 .modalSluiten .icoon,.lightboxSluiten .icoon{margin-right:0;}
-
-/* 10. Hover/focus states */
 button,a,select,input,textarea{transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease,transform .18s ease;}
 button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid rgba(31,78,121,.22);outline-offset:2px;}
 .secundaireKnop:hover,#userButton:hover,.beheerTerug:hover{background:#f1f5f9;border-color:#cbd5e1;}
@@ -24,97 +15,25 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 .caseTypeKnop.actief:hover{background:var(--primary-hover);color:#fff;}
 .primary:hover,.beheerPrimaireKnop:hover,#opslaanFoto:hover{filter:brightness(.96);}
 @media (hover:none){.plaatCard:hover,.plaatCard:hover .plaatFoto img{transform:none;}}
-
-/* Hoofdlogo: volledige logo-zone is een snelkoppeling naar de hoofdpagina */
 a.logo.logoLink{color:inherit;text-decoration:none;}
+.headerButtons{gap:10px;}.zoekContainer{gap:8px;}.plaatInfo{padding:16px 18px 18px;}.badges{margin-top:14px;}.beheer-container{padding-top:28px;padding-bottom:32px;}.beheerIntro{margin-bottom:22px;}.beheerActies{margin-top:20px;}.caseTypeKeuze{gap:8px;margin-bottom:20px;}.uploadButtons{gap:16px;margin-bottom:24px;}.plaatFormActies{gap:10px;margin-top:18px;}
+.akFotoKeuze{display:grid;grid-template-columns:repeat(5,minmax(90px,1fr));gap:12px;width:100%;}.akFotoVak{min-height:120px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px dashed var(--border);border-radius:14px;background:#fafcff;color:var(--text-light);cursor:pointer;font:inherit;font-size:14px;font-weight:600;overflow:hidden;}.akFotoVak:hover{border-color:var(--primary);background:#eef4ff;transform:translateY(-2px);}.akFotoVak .icoon{width:28px;height:28px;margin-right:0;}.akFotoVak img{display:block;width:100%;height:78px;object-fit:cover;border-radius:9px;}.akFotoVak img + span{font-size:12px;}
+.gbGebruikerActies{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}.gbVerwijderGebruikerKnop{border:1px solid #fecaca;background:#fef2f2;color:var(--danger);padding:12px 18px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;}.gbVerwijderGebruikerKnop:hover{background:#fee2e2;border-color:#fca5a5;}.gbVerwijderGebruikerKnop:disabled{opacity:.65;cursor:not-allowed;}
+.dropdown button,.dropdown a{min-height:44px;display:flex;align-items:center;gap:6px;}.dropdown button .icoon,.dropdown a .icoon{width:18px;height:18px;margin-right:2px;}
+@media (max-width:800px){.akFotoKeuze{grid-template-columns:repeat(3,minmax(90px,1fr));}}
+@media (max-width:600px){.headerButtons{gap:6px;}.plaatInfo{padding:14px 15px 16px;}.beheer-container{padding-top:20px;padding-bottom:24px;}.gbGebruikerActies{display:grid;grid-template-columns:1fr;width:100%;}.gbGebruikerActies button{width:100%;min-height:44px;}.akFotoKeuze{grid-template-columns:repeat(2,minmax(100px,1fr));gap:10px;}.akFotoVak{min-height:110px;}.loginArea{width:100%;min-width:0;}.loginArea .loginCompact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;width:100%;padding:5px;box-sizing:border-box;}.loginArea .loginCompact input{width:100%;min-width:0;box-sizing:border-box;padding:10px;font-size:15px;}.loginArea .loginCompact button{grid-column:1 / -1;width:100%;min-height:44px;padding:10px 12px;box-sizing:border-box;}}
 
-/* 11. Kleine spacing-correcties */
-.headerButtons{gap:10px;}
-.zoekContainer{gap:8px;}
-.plaatInfo{padding:16px 18px 18px;}
-.badges{margin-top:14px;}
-.beheer-container{padding-top:28px;padding-bottom:32px;}
-.beheerIntro{margin-bottom:22px;}
-.beheerActies{margin-top:20px;}
-.caseTypeKeuze{gap:8px;margin-bottom:20px;}
-.uploadButtons{gap:16px;margin-bottom:24px;}
-.plaatFormActies{gap:10px;margin-top:18px;}
-
-/* Aankoopklachten: vijf vaste fotovakken, zoals bij een leverancierscase */
-.akFotoKeuze{
-    display:grid;
-    grid-template-columns:repeat(5,minmax(90px,1fr));
-    gap:12px;
-    width:100%;
-}
-.akFotoVak{
-    min-height:120px;
-    padding:10px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    border:2px dashed var(--border);
-    border-radius:14px;
-    background:#fafcff;
-    color:var(--text-light);
-    cursor:pointer;
-    font:inherit;
-    font-size:14px;
-    font-weight:600;
-    overflow:hidden;
-}
-.akFotoVak:hover{border-color:var(--primary);background:#eef4ff;transform:translateY(-2px);}
-.akFotoVak .icoon{width:28px;height:28px;margin-right:0;}
-.akFotoVak img{display:block;width:100%;height:78px;object-fit:cover;border-radius:9px;}
-.akFotoVak img + span{font-size:12px;}
-
-/* Gebruikersbeheer */
-.gbGebruikerActies{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
-.gbVerwijderGebruikerKnop{border:1px solid #fecaca;background:#fef2f2;color:var(--danger);padding:12px 18px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;}
-.gbVerwijderGebruikerKnop:hover{background:#fee2e2;border-color:#fca5a5;}
-.gbVerwijderGebruikerKnop:disabled{opacity:.65;cursor:not-allowed;}
-
-/* Dropdown-menu: voldoende ruimte rond iconen en tekst */
-.dropdown button,.dropdown a{min-height:44px;display:flex;align-items:center;gap:6px;}
-.dropdown button .icoon,.dropdown a .icoon{width:18px;height:18px;margin-right:2px;}
-
-@media (max-width:800px){
-    .akFotoKeuze{grid-template-columns:repeat(3,minmax(90px,1fr));}
-}
-
-@media (max-width:600px){
-    .headerButtons{gap:6px;}
-    .plaatInfo{padding:14px 15px 16px;}
-    .beheer-container{padding-top:20px;padding-bottom:24px;}
-    .gbGebruikerActies{display:grid;grid-template-columns:1fr;width:100%;}
-    .gbGebruikerActies button{width:100%;min-height:44px;}
-    .akFotoKeuze{grid-template-columns:repeat(2,minmax(100px,1fr));gap:10px;}
-    .akFotoVak{min-height:110px;}
-
-    /* Mobiele primaire login: velden leesbaar en aanmelden op een aparte rij */
-    .loginArea{width:100%;min-width:0;}
-    .loginArea .loginCompact{
-        display:grid;
-        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-        gap:6px;
-        width:100%;
-        padding:5px;
-        box-sizing:border-box;
-    }
-    .loginArea .loginCompact input{
-        width:100%;
-        min-width:0;
-        box-sizing:border-box;
-        padding:10px;
-        font-size:15px;
-    }
-    .loginArea .loginCompact button{
-        grid-column:1 / -1;
-        width:100%;
-        min-height:44px;
-        padding:10px 12px;
-        box-sizing:border-box;
-    }
-}
+/* ==========================================================
+   FASE 4 - DETREMMERIE VISUELE BASIS / STAP 1
+   Alleen presentatie: kleuren, typografie, header en cataloguskaarten.
+========================================================== */
+:root{--primary:#1f1f1f;--primary-hover:#000;--bg:#f7f7f5;--surface:#fff;--surface-2:#f4f4f2;--text:#1d1d1b;--text-light:#6f6f6b;--border:#deded9;--radius:8px;--shadow:0 2px 14px rgba(0,0,0,.045);}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+.topbar{background:#fff;padding:16px 32px;box-shadow:0 1px 0 rgba(0,0,0,.08);gap:28px;}
+.logo{gap:14px;}.merkLogo{height:40px;border-radius:0;}.logoTekst h1{color:var(--text);font-size:25px;font-weight:600;letter-spacing:-.3px;}.logoTekst span{color:var(--text-light);font-size:13px;}
+#search,#leverancierFilter{background:#fff;border:1px solid var(--border);border-radius:4px;}#search{padding:13px 18px;font-size:16px;}#leverancierFilter{padding:0 16px;}#search:focus,#leverancierFilter:focus{border-color:#8c8c87;box-shadow:0 0 0 2px rgba(0,0,0,.06);}
+.primary{background:#1f1f1f;border-radius:4px;padding:11px 20px;}.primary:hover{background:#000;transform:none;}
+.secundaireKnop,#userButton{border-radius:4px;box-shadow:none;}
+#resultaten{padding:42px 40px;}.cards{gap:28px;}.plaatCard{border:0;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.055);}.plaatCard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.09);}.plaatFoto{height:240px;background:#efefec;}.plaatCard:hover .plaatFoto img{transform:scale(1.025);}.plaatInfo{padding:18px 20px 20px;}.plaatCode{background:transparent;color:var(--text-light);padding:0;border-radius:0;font-size:12px;font-weight:500;letter-spacing:.04em;margin-bottom:9px;}.plaatNaam{font-size:21px;font-weight:600;margin-bottom:7px;}.plaatLeverancier{font-size:14px;color:var(--text-light);}.badge{background:#f0f0ed;color:#4f4f4b;border-radius:3px;padding:5px 9px;font-weight:500;}
+@media (max-width:900px){.topbar{padding:15px 20px;gap:15px;}}
+@media (max-width:600px){#resultaten{padding:24px 15px;}.plaatFoto{height:210px;}}
