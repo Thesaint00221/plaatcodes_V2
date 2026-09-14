@@ -2,6 +2,16 @@
     const lijst = document.getElementById("aankoopKlachtenLijst");
     if(!lijst) return;
 
+    const style = document.createElement("style");
+    style.textContent = `
+        .akFotoGalerij{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 20px;}
+        .akFotoLink{display:block;width:110px;height:85px;border:1px solid #ddd;border-radius:3px;overflow:hidden;background:#f7f7f4;}
+        .akFotoLink:hover{border-color:#999;transform:none;}
+        .akFotoLink img{width:100%;height:100%;object-fit:cover;display:block;}
+        @media(max-width:600px){.akFotoLink{width:82px;height:68px;}}
+    `;
+    document.head.appendChild(style);
+
     let bezig = false;
 
     async function toonFotos(){
