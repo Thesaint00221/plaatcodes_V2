@@ -90,3 +90,36 @@ body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:v
 #leverancierFilter{color:#4f4f4b;}
 @media (max-width:900px){#resultaten{padding:38px 20px 44px;}}
 @media (max-width:600px){#resultaten{padding:30px 15px 36px;}#resultaten > h2{font-size:24px;margin-bottom:6px;}#resultaten > p{font-size:13px;margin-bottom:20px;}}
+
+/* ==========================================================
+   FASE 4 - STAP 5
+   Detailweergave: meer premium/editorial, met nadruk op het productbeeld.
+   Alleen presentatie; geen functionele wijzigingen.
+========================================================== */
+.detailPagina{max-width:1280px;margin:0 auto;padding:48px 40px 64px;}
+.detailHeader{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:56px;align-items:start;}
+.detailFotoGroot{height:560px;background:#fff;border:1px solid var(--border);border-radius:2px;overflow:hidden;}
+.detailFotoGroot .groteFotoImg{display:block;width:100%;height:100%;object-fit:contain;transition:transform .2s ease;}
+.detailFotoGroot:hover .groteFotoImg{transform:scale(1.01);}
+.geenFotoGroot{height:100%;display:flex;align-items:center;justify-content:center;color:#a2a29d;background:#f1f1ee;}
+.geenFotoGroot .icoon{width:48px;height:48px;margin:0;}
+.detailInfo{padding:12px 0 0;}
+.detailBadge{display:inline-block;margin-bottom:16px;padding:4px 8px;border:1px solid var(--border);border-radius:2px;background:#f4f4f1;color:#666661;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;}
+.detailInfo h1{margin:0 0 10px;color:var(--text);font-size:34px;font-weight:600;line-height:1.15;letter-spacing:-.7px;}
+.detailCode{margin-bottom:32px;color:var(--text-light);font-size:12px;letter-spacing:.08em;text-transform:uppercase;}
+.detailTable{width:100%;border-collapse:collapse;border-top:1px solid var(--border);}
+.detailTable tr{border-bottom:1px solid var(--border);}
+.detailTable td{padding:12px 0;font-size:14px;vertical-align:top;}
+.detailTable td:first-child{width:42%;padding-right:18px;color:var(--text-light);}
+.detailTable td:last-child{color:var(--text);font-weight:500;}
+.bewerkPlaatKnop,.archiveerKnop{margin-top:22px;margin-right:8px;border-radius:2px;box-shadow:none;}
+#galerij{margin-top:64px;}
+#galerij h3{margin:0 0 22px;padding-bottom:12px;border-bottom:1px solid var(--border);font-size:22px;font-weight:600;letter-spacing:-.2px;color:var(--text);}
+.caseKaart{border:1px solid var(--border);border-radius:2px;box-shadow:none;background:#fff;}
+.caseFotos{background:#f2f2ef;}
+.detailFoto{border-radius:0;cursor:pointer;transition:opacity .18s ease,transform .18s ease;}
+.detailFoto:hover{opacity:.94;transform:none;}
+.caseKaartInhoud{padding:20px 22px 22px;}
+.caseTypeBadge{border-radius:2px;}
+@media (max-width:900px){.detailPagina{padding:36px 20px 52px;}.detailHeader{grid-template-columns:1fr;gap:34px;}.detailFotoGroot{height:500px;}.detailInfo{padding-top:0;}}
+@media (max-width:600px){.detailPagina{padding:26px 15px 42px;}.detailHeader{gap:26px;}.detailFotoGroot{height:340px;}.detailInfo h1{font-size:28px;}.detailCode{margin-bottom:24px;}#galerij{margin-top:44px;}#galerij h3{font-size:20px;margin-bottom:18px;}.caseKaartInhoud{padding:17px 16px 18px;}}
