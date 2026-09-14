@@ -83,4 +83,128 @@ function hydrateerIconen(){
     });
 }
 
+function voegKnopConsistentieToe(){
+    if(document.getElementById("knopConsistentieStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "knopConsistentieStyles";
+    style.textContent = `
+/* Gemeenschappelijke actieknoppen: één maat en één visuele hiërarchie. */
+.primary,
+.secundaireKnop,
+#userButton,
+.beheerPrimaireKnop,
+.beheerTerug,
+.bonKnop,
+.rapportKnop,
+.bewerkFoto,
+.verwijderFoto,
+.gbVerwijderGebruikerKnop,
+.bewerkPlaatKnop,
+.archiveerKnop,
+#opslaanFoto,
+#controleerOpslag,
+#wbVerzendKnop,
+#terug,
+#sluitArchief,
+#opschonenButton{
+    min-height:42px;
+    box-sizing:border-box;
+    padding:9px 15px;
+    border-radius:3px;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.2;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    box-shadow:none;
+    transform:none;
+}
+.primary,
+.beheerPrimaireKnop,
+#opslaanFoto{
+    background:#1f1f1f;
+    border:1px solid #1f1f1f;
+    color:#fff;
+}
+.secundaireKnop,
+#userButton,
+.beheerTerug,
+.bonKnop,
+.rapportKnop,
+.bewerkFoto,
+.bewerkPlaatKnop,
+.archiveerKnop,
+#terug,
+#sluitArchief{
+    background:#fff;
+    border:1px solid #deded9;
+    color:#333;
+}
+.verwijderFoto,
+.gbVerwijderGebruikerKnop{
+    background:#fff;
+    border:1px solid #d7b9b9;
+    color:#704444;
+}
+.primary:hover,
+.beheerPrimaireKnop:hover,
+#opslaanFoto:hover{
+    background:#000;
+    border-color:#000;
+    color:#fff;
+}
+.secundaireKnop:hover,
+#userButton:hover,
+.beheerTerug:hover,
+.bonKnop:hover,
+.rapportKnop:hover,
+.bewerkFoto:hover,
+.bewerkPlaatKnop:hover,
+.archiveerKnop:hover,
+#terug:hover,
+#sluitArchief:hover{
+    background:#f7f7f4;
+    border-color:#bdbdb7;
+    color:#222;
+}
+.verwijderFoto:hover,
+.gbVerwijderGebruikerKnop:hover{
+    background:#f7eeee;
+    border-color:#c89d9d;
+    color:#704444;
+}
+.primary .icoon,
+.secundaireKnop .icoon,
+#userButton .icoon,
+.beheerPrimaireKnop .icoon,
+.beheerTerug .icoon,
+.bonKnop .icoon,
+.rapportKnop .icoon,
+.bewerkFoto .icoon,
+.verwijderFoto .icoon,
+.gbVerwijderGebruikerKnop .icoon,
+.bewerkPlaatKnop .icoon,
+.archiveerKnop .icoon,
+#opslaanFoto .icoon,
+#controleerOpslag .icoon,
+#wbVerzendKnop .icoon,
+#terug .icoon,
+#sluitArchief .icoon,
+#opschonenButton .icoon{
+    margin-right:0;
+}
+@media (max-width:600px){
+    .primary,.secundaireKnop,#userButton,.beheerPrimaireKnop,.beheerTerug,.bonKnop,.rapportKnop,.bewerkFoto,.verwijderFoto,.gbVerwijderGebruikerKnop,.bewerkPlaatKnop,.archiveerKnop,#opslaanFoto,#controleerOpslag,#wbVerzendKnop,#terug,#sluitArchief,#opschonenButton{
+        min-height:42px;
+        padding:9px 13px;
+    }
+}
+`;
+    document.head.appendChild(style);
+}
+
+voegKnopConsistentieToe();
 document.addEventListener("DOMContentLoaded", hydrateerIconen);
