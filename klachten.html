@@ -34,7 +34,12 @@
         <p>Leg een klacht over een aangekocht artikel vast en maak er indien nodig meteen een leveranciersrapport van.</p>
     </div>
 
-    <section class="beheerActies">
+    <div class="caseTypeKeuze" role="tablist" aria-label="Aankoopklachten">
+        <button type="button" id="nieuweKlachtTab" class="caseTypeKnop actief" role="tab" aria-selected="true" aria-controls="nieuweKlachtPane"><span class="icoon" data-icon="plus"></span> Nieuwe klacht</button>
+        <button type="button" id="bestaandeKlachtenTab" class="caseTypeKnop" role="tab" aria-selected="false" aria-controls="bestaandeKlachtenPane"><span class="icoon" data-icon="document"></span> Bestaande klachten</button>
+    </div>
+
+    <section id="nieuweKlachtPane" class="beheerActies" role="tabpanel" aria-labelledby="nieuweKlachtTab">
         <h2>Nieuwe klacht</h2>
         <form id="aankoopKlachtForm" class="plaatForm">
             <div class="plaatFormGrid">
@@ -81,7 +86,7 @@
         </form>
     </section>
 
-    <section class="beheerActies">
+    <section id="bestaandeKlachtenPane" class="beheerActies hidden" role="tabpanel" aria-labelledby="bestaandeKlachtenTab" aria-hidden="true">
         <h2>Opgeslagen aankoopklachten</h2>
         <div id="aankoopKlachtenLijst"><p class="loader">Klachten laden...</p></div>
     </section>
@@ -116,6 +121,7 @@
         const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         img.alt = file.name;
+        img.loading = "lazy";
         vak.appendChild(img);
         const naam = document.createElement("span");
         naam.textContent = "Foto " + (Number(vak.dataset.index) + 1);
@@ -144,6 +150,26 @@
         });
         synchroniseer();
     });
+
+    const tabNieuwe = document.getElementById("nieuweKlachtTab");
+    const tabBestaande = document.getElementById("bestaandeKlachtenTab");
+    const paneNieuwe = document.getElementById("nieuweKlachtPane");
+    const paneBestaande = document.getElementById("bestaandeKlachtenPane");
+
+    function toonTab(tab){
+        const bestaand = tab === tabBestaande;
+        tabNieuwe.classList.toggle("actief", !bestaand);
+        tabBestaande.classList.toggle("actief", bestaand);
+        tabNieuwe.setAttribute("aria-selected", String(!bestaand));
+        tabBestaande.setAttribute("aria-selected", String(bestaand));
+        paneNieuwe.classList.toggle("hidden", bestaand);
+        paneBestaande.classList.toggle("hidden", !bestaand);
+        paneNieuwe.setAttribute("aria-hidden", String(bestaand));
+        paneBestaande.setAttribute("aria-hidden", String(!bestaand));
+    }
+
+    tabNieuwe.addEventListener("click", () => toonTab(tabNieuwe));
+    tabBestaande.addEventListener("click", () => toonTab(tabBestaande));
 })();
 </script>
 </body>
