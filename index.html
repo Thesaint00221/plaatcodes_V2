@@ -44,8 +44,14 @@
     </div>
 </header>
 <main>
-    <div id="resultaten" class="cards"></div>
-    <div id="laadMeer" class="laadMeer hidden">Meer platen laden...</div>
+    <div class="caseTypeKeuze catalogusTabs" role="tablist" aria-label="Plaatcatalogus">
+        <button type="button" id="catalogusTab" class="caseTypeKnop actief" role="tab" aria-selected="true" aria-controls="catalogusPane"><span class="icoon" data-icon="lagen"></span> Plaatcatalogus</button>
+        <button type="button" id="nieuwePlaatTab" class="caseTypeKnop" role="tab" aria-selected="false" aria-controls="nieuwePlaatPane"><span class="icoon" data-icon="plus"></span> Nieuwe plaat</button>
+    </div>
+    <section id="catalogusPane" role="tabpanel" aria-labelledby="catalogusTab">
+        <div id="resultaten" class="cards"></div>
+        <div id="laadMeer" class="laadMeer hidden">Meer platen laden...</div>
+    </section>
 </main>
 <section id="plaatModal" class="plaatModal hidden" role="dialog" aria-modal="true" aria-labelledby="plaatModalTitel">
     <form id="nieuwePlaatForm" class="plaatForm">
@@ -157,5 +163,34 @@
 <script src="js/archief.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pwa.js"></script>
+<script>
+(() => {
+    const catalogusTab = document.getElementById("catalogusTab");
+    const nieuwePlaatTab = document.getElementById("nieuwePlaatTab");
+    const catalogusPane = document.getElementById("catalogusPane");
+
+    function toonNieuwePlaat(){
+        nieuwePlaatTab.classList.add("actief");
+        catalogusTab.classList.remove("actief");
+        nieuwePlaatTab.setAttribute("aria-selected", "true");
+        catalogusTab.setAttribute("aria-selected", "false");
+        document.getElementById("plaatModal")?.classList.remove("hidden");
+    }
+
+    function toonCatalogus(){
+        catalogusTab.classList.add("actief");
+        nieuwePlaatTab.classList.remove("actief");
+        catalogusTab.setAttribute("aria-selected", "true");
+        nieuwePlaatTab.setAttribute("aria-selected", "false");
+        document.getElementById("plaatModal")?.classList.add("hidden");
+    }
+
+    nieuwePlaatTab.addEventListener("click", toonNieuwePlaat);
+    catalogusTab.addEventListener("click", toonCatalogus);
+
+    document.getElementById("sluitPlaatModal")?.addEventListener("click", toonCatalogus);
+    document.getElementById("annuleerPlaat")?.addEventListener("click", toonCatalogus);
+})();
+</script>
 </body>
 </html>
