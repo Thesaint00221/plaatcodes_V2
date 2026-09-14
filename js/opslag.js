@@ -18,19 +18,22 @@ function voegGebruiktToe(set, pad) {
     if(genormaliseerd) set.add(genormaliseerd);
 }
 
-async function haalAlleBestanden(map = "") {
+async function haalAlleBestanden(map = "", offset = 0) {
     const { data, error } = await supabaseClient.storage.from("plaatfotos").list(map, {
         limit: 1000,
-        offset: 0
+        offset
     });
     if(error) throw error;
 
     const bestanden = [];
-    for(const item of data || []) {
+    const items = data || [];
+    for(const item of items) {
         const pad = map ? `${map}/${item.name}` : item.name;
         if(item.id === null) bestanden.push(...await haalAlleBestanden(pad));
         else bestanden.push(pad);
     }
+
+    if(items.length === 1000) bestanden.push(...await haalAlleBestanden(map, offset + 1000));
     return bestanden;
 }
 
@@ -102,7 +105,7 @@ async function controleerOpslagEnToonOngebruikte() {
 
         const { data: platen, error: platenError } = await supabaseClient
             .from("platen")
-            .select("foto, photos");
+            .select("photos");
         if(platenError) throw platenError;
 
         const gebruikt = new Set();
@@ -118,9 +121,8 @@ async function controleerOpslagEnToonOngebruikte() {
             voegGebruiktToe(gebruikt, item.leveranciersbon_url);
         }
 
-        // Zowel oudere plaatfoto's als de nieuwe opslagstructuur in platen.photos tellen mee.
+        // Plaatfoto's worden opgeslagen in platen.photos als opslagpad of volledige publieke URL.
         for(const item of platen || []) {
-            voegGebruiktToe(gebruikt, item.foto);
             if(Array.isArray(item.photos)) item.photos.forEach(pad => voegGebruiktToe(gebruikt, pad));
         }
 
@@ -131,7 +133,7 @@ async function controleerOpslagEnToonOngebruikte() {
 
         resultaat.innerHTML = "";
         const samenvatting = document.createElement("p");
-        samenvatting.innerHTML = `<strong>${bestanden.length}</strong> bestanden gevonden · <strong>${gebruikt.size}</strong> gekoppelde bestanden · <strong>${ongebruikt.length}</strong> mogelijk ongebruikt`;
+        samenvatting.innerHTML = `<strong>${bestanden.length}</strong> bestanden gevonden · <strong>${gebruikt.size}</strong> gekoppelde paden · <strong>${ongebruikt.length}</strong> mogelijk ongebruikt`;
         resultaat.appendChild(samenvatting);
 
         if(!ongebruikt.length) {
