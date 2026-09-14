@@ -71,3 +71,20 @@ body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:v
 #fotoLightbox .lightboxSluiten{top:20px;right:20px;}
 body.lightboxOpen{overflow:hidden;}
 @media (max-width:600px){.plaatModal{padding:12px;}.plaatModal .plaatForm{max-height:calc(100vh - 24px);}.plaatFormKop{padding:20px 18px 17px;}.plaatFormKop h2{font-size:21px;}.plaatFormGrid{padding:18px 18px 2px;}.plaatFormMelding{margin-left:18px;margin-right:18px;}.plaatFormActies{padding:15px 18px 18px;}.plaatFormActies .primary,.plaatFormActies .secundaireKnop{width:100%;}.lightboxSluiten{width:40px;height:40px;}#fotoLightbox .lightboxSluiten{top:12px;right:12px;}#fotoLightbox #lightboxAfbeelding{max-width:96vw;max-height:82vh;}}
+
+/* ==========================================================
+   FASE 4 - STAP 10
+   Iconen: subtieler, consistenter en beter uitgelijnd.
+   Alleen presentatie; geen functionele wijzigingen.
+========================================================== */
+.icoon{width:1em;height:1em;margin-right:.32em;vertical-align:-.14em;}
+.icoon svg{width:100%;height:100%;display:block;}
+button .icoon,a .icoon,.caseTypeKnop .icoon,.uploadKnop .icoon{margin-right:.42em;}
+.dropdown button .icoon,.dropdown a .icoon{width:17px;height:17px;margin-right:1px;vertical-align:-.12em;}
+.caseTypeBadge .icoon{width:14px;height:14px;margin-right:0;vertical-align:-.1em;}
+.beheerKaart h3 .icoon{width:15px;height:15px;margin-right:0;vertical-align:-.08em;}
+.beheerActies h2 .icoon{width:17px;height:17px;margin-right:0;vertical-align:-.1em;}
+.fotoInfo .icoon{width:12px;height:12px;margin-right:4px;vertical-align:-.12em;}
+.akFotoVak .icoon{width:26px;height:26px;margin-right:0;}
+.modalSluiten .icoon,.lightboxSluiten .icoon{width:18px;height:18px;margin:0;vertical-align:middle;}
+@media (max-width:600px){.dropdown button .icoon,.dropdown a .icoon{width:16px;height:16px;}.akFotoVak .icoon{width:25px;height:25px;}.modalSluiten .icoon,.lightboxSluiten .icoon{width:17px;height:17px;}}
