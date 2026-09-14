@@ -1,3 +1,23 @@
+function normaliseerOpslagPad(pad) {
+    if(!pad) return "";
+    const waarde = String(pad).trim();
+    if(!waarde) return "";
+
+    try {
+        const url = new URL(waarde);
+        const marker = "/storage/v1/object/public/plaatfotos/";
+        const index = url.pathname.indexOf(marker);
+        if(index !== -1) return decodeURIComponent(url.pathname.slice(index + marker.length));
+    } catch(_) {}
+
+    return waarde.replace(/^\/+/, "");
+}
+
+function voegGebruiktToe(set, pad) {
+    const genormaliseerd = normaliseerOpslagPad(pad);
+    if(genormaliseerd) set.add(genormaliseerd);
+}
+
 async function haalAlleBestanden(map = "") {
     const { data, error } = await supabaseClient.storage.from("plaatfotos").list(map, {
         limit: 1000,
@@ -8,11 +28,8 @@ async function haalAlleBestanden(map = "") {
     const bestanden = [];
     for(const item of data || []) {
         const pad = map ? `${map}/${item.name}` : item.name;
-        if(item.id === null) {
-            bestanden.push(...await haalAlleBestanden(pad));
-        } else {
-            bestanden.push(pad);
-        }
+        if(item.id === null) bestanden.push(...await haalAlleBestanden(pad));
+        else bestanden.push(pad);
     }
     return bestanden;
 }
@@ -27,7 +44,6 @@ function opslagBestandIsPdf(pad) {
 
 function maakOpschoonKnop() {
     if(document.getElementById("opschonenOpslag")) return;
-
     const controleer = document.getElementById("controleerOpslag");
     if(!controleer) return;
 
@@ -38,11 +54,10 @@ function maakOpschoonKnop() {
     knop.innerHTML = '<span class="icoon" data-icon="vuilbak"></span> Opschonen';
     knop.addEventListener("click", controleerOpslagEnToonOngebruikte);
     controleer.insertAdjacentElement("afterend", knop);
-
     if(typeof renderIcons === "function") renderIcons(knop);
 }
 
-function maakOpslagVoorbeeld(pad, extraTekst = "") {
+function maakOpslagVoorbeeld(pad) {
     const url = supabaseClient.storage.from("plaatfotos").getPublicUrl(pad).data.publicUrl;
     const wrapper = document.createElement("div");
     wrapper.className = "opslagBestand";
@@ -62,7 +77,7 @@ function maakOpslagVoorbeeld(pad, extraTekst = "") {
 
     const info = document.createElement("div");
     info.className = "opslagBestandInfo";
-    info.innerHTML = `<strong>${pad.split("/").pop()}</strong><small>${pad}${extraTekst ? ` · ${extraTekst}` : ""}</small>`;
+    info.innerHTML = `<strong>${pad.split("/").pop()}</strong><small>${pad}</small>`;
     wrapper.appendChild(info);
     return wrapper;
 }
@@ -70,7 +85,6 @@ function maakOpslagVoorbeeld(pad, extraTekst = "") {
 async function controleerOpslagEnToonOngebruikte() {
     const resultaat = document.getElementById("opslagControle");
     if(!resultaat) return;
-
     resultaat.textContent = "Opslag controleren...";
 
     try {
@@ -83,36 +97,37 @@ async function controleerOpslagEnToonOngebruikte() {
 
         const { data: klachten, error: klachtenError } = await supabaseClient
             .from("aankoopklachten")
-            .select("id, artikel, leverancier, datum, fotos, leveranciersbon_url")
-            .order("datum", { ascending: false });
+            .select("fotos, leveranciersbon_url");
         if(klachtenError) throw klachtenError;
+
+        const { data: platen, error: platenError } = await supabaseClient
+            .from("platen")
+            .select("foto, photos");
+        if(platenError) throw platenError;
 
         const gebruikt = new Set();
 
         for(const item of cases || []) {
-            [item.foto, item.overzicht_foto, item.leveranciersbon_url].forEach(pad => {
-                if(pad) gebruikt.add(pad);
-            });
-            if(Array.isArray(item.fotos)) {
-                item.fotos.forEach(pad => {
-                    if(pad) gebruikt.add(pad);
-                });
-            }
+            [item.foto, item.overzicht_foto, item.leveranciersbon_url].forEach(pad => voegGebruiktToe(gebruikt, pad));
+            if(Array.isArray(item.fotos)) item.fotos.forEach(pad => voegGebruiktToe(gebruikt, pad));
         }
 
-        // Aankoopklachten tellen mee als gebruikt, maar worden niet apart getoond.
+        // Aankoopklachten zijn gekoppeld, maar worden niet apart getoond.
         for(const item of klachten || []) {
-            if(Array.isArray(item.fotos)) {
-                item.fotos.forEach(pad => {
-                    if(pad) gebruikt.add(pad);
-                });
-            }
-            if(item.leveranciersbon_url) gebruikt.add(item.leveranciersbon_url);
+            if(Array.isArray(item.fotos)) item.fotos.forEach(pad => voegGebruiktToe(gebruikt, pad));
+            voegGebruiktToe(gebruikt, item.leveranciersbon_url);
         }
 
-        const ongebruikt = bestanden.filter(
-            pad => !gebruikt.has(pad) && !pad.endsWith(".emptyFolderPlaceholder")
-        );
+        // Zowel oudere plaatfoto's als de nieuwe opslagstructuur in platen.photos tellen mee.
+        for(const item of platen || []) {
+            voegGebruiktToe(gebruikt, item.foto);
+            if(Array.isArray(item.photos)) item.photos.forEach(pad => voegGebruiktToe(gebruikt, pad));
+        }
+
+        const ongebruikt = bestanden.filter(pad => {
+            const genormaliseerd = normaliseerOpslagPad(pad);
+            return genormaliseerd && !gebruikt.has(genormaliseerd) && !genormaliseerd.endsWith(".emptyFolderPlaceholder");
+        });
 
         resultaat.innerHTML = "";
         const samenvatting = document.createElement("p");
@@ -136,11 +151,14 @@ async function controleerOpslagEnToonOngebruikte() {
         ongebruikt.forEach(pad => {
             const rij = document.createElement("label");
             rij.className = "opslagOngebruiktItem";
-            rij.innerHTML = `<input type="checkbox" checked value="${pad.replace(/"/g, "&quot;")}">`;
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = true;
+            checkbox.value = pad;
+            rij.appendChild(checkbox);
             rij.appendChild(maakOpslagVoorbeeld(pad));
             lijst.appendChild(rij);
         });
-
         resultaat.appendChild(lijst);
 
         const verwijder = document.createElement("button");
@@ -169,9 +187,7 @@ async function controleerOpslagEnToonOngebruikte() {
 
 function initialiseerOpslagbeheer() {
     maakOpschoonKnop();
-
-    const controleer = document.getElementById("controleerOpslag");
-    controleer?.addEventListener("click", controleerOpslagEnToonOngebruikte);
+    document.getElementById("controleerOpslag")?.addEventListener("click", controleerOpslagEnToonOngebruikte);
 }
 
 document.addEventListener("DOMContentLoaded", initialiseerOpslagbeheer);
