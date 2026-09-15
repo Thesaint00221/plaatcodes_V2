@@ -72,6 +72,58 @@
 .gebruikersMenu .dropdown,
 .actiesMenu .dropdown{ z-index:1003; }
 
+/* Eén uniforme afronding voor de zichtbare UI. */
+.akFotoVak,
+.akFotoVak img,
+.dropdown,
+.dropdown button,
+.dropdown a,
+.loginBox,
+.loginCompact,
+.loginCompact input,
+.loginCompact button,
+.kaart,
+.kaartCode,
+.plaatCard,
+.badge,
+#search,
+#leverancierFilter,
+#userButton,
+.primary,
+.secundaireKnop,
+.detailFotoGroot,
+.detailBadge,
+.detailFoto,
+.caseTypeBadge,
+.caseCard,
+.caseKaart,
+.beheerStatus,
+.beheerKaart,
+.beheerActies,
+.beheerPrimaireKnop,
+.beheerTerug,
+.gbVerwijderGebruikerKnop,
+.plaatModal .plaatForm,
+.modalSluiten,
+.plaatFormGrid input,
+.plaatFormGrid select,
+.plaatFormGrid textarea,
+.plaatFormActies .primary,
+.plaatFormActies .secundaireKnop,
+.lightboxSluiten,
+.bonKnop,
+.rapportKnop,
+.bewerkFoto,
+.verwijderFoto,
+.bewerkPlaatKnop,
+.archiveerKnop,
+#opslaanFoto,
+#terug,
+#sluitArchief,
+#opschonenButton {
+    border-radius:2px !important;
+}
+
 @media (max-width:900px){
     .topbar{
         display:grid;
