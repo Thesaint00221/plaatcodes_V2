@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
+        // Bij een nieuwe plaat moet de cases-tab altijd terug naar
+        // "Nieuwe case". Een deeplink naar een specifieke case klikt
+        // daarna zelf opnieuw op "Bestaande cases".
+        window.toonNieuweCaseTab?.();
+
         if(galerij.parentElement !== bestaandePane){
             bestaandePane.appendChild(galerij);
         }
