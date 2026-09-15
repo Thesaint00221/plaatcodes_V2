@@ -173,7 +173,7 @@ function toonCases(cases){
 
         const rij = document.createElement("a");
         rij.className = `caseRij${nieuw ? " caseRijNieuw" : ""}`;
-        rij.href = `index.html?plaat=${encodeURIComponent(item.code)}`;
+        rij.href = `index.html?plaat=${encodeURIComponent(item.code)}&case=${encodeURIComponent(item.id)}`;
 
         rij.innerHTML = `
 
