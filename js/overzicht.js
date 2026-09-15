@@ -20,6 +20,15 @@ let overzichtAllesGeladen = false;
 const gebruikersCacheOverzicht = {};
 const platenCacheOverzicht = {};
 
+function escapeHtml(waarde){
+    return String(waarde ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function isNieuw(datum){
     if(!datum) return false;
     const verschilMs = Date.now() - new Date(datum).getTime();
