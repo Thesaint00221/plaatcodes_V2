@@ -170,6 +170,25 @@
 
     tabNieuwe.addEventListener("click", () => toonTab(tabNieuwe));
     tabBestaande.addEventListener("click", () => toonTab(tabBestaande));
+
+    const gevraagdeKlacht = new URLSearchParams(window.location.search).get("klacht");
+    if(gevraagdeKlacht){
+        toonTab(tabBestaande);
+        let pogingen = 0;
+        const wachtOpKlacht = () => {
+            const knop = document.querySelector(`.akRapport[data-id="${CSS.escape(gevraagdeKlacht)}"]`);
+            const kaart = knop?.closest(".plaatCard");
+            pogingen++;
+            if(kaart){
+                kaart.scrollIntoView({behavior:"smooth", block:"center"});
+                kaart.setAttribute("tabindex", "-1");
+                kaart.focus({preventScroll:true});
+                return;
+            }
+            if(pogingen < 100) setTimeout(wachtOpKlacht, 50);
+        };
+        setTimeout(wachtOpKlacht, 0);
+    }
 })();
 </script>
 </body>
