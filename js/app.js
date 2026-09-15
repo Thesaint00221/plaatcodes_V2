@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // opent die plaat automatisch, zonder dat er gezocht moet worden.
     const params = new URLSearchParams(window.location.search);
     const gevraagdeCode = params.get("plaat");
+    const gevraagdeCase = params.get("case");
 
     if(gevraagdeCode){
 
@@ -55,6 +56,42 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if(!error && data){
             toonDetail(normaliseerPlaat(data));
+
+            if(gevraagdeCase){
+                // Wacht tot de detailweergave en de cases geladen zijn.
+                // Daarna openen we automatisch de bestaande cases en
+                // scrollen we naar de aangeklikte case.
+                const openGevraagdeCase = () => {
+                    const bestaandeTab = document.getElementById("bestaandeCasesTab");
+                    const caseKaart = document.querySelector(`.caseKaart[data-case-id="${CSS.escape(gevraagdeCase)}"]`);
+
+                    if(!caseKaart){
+                        return false;
+                    }
+
+                    bestaandeTab?.click();
+
+                    setTimeout(() => {
+                        caseKaart.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+                    }, 50);
+
+                    return true;
+                };
+
+                let pogingen = 0;
+                const wachtOpCase = () => {
+                    pogingen++;
+                    if(openGevraagdeCase() || pogingen >= 100){
+                        return;
+                    }
+                    setTimeout(wachtOpCase, 50);
+                };
+
+                setTimeout(wachtOpCase, 0);
+            }
         }
 
     }
