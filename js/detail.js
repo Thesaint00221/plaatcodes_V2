@@ -193,7 +193,9 @@ const basisFoto =
             }
 
         </div>
+            <div id="galerij">
 
+    </div>
         <div class="detailInfo">
 
             <span class="detailBadge">
