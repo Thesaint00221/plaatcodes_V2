@@ -10,6 +10,27 @@
     <meta name="theme-color" content="#2563eb">
     <link rel="stylesheet" href="style.min.css">
     <link rel="stylesheet" href="phase3.css">
+    <style>
+        #casesLijst{width:100%;min-width:0;}
+        .caseRij{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;max-width:100%;box-sizing:border-box;padding:16px 18px;margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);background:#fff;color:var(--text);text-decoration:none;overflow:hidden;}
+        .caseRijInfo{min-width:0;overflow:hidden;}
+        .caseRijInfo strong,.caseRijTitel{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .caseRijMeta{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0;flex-wrap:wrap;font-size:12px;color:var(--text-light);}
+        .caseRijMeta span{white-space:nowrap;}
+        .caseRijCode{color:var(--text-light);font-weight:500;font-size:11px;letter-spacing:.06em;}
+        @media(max-width:600px){
+            .caseRij{grid-template-columns:auto minmax(0,1fr);gap:10px;padding:14px 12px;margin-bottom:8px;}
+            .caseRijMeta{grid-column:1 / -1;justify-content:flex-start;gap:8px;padding-left:0;font-size:11px;}
+            .caseRijInfo strong,.caseRijTitel{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;}
+            .caseRijInfo strong{line-height:1.35;}
+            .caseRijTitel{margin-top:3px;line-height:1.45;}
+            .caseTypeKeuze{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+            .caseTypeKnop{min-width:0;padding:11px 8px;font-size:13px;}
+        }
+        @media(max-width:380px){
+            .caseTypeKeuze{grid-template-columns:1fr;}
+        }
+    </style>
 </head>
 <body class="beheerPagina">
 <header class="beheerTopbar">
