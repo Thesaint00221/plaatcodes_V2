@@ -14,7 +14,7 @@
 
 #detailContent,
 #uploadKaart{
-    border-radius:2px;
+    border-radius:var(--radius);
     box-shadow:0 5px 20px rgba(15,23,42,.06);
 }
 
@@ -31,7 +31,7 @@
 }
 
 .infoItem{
-    border-radius:2px;
+    border-radius:var(--radius);
     padding:16px;
 }
 
@@ -42,29 +42,29 @@
 .gallery img{
     height:auto;
     aspect-ratio:4 / 3;
-    border-radius:2px;
+    border-radius:var(--radius);
     box-shadow:0 4px 16px rgba(15,23,42,.07);
 }
 
 .caseCard{
-    border-radius:2px;
+    border-radius:var(--radius);
     border-left-width:4px;
     box-shadow:0 4px 16px rgba(15,23,42,.06);
 }
 
 #uploadKaart{ padding:24px; }
-.caseTypeKnop{ border-radius:2px; }
-.uploadKnop{ border-radius:2px; }
+.caseTypeKnop{ border-radius:var(--radius); }
+.uploadKnop{ border-radius:var(--radius); }
 .uploadKnop:hover{ transform:none; }
 
 .uploadVeld input,
 .uploadVeld select,
 .uploadVeld textarea{
-    border-radius:2px;
+    border-radius:var(--radius);
     border-color:var(--border);
 }
 
-#opslaanFoto{ border-radius:2px; }
+#opslaanFoto{ border-radius:var(--radius); }
 
 /* Dropdowns altijd boven de zoek/filterzone */
 .gebruikersMenu{ position:relative; z-index:1002; }
@@ -121,7 +121,7 @@
 #terug,
 #sluitArchief,
 #opschonenButton {
-    border-radius:2px !important;
+    border-radius:var(--radius);
 }
 
 @media (max-width:900px){
@@ -162,7 +162,7 @@
         box-sizing:border-box;
         padding:12px 14px;
         font-size:16px;
-        border-radius:2px;
+        border-radius:var(--radius);
     }
     #leverancierFilter{
         width:100%;
@@ -171,7 +171,7 @@
         box-sizing:border-box;
         min-height:44px;
         padding:0 12px;
-        border-radius:2px;
+        border-radius:var(--radius);
     }
     .headerButtons{
         grid-area:actions;
@@ -228,7 +228,7 @@
     #detailContent,
     #uploadKaart{
         padding:16px;
-        border-radius:2px;
+        border-radius:var(--radius);
     }
     .infoGrid,
     .gallery{

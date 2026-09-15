@@ -22,7 +22,7 @@
 
     --border:#dbe3ec;
 
-    --radius:16px;
+    --radius:4px;
 
     --shadow:
         0 8px 30px rgba(0,0,0,.08);
@@ -136,7 +136,7 @@ LOGO
 
     width:auto;
 
-    border-radius:9px;
+    border-radius:var(--radius);
 
     display:block;
 
@@ -186,7 +186,7 @@ ZOEKBALK
 
     padding:15px 22px;
 
-    border-radius:50px;
+    border-radius:var(--radius);
 
     border:2px solid var(--border);
 
@@ -212,7 +212,7 @@ ZOEKBALK
 
     padding:0 20px;
 
-    border-radius:50px;
+    border-radius:var(--radius);
 
     border:2px solid var(--border);
 
@@ -278,7 +278,7 @@ USER MENU
 
     background:white;
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     cursor:pointer;
 
@@ -328,7 +328,7 @@ button{
 
     padding:12px 22px;
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     cursor:pointer;
 
@@ -391,7 +391,7 @@ PLAATKAART
 
     background:white;
 
-    border-radius:18px;
+    border-radius:var(--radius);
 
     overflow:hidden;
 
@@ -474,7 +474,7 @@ CODE
 
     padding:6px 12px;
 
-    border-radius:20px;
+    border-radius:var(--radius);
 
     font-size:13px;
 
@@ -539,7 +539,7 @@ BADGES
 
     padding:6px 12px;
 
-    border-radius:20px;
+    border-radius:var(--radius);
 
     font-size:13px;
 
@@ -717,7 +717,7 @@ TERUG KNOP
 
     border:1px solid var(--border);
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     padding:12px 22px;
 
@@ -747,7 +747,7 @@ DETAIL CONTENT
 
     background:white;
 
-    border-radius:20px;
+    border-radius:var(--radius);
 
     padding:30px;
 
@@ -801,7 +801,7 @@ INFO BLOKKEN
 
     border:1px solid var(--border);
 
-    border-radius:14px;
+    border-radius:var(--radius);
 
     padding:18px;
 
@@ -855,7 +855,7 @@ FOTOGALERIJ
 
     object-fit:cover;
 
-    border-radius:16px;
+    border-radius:var(--radius);
 
     cursor:pointer;
 
@@ -879,7 +879,7 @@ CASES
 
     background:white;
 
-    border-radius:18px;
+    border-radius:var(--radius);
 
     padding:22px;
 
@@ -933,7 +933,7 @@ GEEN CASES
 
     background:white;
 
-    border-radius:18px;
+    border-radius:var(--radius);
 
     border:2px dashed var(--border);
 
@@ -946,7 +946,7 @@ DEEL 5 - UPLOADKAART
 
     background:white;
 
-    border-radius:20px;
+    border-radius:var(--radius);
 
     padding:30px;
 
@@ -988,7 +988,7 @@ FOTOKNOPPEN
 
     border:2px dashed var(--border);
 
-    border-radius:18px;
+    border-radius:var(--radius);
 
     background:#fafcff;
 
@@ -1084,7 +1084,7 @@ CASE TYPE KEUZE
 
     padding:14px;
 
-    border-radius:14px;
+    border-radius:var(--radius);
 
     border:2px solid var(--border);
 
@@ -1178,7 +1178,7 @@ FORMULIER
 
     border:2px solid var(--border);
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     font-size:16px;
 
@@ -1232,7 +1232,7 @@ OPSLAAN
 
     border:none;
 
-    border-radius:14px;
+    border-radius:var(--radius);
 
     background:var(--success);
 
@@ -1284,7 +1284,7 @@ BEHEER
 
     border:none;
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     padding:12px 18px;
 
@@ -1319,7 +1319,7 @@ BEHEER
 
     padding:25px;
 
-    border-radius:18px;
+    border-radius:var(--radius);
 
     box-shadow:
     0 15px 40px rgba(0,0,0,.15);
@@ -1348,7 +1348,7 @@ BEHEER
 
     margin-bottom:12px;
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     border:2px solid var(--border);
 
@@ -1378,7 +1378,7 @@ BEHEER
 
     border:none;
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     font-weight:700;
 
@@ -1398,7 +1398,7 @@ BEHEER
 
     padding:12px 20px;
 
-    border-radius:12px;
+    border-radius:var(--radius);
 
     cursor:pointer;
 
@@ -1453,7 +1453,7 @@ BEHEER
 
     padding:4px 10px;
 
-    border-radius:20px;
+    border-radius:var(--radius);
 
     font-size:12px;
 
@@ -1474,7 +1474,7 @@ BEHEER
 
     padding:15px;
 
-    border-radius:14px;
+    border-radius:var(--radius);
 
     box-shadow:var(--shadow);
 
@@ -1506,14 +1506,14 @@ BEHEER
     padding: 6px;
     background: var(--surface-2);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius);
 }
 
 .loginCompact input {
     width: 146px;
     padding: 9px 11px;
     border: 1px solid transparent;
-    border-radius: 9px;
+    border-radius: var(--radius);
     background: white;
     color: var(--text);
     font: inherit;
@@ -1524,7 +1524,7 @@ BEHEER
 .loginCompact button,
 .gebruikerNaam {
     border: 0;
-    border-radius: 10px;
+    border-radius: var(--radius);
     background: var(--primary);
     color: #1d4ed8;
     padding: 10px 13px;
@@ -1553,7 +1553,7 @@ BEHEER
     display: block;
     width: 100%;
     border: 0;
-    border-radius: 9px;
+    border-radius: var(--radius);
     padding: 10px 12px;
     background: transparent;
     color: var(--text);
@@ -1572,7 +1572,7 @@ BEHEER
 .kaart {
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: var(--radius);
     background: var(--surface);
     box-shadow: 0 8px 24px rgba(15, 23, 42, .07);
     cursor: pointer;
@@ -1585,25 +1585,25 @@ BEHEER
 .kaart:hover .kaartFoto img { transform: scale(1.04); }
 .kaartBody { padding: 18px; }
 .kaartTitel { font-size: 20px; font-weight: 750; }
-.kaartCode { display: inline-block; margin: 10px 0 7px; padding: 4px 9px; border-radius: 7px; background: #eff6ff; color: var(--primary); font-size: 13px; font-weight: 750; }
+.kaartCode { display: inline-block; margin: 10px 0 7px; padding: 4px 9px; border-radius: var(--radius); background: #eff6ff; color: var(--primary); font-size: 13px; font-weight: 750; }
 .kaartLeverancier { color: var(--text-light); font-size: 14px; }
 .detailKnop { display: block; margin-top: 16px; color: var(--primary); font: inherit; font-weight: 700; border: 0; background: transparent; cursor: pointer; }
 
 .detailHeader { display: grid; grid-template-columns: minmax(280px, .9fr) 1.1fr; gap: 34px; align-items: start; }
-.detailFotoGroot { overflow: hidden; border-radius: 16px; background: var(--surface-2); }
+.detailFotoGroot { overflow: hidden; border-radius: var(--radius); background: var(--surface-2); }
 .detailFotoGroot img { display: block; width: 100%; aspect-ratio: 1 / .78; object-fit: cover; cursor: zoom-in; }
-.detailBadge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #eff6ff; color: var(--primary); font-size: 13px; font-weight: 700; }
+.detailBadge { display: inline-block; padding: 6px 10px; border-radius: var(--radius); background: #eff6ff; color: var(--primary); font-size: 13px; font-weight: 700; }
 .detailInfo h1 { margin: 12px 0 8px; font-size: clamp(28px, 4vw, 42px); }
 .detailCode { color: var(--text-light); font-weight: 700; }
 .detailTable { width: 100%; margin-top: 24px; border-collapse: collapse; }
 .detailTable td { padding: 12px 0; border-bottom: 1px solid var(--border); }
 .detailTable td:first-child { color: var(--text-light); width: 42%; }
 
-.archiveerKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
+.archiveerKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; padding: 10px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: white; color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
 .archiveerKnop:hover { border-color: var(--warning); color: #b45309; background: #fffbeb; }
 .archiveerKnop:disabled { opacity: .6; cursor: default; }
 
-.bewerkPlaatKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; margin-right: 10px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
+.bewerkPlaatKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; margin-right: 10px; padding: 10px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: white; color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
 .bewerkPlaatKnop:hover { border-color: var(--primary); color: var(--primary); background: #eff6ff; }
 .bewerkPlaatKnop:disabled { opacity: .6; cursor: default; }
 
@@ -1614,20 +1614,20 @@ PLAAT ZOEKEN (binnen "Plaat aanpassen")
 .plaatZoekVeld { margin-bottom: 10px; }
 .plaatZoekResultaten { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; max-height: 320px; overflow-y: auto; }
 
-.plaatZoekItem { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: white; text-align: left; cursor: pointer; font: inherit; transition: var(--transition); }
+.plaatZoekItem { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: white; text-align: left; cursor: pointer; font: inherit; transition: var(--transition); }
 .plaatZoekItem:hover { border-color: var(--primary); background: #f5f8ff; }
 .plaatZoekItem strong { font-size: 14px; }
 .plaatZoekItem span { font-size: 13px; color: var(--text-light); }
 
-.caseKaart { margin-top: 18px; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface-2); }
+.caseKaart { margin-top: 18px; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
 .caseFotos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px; }
-.caseFotos img { width: 100%; height: 220px; border-radius: 12px; object-fit: cover; cursor: zoom-in; transition: transform .2s ease; }
+.caseFotos img { width: 100%; height: 220px; border-radius: var(--radius); object-fit: cover; cursor: zoom-in; transition: transform .2s ease; }
 .caseFotos img:hover { transform: scale(1.02); }
 .caseFotosGalerij { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 .caseFotosGalerij img { height: 150px; }
 .fotoInfo { display: block; margin-top: 16px; color: var(--text-light); line-height: 1.6; }
 
-.caseTypeBadge { display: inline-block; margin-bottom: 10px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 750; }
+.caseTypeBadge { display: inline-block; margin-bottom: 10px; padding: 5px 11px; border-radius: var(--radius); font-size: 12px; font-weight: 750; }
 .caseTypeBadge--productie { background: #eff6ff; color: var(--primary); }
 .caseTypeBadge--leverancier { background: #fff7ed; color: #c2410c; }
 
@@ -1637,7 +1637,7 @@ CASES OVERZICHT
 
 #casesLijst { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
 
-.caseRij { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 14px; border: 1px solid var(--border); background: white; text-decoration: none; color: inherit; transition: var(--transition); }
+.caseRij { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: var(--radius); border: 1px solid var(--border); background: white; text-decoration: none; color: inherit; transition: var(--transition); }
 .caseRij:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateY(-1px); }
 
 .caseRij .caseTypeBadge { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; padding: 0; margin-bottom: 0; }
@@ -1651,7 +1651,7 @@ CASES OVERZICHT
 .caseRijMeta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 12px; color: var(--text-light); flex-shrink: 0; }
 .caseRijMeta .icoon { margin-right: 3px; }
 
-.nieuwBadge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--primary); color: white; font-weight: 700; font-size: 11px; }
+.nieuwBadge { display: inline-block; padding: 2px 8px; border-radius: var(--radius); background: var(--primary); color: white; font-weight: 700; font-size: 11px; }
 .caseRijNieuw { border-color: var(--primary); background: #f5f8ff; }
 
 @media (max-width: 640px) {
@@ -1659,21 +1659,21 @@ CASES OVERZICHT
     .caseRijMeta { align-items: flex-start; flex-direction: row; gap: 10px; width: 100%; padding-left: 52px; }
 }
 
-.bonKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 8px 14px; border-radius: 10px; background: #fff7ed; color: #c2410c; font-weight: 700; text-decoration: none; }
+.bonKnop { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 8px 14px; border-radius: var(--radius); background: #fff7ed; color: #c2410c; font-weight: 700; text-decoration: none; }
 .bonKnop:hover { background: #ffedd5; }
 
-.rapportKnop { display: inline-flex; align-items: center; gap: 6px; margin: 10px 8px 0 0; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font-weight: 700; cursor: pointer; transition: var(--transition); }
+.rapportKnop { display: inline-flex; align-items: center; gap: 6px; margin: 10px 8px 0 0; padding: 8px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: white; color: var(--text); font-weight: 700; cursor: pointer; transition: var(--transition); }
 .rapportKnop:hover { border-color: var(--primary); color: var(--primary); }
 .rapportKnop:disabled { opacity: .6; cursor: default; }
 
-.bewerkFoto, .verwijderFoto { display: inline-flex; align-items: center; gap: 6px; margin: 0 8px 0 0; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border); background: white; font-weight: 700; cursor: pointer; transition: var(--transition); }
+.bewerkFoto, .verwijderFoto { display: inline-flex; align-items: center; gap: 6px; margin: 0 8px 0 0; padding: 8px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: white; font-weight: 700; cursor: pointer; transition: var(--transition); }
 .bewerkFoto { color: var(--text); }
 .bewerkFoto:hover { border-color: var(--primary); color: var(--primary); }
 .verwijderFoto { color: var(--danger); }
 .verwijderFoto:hover { border-color: var(--danger); background: #fef2f2; }
 .verwijderFoto:disabled, .bewerkFoto:disabled { opacity: .6; cursor: default; }
 
-.bewerkOpslaan, .bewerkAnnuleren { display: inline-flex; align-items: center; gap: 6px; margin: 10px 8px 0 0; padding: 8px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: var(--transition); border: 1px solid var(--border); }
+.bewerkOpslaan, .bewerkAnnuleren { display: inline-flex; align-items: center; gap: 6px; margin: 10px 8px 0 0; padding: 8px 14px; border-radius: var(--radius); font-weight: 700; cursor: pointer; transition: var(--transition); border: 1px solid var(--border); }
 .bewerkOpslaan { background: var(--primary); color: white; border-color: var(--primary); }
 .bewerkOpslaan:hover { background: var(--primary-hover); }
 .bewerkOpslaan:disabled { opacity: .6; cursor: default; }
@@ -1683,7 +1683,7 @@ CASES OVERZICHT
 #fotoLightbox { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, .88); }
 #fotoLightbox.actief { display: flex; }
 .lightboxBinnen { position: relative; max-width: min(1200px, 95vw); max-height: 92vh; }
-.lightboxBinnen img { display: block; max-width: 100%; max-height: 88vh; border-radius: 12px; box-shadow: 0 24px 70px rgba(0, 0, 0, .45); object-fit: contain; }
+.lightboxBinnen img { display: block; max-width: 100%; max-height: 88vh; border-radius: var(--radius); box-shadow: 0 24px 70px rgba(0, 0, 0, .45); object-fit: contain; }
 .lightboxSluiten { position: absolute; top: -13px; right: -13px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: white; color: var(--text); font-size: 28px; line-height: 1; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, .25); }
 body.lightboxOpen { overflow: hidden; }
 
@@ -1749,25 +1749,25 @@ body.lightboxOpen { overflow: hidden; }
 .beheerIntro h1 { margin: 7px 0 8px; font-size: clamp(30px, 5vw, 44px); letter-spacing: -.03em; }
 .beheerIntro > p:last-child { color: var(--text-light); font-size: 17px; }
 
-#beheerStatus { display: inline-flex; align-items: center; padding: 8px 12px; margin-bottom: 24px; border-radius: 999px; background: #e0ecff; color: #1e4fa8; font-size: 14px; font-weight: 700; }
+#beheerStatus { display: inline-flex; align-items: center; padding: 8px 12px; margin-bottom: 24px; border-radius: var(--radius); background: #e0ecff; color: #1e4fa8; font-size: 14px; font-weight: 700; }
 
 .beheerKaarten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.beheerKaart { min-height: 160px; padding: 24px; border: 1px solid rgba(219, 227, 236, .95); border-radius: 18px; background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(30, 64, 175, .08); }
+.beheerKaart { min-height: 160px; padding: 24px; border: 1px solid rgba(219, 227, 236, .95); border-radius: var(--radius); background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(30, 64, 175, .08); }
 .beheerKaart h3 { color: var(--text-light); font-size: 15px; font-weight: 700; }
 .beheerKaart p { margin-top: 20px; color: var(--primary); font-size: 42px; font-weight: 800; letter-spacing: -.04em; }
 
-.beheerActies { margin-top: 24px; padding: 26px; border: 1px solid rgba(219, 227, 236, .95); border-radius: 18px; background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(30, 64, 175, .08); }
+.beheerActies { margin-top: 24px; padding: 26px; border: 1px solid rgba(219, 227, 236, .95); border-radius: var(--radius); background: rgba(255, 255, 255, .9); box-shadow: 0 12px 30px rgba(30, 64, 175, .08); }
 .beheerActies h2 { margin-bottom: 8px; font-size: 22px; }
-.beheerPrimaireKnop { margin: 18px 0; padding: 12px 16px; border: 0; border-radius: 11px; background: var(--primary); color: white; font: inherit; font-weight: 750; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+.beheerPrimaireKnop { margin: 18px 0; padding: 12px 16px; border: 0; border-radius: var(--radius); background: var(--primary); color: white; font: inherit; font-weight: 750; cursor: pointer; transition: transform .2s ease, background .2s ease; }
 .beheerPrimaireKnop:hover { background: var(--primary-hover); transform: translateY(-2px); }
-#opslagControle { min-height: 52px; padding: 14px; border-radius: 12px; background: var(--surface-2); color: var(--text-light); line-height: 1.5; }
+#opslagControle { min-height: 52px; padding: 14px; border-radius: var(--radius); background: var(--surface-2); color: var(--text-light); line-height: 1.5; }
 .beheerTerug { display: inline-flex; margin-top: 28px; color: var(--primary); font-weight: 750; text-decoration: none; }
 .beheerTerug:hover { text-decoration: underline; }
 
 /* Gebruikersbeheer */
 .gebruikersLijst { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
 
-.gebruikerRij { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 14px; border: 1px solid var(--border); background: white; transition: var(--transition); }
+.gebruikerRij { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: var(--radius); border: 1px solid var(--border); background: white; transition: var(--transition); }
 .gebruikerRij:hover { border-color: var(--primary); box-shadow: var(--shadow); }
 
 .gebruikerRijIcoon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #eef4ff; flex-shrink: 0; margin-right: 0 !important; }
@@ -1779,7 +1779,7 @@ body.lightboxOpen { overflow: hidden; }
 .gebruikerRijMeta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--text-light); }
 .gebruikerRijMeta .icoon { margin-right: 3px; }
 
-.gebruikerRolSelect { padding: 6px 14px 6px 12px; border: 2px solid var(--border); border-radius: 999px; font: inherit; font-weight: 750; font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; background: #f1f5f9; color: var(--text-light); flex-shrink: 0; cursor: pointer; transition: .25s; }
+.gebruikerRolSelect { padding: 6px 14px 6px 12px; border: 2px solid var(--border); border-radius: var(--radius); font: inherit; font-weight: 750; font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; background: #f1f5f9; color: var(--text-light); flex-shrink: 0; cursor: pointer; transition: .25s; }
 .gebruikerRolSelect:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,.12); }
 .gebruikerRolSelect:disabled { opacity: .6; cursor: default; }
 .gebruikerRolSelect--beheerder { border-color: var(--primary); background: #eef4ff; color: var(--primary); }
@@ -1790,11 +1790,11 @@ body.lightboxOpen { overflow: hidden; }
 .wachtwoordVeld { position: relative; display: flex; align-items: center; }
 .wachtwoordVeld input { padding-right: 42px !important; }
 
-.wachtwoordToggleKnop { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: transparent; color: var(--text-light); cursor: pointer; border-radius: 8px; transition: var(--transition); }
+.wachtwoordToggleKnop { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: transparent; color: var(--text-light); cursor: pointer; border-radius: var(--radius); transition: var(--transition); }
 .wachtwoordToggleKnop:hover { background: var(--surface-2); color: var(--text); }
 .wachtwoordToggleKnop .icoon { width: 19px; height: 19px; }
 
-.gebruikerZelf { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 3px 8px; border-radius: 999px; background: #f1f5f9; }
+.gebruikerZelf { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 3px 8px; border-radius: var(--radius); background: #f1f5f9; }
 
 @media (max-width: 640px) {
     .gebruikerRij { flex-wrap: wrap; }
@@ -1810,23 +1810,23 @@ body.lightboxOpen { overflow: hidden; }
 
 /* Modal voor nieuwe platen */
 .plaatModal { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 24px; background: rgba(15, 23, 42, .64); }
-.plaatForm { width: min(100%, 720px); max-height: 90vh; overflow-y: auto; padding: 28px; border-radius: 20px; background: white; box-shadow: 0 24px 80px rgba(15, 23, 42, .32); }
+.plaatForm { width: min(100%, 720px); max-height: 90vh; overflow-y: auto; padding: 28px; border-radius: var(--radius); background: white; box-shadow: 0 24px 80px rgba(15, 23, 42, .32); }
 .plaatFormKop { display: flex; justify-content: space-between; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
 .plaatFormKop h2 { margin: 5px 0 7px; font-size: 28px; }
 .plaatFormKop p:not(.beheerEyebrow) { color: var(--text-light); }
 .modalSluiten { display: grid; width: 38px; height: 38px; place-items: center; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--text); font-size: 28px; line-height: 1; cursor: pointer; }
 .plaatFormGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 24px 0; }
 .plaatFormGrid label { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 14px; font-weight: 700; }
-.plaatFormGrid input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fbfdff; color: var(--text); font: inherit; }
+.plaatFormGrid input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: #fbfdff; color: var(--text); font: inherit; }
 .plaatFormGrid input:focus { outline: 2px solid rgba(37, 99, 235, .25); border-color: var(--primary); }
 .plaatFormGrid input:disabled { background: var(--surface-2); color: var(--text-light); cursor: not-allowed; }
 
-.plaatFormGrid select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #fbfdff; color: var(--text); font: inherit; cursor: pointer; }
+.plaatFormGrid select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: #fbfdff; color: var(--text); font: inherit; cursor: pointer; }
 .plaatFormGrid select:focus { outline: 2px solid rgba(37, 99, 235, .25); border-color: var(--primary); }
 .plaatFotoVeld { grid-column: 1 / -1; }
 .plaatFormMelding { min-height: 22px; color: var(--text-light); font-size: 14px; }
 .plaatFormActies { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
-.secundaireKnop { padding: 12px 16px; border: 1px solid var(--border); border-radius: 11px; background: white; color: var(--text); font: inherit; font-weight: 700; cursor: pointer; transition: var(--transition); }
+.secundaireKnop { padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: white; color: var(--text); font: inherit; font-weight: 700; cursor: pointer; transition: var(--transition); }
 .secundaireKnop:hover { border-color: var(--primary); color: var(--primary); }
 .secundaireKnop:disabled { opacity: .6; cursor: default; }
 a.secundaireKnop { display: inline-flex; align-items: center; text-decoration: none; }

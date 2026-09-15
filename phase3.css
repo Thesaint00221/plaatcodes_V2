@@ -54,7 +54,7 @@ a.logo.logoLink {
   justify-content: center;
   gap: 8px;
   border: 2px dashed var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: #fafcff;
   color: var(--text-light);
   cursor: pointer;
@@ -75,7 +75,7 @@ a.logo.logoLink {
   width: 100%;
   height: 78px;
   object-fit: cover;
-  border-radius: 9px;
+  border-radius: var(--radius);
 }
 
 .akFotoVak img + span {
@@ -104,7 +104,7 @@ a.logo.logoLink {
   --text: #1d1d1b;
   --text-light: #6f6f6b;
   --border: #deded9;
-  --radius: 8px;
+  --radius: 4px;
   --shadow: 0 2px 14px rgba(0,0,0,.045);
 }
 
@@ -121,7 +121,7 @@ body {
 
 .plaatCard {
   border: 0;
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: 0 1px 8px rgba(0,0,0,.045);
 }
 
@@ -147,7 +147,7 @@ body {
   background: transparent;
   color: var(--text-light);
   padding: 0;
-  border-radius: 0;
+  border-radius: var(--radius);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: .07em;
@@ -176,7 +176,7 @@ body {
 .badge {
   background: #f0f0ed;
   color: #4f4f4b;
-  border-radius: 2px;
+  border-radius: var(--radius);
   padding: 4px 8px;
   font-weight: 500;
   font-size: 12px;
@@ -196,7 +196,7 @@ body {
 
 .merkLogo {
   height: 42px;
-  border-radius: 0;
+  border-radius: var(--radius);
 }
 
 .logoTekst h1 {
@@ -216,7 +216,7 @@ body {
 #search {
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   padding: 11px 16px;
   font-size: 15px;
   min-height: 44px;
@@ -237,18 +237,18 @@ body {
 
 .headerButtons button {
   min-height: 42px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: none;
 }
 
 .secundaireKnop {
-  border-radius: 4px;
+  border-radius: var(--radius);
   box-shadow: none;
   padding: 10px 15px;
 }
 
 #userButton {
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: none;
   min-height: 42px;
   padding: 10px 15px;
@@ -256,7 +256,7 @@ body {
 
 .primary {
   background: #1f1f1f;
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 10px 18px;
 }
 
@@ -294,7 +294,7 @@ body {
 #leverancierFilter {
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   padding: 0 14px;
   min-height: 44px;
   font-size: 14px;
@@ -319,7 +319,7 @@ body {
   height: 560px;
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
@@ -359,7 +359,7 @@ body {
   margin-bottom: 16px;
   padding: 4px 8px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #f4f4f1;
   color: #666661;
   font-size: 11px;
@@ -416,7 +416,7 @@ body {
 .archiveerKnop {
   margin-top: 22px;
   margin-right: 8px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: none;
 }
 
@@ -436,7 +436,7 @@ body {
 }
 
 .detailFoto {
-  border-radius: 0;
+  border-radius: var(--radius);
   cursor: zoom-in;
   transition: opacity .18s ease;
   display: block;
@@ -452,7 +452,7 @@ body {
 }
 
 .caseTypeBadge {
-  border-radius: 2px;
+  border-radius: var(--radius);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -556,7 +556,7 @@ body {
   margin-bottom: 28px;
   padding: 12px 15px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: #5f5f5a;
   font-size: 13px;
@@ -565,7 +565,7 @@ body {
 .beheerKaart {
   padding: 24px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   box-shadow: none;
 }
@@ -615,7 +615,7 @@ body {
   min-height: 40px;
   padding: 9px 15px;
   border: 1px solid #1f1f1f;
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #1f1f1f;
   color: #fff;
   font-size: 13px;
@@ -658,7 +658,7 @@ body {
   box-sizing: border-box;
   min-height: 42px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: var(--text);
   padding: 9px 11px;
@@ -693,7 +693,7 @@ body {
 .gbGebruikerActies .primary {
   min-height: 40px;
   padding: 9px 14px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: none;
 }
 
@@ -702,7 +702,7 @@ body {
   background: #fff;
   color: #704444;
   padding: 9px 14px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
@@ -722,7 +722,7 @@ body {
   margin-top: 4px;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: #4f4f4b;
   text-decoration: none;
@@ -747,7 +747,7 @@ body {
   overflow: auto;
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius);
   box-shadow: 0 18px 60px rgba(0,0,0,.18);
 }
 
@@ -779,7 +779,7 @@ body {
   width: 36px;
   height: 36px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: #555550;
   font-size: 23px;
@@ -812,7 +812,7 @@ body {
 .plaatFormGrid textarea {
   min-height: 42px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: var(--text);
   padding: 9px 11px;
@@ -839,13 +839,13 @@ body {
 .plaatFormActies .primary,
 .plaatFormActies .secundaireKnop {
   min-height: 40px;
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: none;
 }
 
 .lightboxSluiten {
   border: 1px solid rgba(255,255,255,.28);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: rgba(255,255,255,.08);
   color: #fff;
   box-shadow: none;
@@ -1033,7 +1033,7 @@ textarea:focus-visible {
   margin-bottom: 24px;
   padding: 28px 30px 30px;
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   box-shadow: none;
 }
@@ -1051,7 +1051,7 @@ textarea:focus-visible {
 
 .caseKaart {
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: var(--radius);
   box-shadow: none;
   background: #fff;
   margin-bottom: 20px;
@@ -1082,7 +1082,7 @@ textarea:focus-visible {
   margin: 4px 6px 0 0;
   padding: 8px 13px;
   border: 1px solid #cfcfca;
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: #333;
   box-shadow: none;
@@ -1102,7 +1102,7 @@ textarea:focus-visible {
   margin: 4px 6px 0 0;
   padding: 8px 13px;
   border: 1px solid #cfcfca;
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: #fff;
   color: #704444;
   box-shadow: none;
