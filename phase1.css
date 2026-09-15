@@ -221,6 +221,15 @@
         max-width:100%;
         box-sizing:border-box;
     }
+
+    /* Voorkom automatische browserzoom bij het typen in "Plaat aanpassen".
+       iOS Safari/Chrome zoomen in bij formuliervelden kleiner dan 16px. */
+    .plaatModal input,
+    .plaatModal select,
+    .plaatModal textarea{
+        font-size:16px;
+    }
+
     .plaatNaam{ font-size:19px; }
     .plaatInfo{ padding:15px; }
 
