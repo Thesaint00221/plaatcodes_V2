@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cases overzicht | Plaatcodes</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icons/favicon.ico">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="theme-color" content="#2563eb">
-<link rel="stylesheet" href="style.min.css">
-<link rel="stylesheet" href="phase3.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cases overzicht | Plaatcodes</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/favicon.ico">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="style.min.css">
+    <link rel="stylesheet" href="phase3.css">
 </head>
 <body class="beheerPagina">
 <header class="beheerTopbar">
@@ -29,6 +29,7 @@
     <button type="button" class="caseTypeKnop actief" data-filter="">Alle cases</button>
     <button type="button" class="caseTypeKnop" data-filter="productie"><span class="icoon" data-icon="fabriek"></span> Productie</button>
     <button type="button" class="caseTypeKnop" data-filter="leverancier"><span class="icoon" data-icon="vrachtwagen"></span> Leverancier</button>
+    <button type="button" class="caseTypeKnop" data-filter="aankoop"><span class="icoon" data-icon="document"></span> Aankoopklachten</button>
 </div>
 <div id="casesLijst"></div>
 <div id="casesLaadMeer" class="laadMeer hidden">Meer cases laden...</div>
@@ -40,7 +41,6 @@
 <script src="js/dropdown-sluiten.js"></script>
 <script src="js/supabase.js"></script>
 <script src="js/auth.js"></script>
-<script src="js/mijn-wachtwoord.js"></script>
 <script src="js/overzicht.js"></script>
 <script src="js/pwa.js"></script>
 </body>
