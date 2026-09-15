@@ -5,35 +5,66 @@
    phase3.css.
 ========================================================== */
 
-.plaatCard{
-    border-radius:14px;
-    box-shadow:0 4px 16px rgba(0,0,0,.06);
-    transition:box-shadow .2s ease, transform .2s ease;
+/* Aanvullende detail/upload-layout */
+#detail{
+    max-width:1280px;
+    margin:28px auto;
+    padding:24px;
 }
-.plaatCard:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 24px rgba(0,0,0,.09);
-}
-.plaatCode{ border-radius:7px; padding:5px 9px; margin-bottom:10px; }
-.plaatNaam{ font-size:20px; margin-bottom:7px; }
-.badge{ border-radius:7px; padding:5px 9px; }
-.cards{ gap:18px; }
 
-.primary,
-.secundaireKnop,
-#loginBox button,
-#userButton{
-    min-height:44px;
-    border-radius:9px;
-    box-shadow:none;
+#detailContent,
+#uploadKaart{
+    border-radius:2px;
+    box-shadow:0 5px 20px rgba(15,23,42,.06);
 }
-.primary:hover{ transform:none; }
 
-.topbar{
-    gap:16px;
-    padding:14px 24px;
-    box-shadow:0 1px 8px rgba(0,0,0,.07);
+#detailContent{ padding:24px; }
+
+#detailContent h2{
+    font-size:clamp(26px,3vw,32px);
+    color:var(--text);
 }
+
+#detailContent h3{
+    font-size:20px;
+    color:var(--text-light);
+}
+
+.infoItem{
+    border-radius:2px;
+    padding:16px;
+}
+
+.infoItem span{ font-size:16px; }
+
+.gallery{ gap:16px; }
+
+.gallery img{
+    height:auto;
+    aspect-ratio:4 / 3;
+    border-radius:2px;
+    box-shadow:0 4px 16px rgba(15,23,42,.07);
+}
+
+.caseCard{
+    border-radius:2px;
+    border-left-width:4px;
+    box-shadow:0 4px 16px rgba(15,23,42,.06);
+}
+
+#uploadKaart{ padding:24px; }
+.caseTypeKnop{ border-radius:2px; }
+.uploadKnop{ border-radius:2px; }
+.uploadKnop:hover{ transform:none; }
+
+.uploadVeld input,
+.uploadVeld select,
+.uploadVeld textarea{
+    border-radius:2px;
+    border-color:var(--border);
+}
+
+#opslaanFoto{ border-radius:2px; }
 
 /* Dropdowns altijd boven de zoek/filterzone */
 .gebruikersMenu{ position:relative; z-index:1002; }
@@ -79,7 +110,7 @@
         box-sizing:border-box;
         padding:12px 14px;
         font-size:16px;
-        border-radius:9px;
+        border-radius:2px;
     }
     #leverancierFilter{
         width:100%;
@@ -88,7 +119,7 @@
         box-sizing:border-box;
         min-height:44px;
         padding:0 12px;
-        border-radius:9px;
+        border-radius:2px;
     }
     .headerButtons{
         grid-area:actions;
@@ -140,101 +171,12 @@
     }
     .plaatNaam{ font-size:19px; }
     .plaatInfo{ padding:15px; }
-}
 
-/* Detail/upload-regels die niet dubbel in phase3 staan */
-#detail{
-    max-width:1280px;
-    margin:28px auto;
-    padding:24px;
-}
-
-#detailContent,
-#uploadKaart{
-    border-radius:14px;
-    box-shadow:0 5px 20px rgba(15,23,42,.06);
-}
-
-#detailContent{ padding:24px; }
-
-#detailContent h2{
-    font-size:clamp(26px,3vw,32px);
-    color:var(--text);
-}
-
-#detailContent h3{
-    font-size:20px;
-    color:var(--text-light);
-}
-
-.infoItem{
-    border-radius:10px;
-    padding:16px;
-}
-
-.infoItem span{ font-size:16px; }
-
-.gallery{ gap:16px; }
-
-.gallery img{
-    height:auto;
-    aspect-ratio:4 / 3;
-    border-radius:12px;
-    box-shadow:0 4px 16px rgba(15,23,42,.07);
-}
-
-.caseCard{
-    border-radius:12px;
-    border-left-width:4px;
-    box-shadow:0 4px 16px rgba(15,23,42,.06);
-}
-
-#uploadKaart{ padding:24px; }
-.caseTypeKnop{ border-radius:9px; }
-.uploadKnop{ border-radius:12px; }
-.uploadKnop:hover{ transform:none; }
-
-.uploadVeld input,
-.uploadVeld select,
-.uploadVeld textarea{
-    border-radius:9px;
-    border-color:var(--border);
-}
-
-#opslaanFoto{ border-radius:9px; }
-
-@media (max-width:900px){
-    #detail{
-        width:100%;
-        max-width:100%;
-        margin:18px auto;
-        padding:16px;
-        box-sizing:border-box;
-    }
-    #detailContent,
-    #uploadKaart{
-        width:100%;
-        max-width:100%;
-        box-sizing:border-box;
-    }
-    .detailHeader{
-        grid-template-columns:minmax(0,1fr);
-        gap:20px;
-    }
-    .infoGrid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-    .gallery{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-}
-
-@media (max-width:600px){
     #detail{ padding:12px; }
     #detailContent,
     #uploadKaart{
         padding:16px;
-        border-radius:12px;
+        border-radius:2px;
     }
     .infoGrid,
     .gallery{
