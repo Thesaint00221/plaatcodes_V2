@@ -291,12 +291,6 @@ const basisFoto =
 
     </div>
 
-    <div id="galerij">
-
-        <h3>Cases & foto's</h3>
-
-    </div>
-
 </div>
 
 `;
