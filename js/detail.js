@@ -474,7 +474,7 @@ async function toonFotos(plaat){
             class="rapportKnop"
             id="rapport-${item.id}">
 
-            ${icoon("download")} Rapport downloaden
+            ${icoon("document")} Rapport downloaden
 
         </button>
         `
