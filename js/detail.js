@@ -651,7 +651,7 @@ async function verwijderCase(id, knop){
     const {data:item,error:zoekError} =
         await supabaseClient
             .from("eigen_data")
-            .select("foto,overzicht_foto,fotos,leveranciersbon_url")
+            .select("foto,overzicht_foto,fotos,leveranciersbon_url,rapport_url")
             .eq("id",id)
             .single();
 
@@ -700,6 +700,13 @@ async function verwijderCase(id, knop){
 
     if(item.leveranciersbon_url){
         const pad = haalOpslagPad(item.leveranciersbon_url);
+        if(pad){
+            bestanden.push(pad);
+        }
+    }
+
+    if(item.rapport_url){
+        const pad = haalOpslagPad(item.rapport_url);
         if(pad){
             bestanden.push(pad);
         }
