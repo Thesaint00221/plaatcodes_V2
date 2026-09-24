@@ -112,6 +112,61 @@ function laadAfbeeldingAfmetingen(dataUrl){
     });
 }
 
+async function downloadBestaandRapport(pad, naam, knop){
+    try{
+        if(knop) knop.disabled = true;
+        const url = haalOpenbareUrl(pad);
+        const response = await fetch(url);
+        if(!response.ok) throw new Error("Rapport niet gevonden");
+        const blob = await response.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = naam;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }catch(error){
+        console.error("Bestaand rapport downloaden mislukt:", error);
+        alert("Het opgeslagen rapport kon niet worden gedownload.");
+    }finally{
+        if(knop) knop.disabled = false;
+    }
+}
+
+async function slaLeveranciersRapportOp(caseId, bytes, bestandsnaam){
+    const pad = `rapporten/leveranciersklachten/${caseId}.pdf`;
+    const blob = new Blob([bytes], {type:"application/pdf"});
+    const upload = await supabaseClient.storage.from("plaatfotos").upload(pad, blob, {
+        upsert:true,
+        contentType:"application/pdf"
+    });
+    if(upload.error) throw upload.error;
+
+    const {data:userData} = await supabaseClient.auth.getUser();
+    const gebruiker = userData.user?.email || "onbekend";
+
+    const {error} = await supabaseClient
+        .from("eigen_data")
+        .update({
+            rapport_url: pad,
+            rapport_aangemaakt_door: gebruiker,
+            rapport_aangemaakt_op: new Date().toISOString()
+        })
+        .eq("id", caseId);
+
+    if(error) throw error;
+
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = bestandsnaam;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+}
+
 async function genereerKlachtenRapport(caseId, knop){
 
     const item = window.laatstGeladenCases?.[caseId];
@@ -265,23 +320,18 @@ async function genereerKlachtenRapport(caseId, knop){
             y += 8;
             doc.setFont(undefined, "normal");
 
-            const kolommen = 2;
             const tussenruimte = 8;
-            const kolomBreedte = (paginaBreedte - marge * 2 - tussenruimte * (kolommen - 1)) / kolommen;
-            const celHoogte = 65;
-
-            let kolom = 0;
+            const fotoBreedte = paginaBreedte - marge * 2;
+            const fotoHoogte = 85; // ongeveer 1/3 van een A4-pagina
 
             for(const url of fotoUrls){
 
-                if(kolom === 0){
-                    nieuwePaginaIndienNodig(celHoogte + tussenruimte);
-                }
+                nieuwePaginaIndienNodig(fotoHoogte + tussenruimte);
 
-                const x = marge + kolom * (kolomBreedte + tussenruimte);
+                const x = marge;
 
                 doc.setDrawColor(219, 227, 236);
-                doc.rect(x, y, kolomBreedte, celHoogte);
+                doc.rect(x, y, fotoBreedte, fotoHoogte);
 
                 const dataUrl = await fotoAlsDataUrl(url);
 
@@ -292,85 +342,53 @@ async function genereerKlachtenRapport(caseId, knop){
                         const {breedte: natBreedte, hoogte: natHoogte} =
                             await laadAfbeeldingAfmetingen(dataUrl);
 
-                        const schaal = Math.min(kolomBreedte / natBreedte, celHoogte / natHoogte);
+                        const schaal = Math.min(fotoBreedte / natBreedte, fotoHoogte / natHoogte);
                         const afbBreedte = natBreedte * schaal;
                         const afbHoogte = natHoogte * schaal;
-                        const offsetX = x + (kolomBreedte - afbBreedte) / 2;
-                        const offsetY = y + (celHoogte - afbHoogte) / 2;
+                        const offsetX = x + (fotoBreedte - afbBreedte) / 2;
+                        const offsetY = y + (fotoHoogte - afbHoogte) / 2;
 
                         doc.addImage(dataUrl, "JPEG", offsetX, offsetY, afbBreedte, afbHoogte);
 
                     }catch(fout){
                         console.error("Foto invoegen in PDF mislukt:", fout);
-                        doc.textWithLink(url, x + 3, y + celHoogte / 2, {url});
+                        doc.textWithLink(url, x + 3, y + fotoHoogte / 2, {url});
                     }
 
                 }else{
 
-                    doc.textWithLink(url, x + 3, y + celHoogte / 2, {url});
+                    doc.textWithLink(url, x + 3, y + fotoHoogte / 2, {url});
 
                 }
 
-                kolom++;
-
-                if(kolom === kolommen){
-                    kolom = 0;
-                    y += celHoogte + tussenruimte;
-                }
-
-            }
-
-            if(kolom !== 0){
-                y += celHoogte + tussenruimte;
+                y += fotoHoogte + tussenruimte;
             }
 
         }
 
-        const bestandsnaam = `Rapport-leveranciersklacht_${plaat.code}_${Date.now()}.pdf`;
+        const bestandsnaam = `Rapport-leveranciersklacht_${plaat.code}.pdf`;
+        let eindBytes = doc.output("arraybuffer");
 
-        if(!bonBytes){
-            doc.save(bestandsnaam);
-        }else{
-
-            if(knop){
-                knop.innerHTML = "⏳ Bon samenvoegen...";
-            }
-
+        if(bonBytes){
+            if(knop) knop.innerHTML = "⏳ Bon samenvoegen...";
             try{
-
                 const PDFLib = await laadPdfLib();
-                const reportBytes = doc.output("arraybuffer");
-
                 const samengevoegd = await PDFLib.PDFDocument.create();
-
-                const reportDoc = await PDFLib.PDFDocument.load(reportBytes);
+                const reportDoc = await PDFLib.PDFDocument.load(eindBytes);
                 const reportPaginas = await samengevoegd.copyPages(reportDoc, reportDoc.getPageIndices());
                 reportPaginas.forEach(pagina => samengevoegd.addPage(pagina));
 
                 const bonDoc = await PDFLib.PDFDocument.load(bonBytes);
                 const bonPaginas = await samengevoegd.copyPages(bonDoc, bonDoc.getPageIndices());
                 bonPaginas.forEach(pagina => samengevoegd.addPage(pagina));
-
-                const samengevoegdeBytes = await samengevoegd.save();
-
-                const blob = new Blob([samengevoegdeBytes], {type: "application/pdf"});
-                const url = URL.createObjectURL(blob);
-
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = bestandsnaam;
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-
-                URL.revokeObjectURL(url);
-
+                eindBytes = await samengevoegd.save();
             }catch(samenvoegFout){
                 console.error("Bon samenvoegen mislukt:", samenvoegFout);
-                doc.save(bestandsnaam);
             }
-
         }
+
+        if(knop) knop.innerHTML = "⏳ Rapport opslaan...";
+        await slaLeveranciersRapportOp(caseId, eindBytes, bestandsnaam);
 
     }catch(fout){
 
