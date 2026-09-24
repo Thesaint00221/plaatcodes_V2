@@ -32,6 +32,27 @@ function akDatum(waarde){
     return waarde ? new Date(waarde).toLocaleDateString("nl-BE") : "-";
 }
 
+async function akDownloadRapport(pad, id, knop){
+    try{
+        if(knop) knop.disabled = true;
+        const response = await fetch(akUrl(pad));
+        if(!response.ok) throw new Error("Rapport niet gevonden");
+        const blob = await response.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Rapport-aankoopklacht_${id}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }catch(error){
+        console.error("Rapport downloaden mislukt:", error);
+        alert("Het opgeslagen rapport kon niet worden gedownload.");
+    }finally{
+        if(knop) knop.disabled = false;
+    }
+}
+
 async function laadAankoopKlachten(){
     const {data, error} = await supabaseClient
         .from("aankoopklachten")
@@ -63,20 +84,114 @@ async function laadAankoopKlachten(){
                     <p>${akEsc(item.omschrijving)}</p>
                     ${item.gewenste_oplossing ? `<p><strong>Gewenste oplossing:</strong> ${akEsc(item.gewenste_oplossing)}</p>` : ""}
                     <p><strong>Foto's:</strong> ${fotos.length}</p>
+                    ${item.laatst_aangepast_door ? `<p class="fotoInfo"><strong>Aangepast:</strong> ${akEsc(item.laatst_aangepast_door)} op ${akDatum(item.laatst_aangepast_op)}</p>` : ""}
                     <div class="plaatFormActies">
-                        <button type="button" class="primary akRapport" data-id="${item.id}"><span class="icoon" data-icon="document"></span> Leveranciersrapport</button>
+                        <button type="button" class="primary akBewerk" data-id="${item.id}"><span class="icoon" data-icon="tools"></span> Aanpassen</button>
+                        <button type="button" class="secundaireKnop akRapport" data-id="${item.id}">
+                            ${item.rapport_url ? '<span class="icoon" data-icon="download"></span> Rapport downloaden' : '<span class="icoon" data-icon="document"></span> Leveranciersrapport'}
+                        </button>
                         <button type="button" class="secundaireKnop akVerwijder" data-id="${item.id}"><span class="icoon" data-icon="vuilbak"></span> Verwijderen</button>
                     </div>
                 </div>
             </article>`;
     }).join("");
 
+    document.querySelectorAll(".akBewerk").forEach(knop => {
+        knop.addEventListener("click", () => {
+            const item = data.find(rij => rij.id === knop.dataset.id);
+            if(item) openAankoopKlachtBewerken(item);
+        });
+    });
+
     document.querySelectorAll(".akRapport").forEach(knop => {
-        knop.addEventListener("click", () => genereerAankoopKlachtRapport(knop.dataset.id, knop));
+        const item = data.find(rij => rij.id === knop.dataset.id);
+        knop.addEventListener("click", () => {
+            if(item?.rapport_url){
+                akDownloadRapport(item.rapport_url, item.id, knop);
+            }else{
+                genereerAankoopKlachtRapport(item.id, knop);
+            }
+        });
     });
 
     document.querySelectorAll(".akVerwijder").forEach(knop => {
         knop.addEventListener("click", () => verwijderAankoopKlacht(knop.dataset.id));
+    });
+}
+
+function sluitAkEditModal(){
+    document.getElementById("akEditModal")?.remove();
+}
+
+function openAankoopKlachtBewerken(item){
+    sluitAkEditModal();
+
+    const modal = document.createElement("section");
+    modal.id = "akEditModal";
+    modal.className = "plaatModal";
+    modal.innerHTML = `
+        <form class="plaatForm" id="akEditForm" style="max-width:850px;">
+            <div class="plaatFormKop">
+                <div>
+                    <p class="beheerEyebrow">Aankoopklacht</p>
+                    <h2>Klacht aanpassen</h2>
+                    <p>De aanpassing wordt automatisch geregistreerd met gebruiker en datum.</p>
+                </div>
+                <button type="button" class="modalSluiten" id="akEditSluit" aria-label="Sluiten">×</button>
+            </div>
+            <div class="plaatFormGrid">
+                <label>Artikel / omschrijving<input id="akeArtikel" type="text" maxlength="150" required value="${akEsc(item.artikel)}"></label>
+                <label>Leverancier<input id="akeLeverancier" type="text" maxlength="150" required value="${akEsc(item.leverancier)}"></label>
+                <label>Artikelnummer / referentie<input id="akeReferentie" type="text" maxlength="100" value="${akEsc(item.referentie || "")}"></label>
+                <label>Datum klacht<input id="akeDatum" type="date" required value="${item.datum ? new Date(item.datum).toISOString().slice(0,10) : ""}"></label>
+                <label>Aantal<input id="akeAantal" type="number" min="0" step="1" value="${item.aantal ?? ""}"></label>
+                <label>Bestelnummer<input id="akeBestelnummer" type="text" maxlength="100" value="${akEsc(item.bestelnummer || "")}"></label>
+            </div>
+            <div class="uploadVeld"><label for="akeOmschrijving">Omschrijving klacht</label><textarea id="akeOmschrijving" rows="6" maxlength="3000" required>${akEsc(item.omschrijving || "")}</textarea></div>
+            <div class="uploadVeld"><label for="akeOplossing">Gewenste oplossing</label><textarea id="akeOplossing" rows="4" maxlength="1000">${akEsc(item.gewenste_oplossing || "")}</textarea></div>
+            <p id="akeMelding" class="plaatFormMelding" aria-live="polite"></p>
+            <div class="plaatFormActies">
+                <button type="button" class="secundaireKnop" id="akEditAnnuleer">Annuleren</button>
+                <button class="primary" type="submit"><span class="icoon" data-icon="vink"></span> Wijzigingen opslaan</button>
+            </div>
+        </form>`;
+
+    document.body.appendChild(modal);
+    modal.classList.remove("hidden");
+    modal.querySelector("#akEditSluit").addEventListener("click", sluitAkEditModal);
+    modal.querySelector("#akEditAnnuleer").addEventListener("click", sluitAkEditModal);
+    modal.addEventListener("click", e => { if(e.target === modal) sluitAkEditModal(); });
+
+    modal.querySelector("#akEditForm").addEventListener("submit", async e => {
+        e.preventDefault();
+        const melding = modal.querySelector("#akeMelding");
+        const knop = modal.querySelector('button[type="submit"]');
+        knop.disabled = true;
+        melding.textContent = "Bezig met opslaan...";
+
+        const {error} = await supabaseClient
+            .from("aankoopklachten")
+            .update({
+                artikel: document.getElementById("akeArtikel").value.trim(),
+                leverancier: document.getElementById("akeLeverancier").value.trim(),
+                referentie: document.getElementById("akeReferentie").value.trim() || null,
+                datum: document.getElementById("akeDatum").value,
+                aantal: document.getElementById("akeAantal").value || null,
+                omschrijving: document.getElementById("akeOmschrijving").value.trim(),
+                bestelnummer: document.getElementById("akeBestelnummer").value.trim() || null,
+                gewenste_oplossing: document.getElementById("akeOplossing").value.trim() || null
+            })
+            .eq("id", item.id);
+
+        if(error){
+            console.error(error);
+            melding.textContent = "Wijzigingen opslaan mislukt.";
+            knop.disabled = false;
+            return;
+        }
+
+        sluitAkEditModal();
+        await laadAankoopKlachten();
     });
 }
 
@@ -166,7 +281,7 @@ async function verwijderAankoopKlacht(id){
 
     const {data:item, error:leesError} = await supabaseClient
         .from("aankoopklachten")
-        .select("fotos, leveranciersbon_url")
+        .select("fotos, leveranciersbon_url, rapport_url")
         .eq("id", id)
         .single();
 
@@ -177,11 +292,45 @@ async function verwijderAankoopKlacht(id){
 
     const paden = [...(Array.isArray(item.fotos) ? item.fotos : [])];
     if(item.leveranciersbon_url) paden.push(item.leveranciersbon_url);
+    if(item.rapport_url) paden.push(item.rapport_url);
     if(paden.length) await supabaseClient.storage.from("plaatfotos").remove(paden);
 
     const {error} = await supabaseClient.from("aankoopklachten").delete().eq("id", id);
     if(error) console.error(error);
     await laadAankoopKlachten();
+}
+
+async function slaAankoopRapportOp(id, bytes, bestandsnaam){
+    const pad = `rapporten/aankoopklachten/${id}.pdf`;
+    const blob = new Blob([bytes], {type:"application/pdf"});
+    const upload = await supabaseClient.storage.from("plaatfotos").upload(pad, blob, {
+        upsert:true,
+        contentType:"application/pdf"
+    });
+    if(upload.error) throw upload.error;
+
+    const {data:userData} = await supabaseClient.auth.getUser();
+    const gebruiker = userData.user?.email || "onbekend";
+
+    const {error} = await supabaseClient
+        .from("aankoopklachten")
+        .update({
+            rapport_url: pad,
+            rapport_aangemaakt_door: gebruiker,
+            rapport_aangemaakt_op: new Date().toISOString()
+        })
+        .eq("id", id);
+
+    if(error) throw error;
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = bestandsnaam;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 async function genereerAankoopKlachtRapport(id, knop){
@@ -282,39 +431,33 @@ async function genereerAankoopKlachtRapport(id, knop){
         const fotoUrls = (Array.isArray(item.fotos) ? item.fotos : []).map(akUrl).filter(Boolean);
         if(fotoUrls.length){
             y += 5;
-            nieuwePaginaIndienNodig(75);
+            nieuwePaginaIndienNodig(10);
             doc.setFont(undefined, "bold");
             doc.text("Foto's:", marge, y);
             y += 8;
-            const kolommen = 2;
+
             const tussenruimte = 8;
-            const kolomBreedte = (paginaBreedte - marge * 2 - tussenruimte) / 2;
-            const celHoogte = 65;
-            let kolom = 0;
+            const fotoBreedte = paginaBreedte - marge * 2;
+            const fotoHoogte = 85;
 
             for(const url of fotoUrls){
-                if(kolom === 0) nieuwePaginaIndienNodig(celHoogte + tussenruimte);
-                const x = marge + kolom * (kolomBreedte + tussenruimte);
-                doc.rect(x, y, kolomBreedte, celHoogte);
+                nieuwePaginaIndienNodig(fotoHoogte + tussenruimte);
+                const x = marge;
+                doc.rect(x, y, fotoBreedte, fotoHoogte);
                 const dataUrl = await fotoAlsDataUrl(url);
                 if(dataUrl){
                     try{
                         const afm = await laadAfbeeldingAfmetingen(dataUrl);
-                        const schaal = Math.min(kolomBreedte / afm.breedte, celHoogte / afm.hoogte);
+                        const schaal = Math.min(fotoBreedte / afm.breedte, fotoHoogte / afm.hoogte);
                         const w = afm.breedte * schaal;
                         const h = afm.hoogte * schaal;
-                        doc.addImage(dataUrl, "JPEG", x + (kolomBreedte - w) / 2, y + (celHoogte - h) / 2, w, h);
+                        doc.addImage(dataUrl, "JPEG", x + (fotoBreedte - w) / 2, y + (fotoHoogte - h) / 2, w, h);
                     }catch(e){
-                        doc.textWithLink(url, x + 3, y + celHoogte / 2, {url});
+                        doc.textWithLink(url, x + 3, y + fotoHoogte / 2, {url});
                     }
                 }
-                kolom++;
-                if(kolom === kolommen){
-                    kolom = 0;
-                    y += celHoogte + tussenruimte;
-                }
+                y += fotoHoogte + tussenruimte;
             }
-            if(kolom !== 0) y += celHoogte + tussenruimte;
         }
 
         if(bonUrl){
@@ -327,24 +470,21 @@ async function genereerAankoopKlachtRapport(id, knop){
             y += 10;
         }
 
-        const bestandsnaam = `Rapport-aankoopklacht_${item.id}_${Date.now()}.pdf`;
-        if(!bonBytes){
-            doc.save(bestandsnaam);
-        }else{
+        const bestandsnaam = `Rapport-aankoopklacht_${item.id}.pdf`;
+        let eindBytes = doc.output("arraybuffer");
+
+        if(bonBytes){
             const PDFLib = await laadPdfLib();
-            const reportDoc = await PDFLib.PDFDocument.load(doc.output("arraybuffer"));
+            const reportDoc = await PDFLib.PDFDocument.load(eindBytes);
             const bonDoc = await PDFLib.PDFDocument.load(bonBytes);
             const samengevoegd = await PDFLib.PDFDocument.create();
             for(const pagina of await samengevoegd.copyPages(reportDoc, reportDoc.getPageIndices())) samengevoegd.addPage(pagina);
             for(const pagina of await samengevoegd.copyPages(bonDoc, bonDoc.getPageIndices())) samengevoegd.addPage(pagina);
-            const blob = new Blob([await samengevoegd.save()], {type:"application/pdf"});
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = bestandsnaam;
-            link.click();
-            URL.revokeObjectURL(url);
+            eindBytes = await samengevoegd.save();
         }
+
+        knop.innerHTML = "⏳ Rapport opslaan...";
+        await slaAankoopRapportOp(item.id, eindBytes, bestandsnaam);
     }catch(fout){
         console.error(fout);
         alert("Rapport maken is mislukt.");
