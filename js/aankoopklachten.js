@@ -126,6 +126,7 @@ function sluitAkEditModal(){
 function openAankoopKlachtBewerken(item){
     sluitAkEditModal();
 
+    const bestaandeFotos = Array.isArray(item.fotos) ? item.fotos : [];
     const modal = document.createElement("section");
     modal.id = "akEditModal";
     modal.className = "plaatModal";
@@ -135,10 +136,11 @@ function openAankoopKlachtBewerken(item){
                 <div>
                     <p class="beheerEyebrow">Aankoopklacht</p>
                     <h2>Klacht aanpassen</h2>
-                    <p>De aanpassing wordt automatisch geregistreerd met gebruiker en datum.</p>
+                    <p>Tekst, foto's en leveranciersbon kunnen worden aangepast. Wijzigingen worden automatisch geregistreerd.</p>
                 </div>
                 <button type="button" class="modalSluiten" id="akEditSluit" aria-label="Sluiten">×</button>
             </div>
+
             <div class="plaatFormGrid">
                 <label>Artikel / omschrijving<input id="akeArtikel" type="text" maxlength="150" required value="${akEsc(item.artikel)}"></label>
                 <label>Leverancier<input id="akeLeverancier" type="text" maxlength="150" required value="${akEsc(item.leverancier)}"></label>
@@ -147,8 +149,30 @@ function openAankoopKlachtBewerken(item){
                 <label>Aantal<input id="akeAantal" type="number" min="0" step="1" value="${item.aantal ?? ""}"></label>
                 <label>Bestelnummer<input id="akeBestelnummer" type="text" maxlength="100" value="${akEsc(item.bestelnummer || "")}"></label>
             </div>
+
             <div class="uploadVeld"><label for="akeOmschrijving">Omschrijving klacht</label><textarea id="akeOmschrijving" rows="6" maxlength="3000" required>${akEsc(item.omschrijving || "")}</textarea></div>
             <div class="uploadVeld"><label for="akeOplossing">Gewenste oplossing</label><textarea id="akeOplossing" rows="4" maxlength="1000">${akEsc(item.gewenste_oplossing || "")}</textarea></div>
+
+            <div class="uploadVeld">
+                <label>Bestaande foto's</label>
+                <div id="akeBestaandeFotos" style="display:flex;gap:10px;flex-wrap:wrap;">
+                    ${bestaandeFotos.map((pad,index)=>`
+                        <div class="akEditFoto" data-pad="${akEsc(pad)}" style="position:relative;">
+                            <img src="${akUrl(pad)}" style="width:120px;height:90px;object-fit:cover;border-radius:6px;">
+                            <button type="button" class="secundaireKnop akFotoVerwijder" data-index="${index}" style="margin-top:5px;width:100%;">Foto verwijderen</button>
+                        </div>`).join("") || "<p>Geen foto's.</p>"}
+                </div>
+                <label style="margin-top:10px;">Nieuwe foto's toevoegen<input id="akeFotos" type="file" accept="image/*" multiple></label>
+                <small>Nieuwe foto's worden toegevoegd aan de bestaande foto's.</small>
+            </div>
+
+            <div class="uploadVeld">
+                <label>Leveranciersbon</label>
+                ${item.leveranciersbon_url ? `<p><a href="${akUrl(item.leveranciersbon_url)}" target="_blank" rel="noopener">Huidige leveranciersbon bekijken</a></p>` : "<p>Geen leveranciersbon opgeslagen.</p>"}
+                <label>Nieuwe bon uploaden (optioneel)<input id="akeBon" type="file" accept="application/pdf"></label>
+                ${item.leveranciersbon_url ? '<label><input id="akeBonVerwijder" type="checkbox"> Huidige bon verwijderen</label>' : ""}
+            </div>
+
             <p id="akeMelding" class="plaatFormMelding" aria-live="polite"></p>
             <div class="plaatFormActies">
                 <button type="button" class="secundaireKnop" id="akEditAnnuleer">Annuleren</button>
@@ -158,43 +182,95 @@ function openAankoopKlachtBewerken(item){
 
     document.body.appendChild(modal);
     modal.classList.remove("hidden");
+
+    const verwijderdeFotos = new Set();
+    modal.querySelectorAll(".akFotoVerwijder").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const kaart = btn.closest(".akEditFoto");
+            verwijderdeFotos.add(kaart.dataset.pad);
+            kaart.remove();
+        });
+    });
+
     modal.querySelector("#akEditSluit").addEventListener("click", sluitAkEditModal);
     modal.querySelector("#akEditAnnuleer").addEventListener("click", sluitAkEditModal);
     modal.addEventListener("click", e => { if(e.target === modal) sluitAkEditModal(); });
 
     modal.querySelector("#akEditForm").addEventListener("submit", async e => {
         e.preventDefault();
+
         const melding = modal.querySelector("#akeMelding");
         const knop = modal.querySelector('button[type="submit"]');
         knop.disabled = true;
         melding.textContent = "Bezig met opslaan...";
 
-        const {error} = await supabaseClient
-            .from("aankoopklachten")
-            .update({
-                artikel: document.getElementById("akeArtikel").value.trim(),
-                leverancier: document.getElementById("akeLeverancier").value.trim(),
-                referentie: document.getElementById("akeReferentie").value.trim() || null,
-                datum: document.getElementById("akeDatum").value,
-                aantal: document.getElementById("akeAantal").value || null,
-                omschrijving: document.getElementById("akeOmschrijving").value.trim(),
-                bestelnummer: document.getElementById("akeBestelnummer").value.trim() || null,
-                gewenste_oplossing: document.getElementById("akeOplossing").value.trim() || null
-            })
-            .eq("id", item.id);
+        try{
+            let fotos = bestaandeFotos.filter(pad => !verwijderdeFotos.has(pad));
+            const nieuweBestanden = Array.from(modal.querySelector("#akeFotos").files || []).slice(0, 5);
 
-        if(error){
+            for(let i=0; i<nieuweBestanden.length; i++){
+                const foto = await verkleinFoto(nieuweBestanden[i]);
+                const pad = akPadFoto(item.id, Date.now() + i, foto.name);
+                const upload = await supabaseClient.storage.from("plaatfotos").upload(pad, foto);
+                if(upload.error) throw upload.error;
+                fotos.push(pad);
+            }
+
+            const bonInput = modal.querySelector("#akeBon");
+            const nieuweBon = bonInput?.files?.[0] || null;
+            if(nieuweBon && nieuweBon.type !== "application/pdf") throw new Error("De leveranciersbon moet een PDF zijn.");
+
+            let bonPad = item.leveranciersbon_url;
+            if(modal.querySelector("#akeBonVerwijder")?.checked){
+                if(bonPad) await supabaseClient.storage.from("plaatfotos").remove([bonPad]);
+                bonPad = null;
+            }
+
+            if(nieuweBon){
+                if(bonPad) await supabaseClient.storage.from("plaatfotos").remove([bonPad]);
+                bonPad = akPadBon(item.id, nieuweBon.name);
+                const upload = await supabaseClient.storage.from("plaatfotos").upload(bonPad, nieuweBon);
+                if(upload.error) throw upload.error;
+            }
+
+            const {error} = await supabaseClient
+                .from("aankoopklachten")
+                .update({
+                    artikel: modal.querySelector("#akeArtikel").value.trim(),
+                    leverancier: modal.querySelector("#akeLeverancier").value.trim(),
+                    referentie: modal.querySelector("#akeReferentie").value.trim() || null,
+                    datum: modal.querySelector("#akeDatum").value,
+                    aantal: modal.querySelector("#akeAantal").value || null,
+                    omschrijving: modal.querySelector("#akeOmschrijving").value.trim(),
+                    bestelnummer: modal.querySelector("#akeBestelnummer").value.trim() || null,
+                    gewenste_oplossing: modal.querySelector("#akeOplossing").value.trim() || null,
+                    fotos,
+                    leveranciersbon_url: bonPad,
+                    rapport_url: null,
+                    rapport_aangemaakt_door: null,
+                    rapport_aangemaakt_op: null
+                })
+                .eq("id", item.id);
+
+            if(error) throw error;
+
+            if(verwijderdeFotos.size){
+                await supabaseClient.storage.from("plaatfotos").remove([...verwijderdeFotos]);
+            }
+
+            if(item.rapport_url){
+                await supabaseClient.storage.from("plaatfotos").remove([item.rapport_url]);
+            }
+
+            sluitAkEditModal();
+            await laadAankoopKlachten();
+        }catch(error){
             console.error(error);
-            melding.textContent = "Wijzigingen opslaan mislukt.";
+            melding.textContent = error.message || "Wijzigingen opslaan mislukt.";
             knop.disabled = false;
-            return;
         }
-
-        sluitAkEditModal();
-        await laadAankoopKlachten();
     });
 }
-
 akForm?.addEventListener("submit", async event => {
     event.preventDefault();
     akMelding.textContent = "Bezig met opslaan...";
