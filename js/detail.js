@@ -466,6 +466,19 @@ async function toonFotos(plaat){
     ${
         isLeverancier
         ?
+        item.rapport_url
+        ?
+        `
+        <button
+            type="button"
+            class="rapportKnop"
+            id="rapport-${item.id}">
+
+            ${icoon("download")} Rapport downloaden
+
+        </button>
+        `
+        :
         `
         <button
             type="button"
@@ -543,7 +556,14 @@ async function toonFotos(plaat){
 
     galerij.querySelectorAll(".rapportKnop").forEach(btn => {
         const caseId = btn.id.replace("rapport-", "");
-        btn.addEventListener("click", () => genereerKlachtenRapport(caseId, btn));
+        const item = window.laatstGeladenCases?.[caseId];
+        btn.addEventListener("click", () => {
+            if(item?.rapport_url){
+                downloadBestaandRapport(item.rapport_url, `Rapport-leveranciersklacht_${plaat.code}.pdf`, btn);
+            }else{
+                genereerKlachtenRapport(caseId, btn);
+            }
+        });
     });
 
     galerij.querySelectorAll(".bewerkFoto").forEach(btn => {
