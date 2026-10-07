@@ -622,7 +622,12 @@ async function slaLeverancierCaseOp(knop, plaat){
 
         knop.innerHTML = "⏳ Bon uploaden...";
 
-        bonPad = `bonnen/${plaat.code}/${Date.now()}_${geselecteerdeLeverancierBon.name}`;
+        const veiligeBonNaam = geselecteerdeLeverancierBon.name
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+        bonPad = `bonnen/${plaat.code}/${Date.now()}_${veiligeBonNaam}`;
 
         const {error} =
             await supabaseClient.storage
