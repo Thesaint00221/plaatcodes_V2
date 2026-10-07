@@ -9,12 +9,19 @@ const akMelding = document.getElementById("akMelding");
 const akFotos = document.getElementById("akFotos");
 const akBon = document.getElementById("akBon");
 
+function akVeiligeBestandsnaam(naam){
+    return String(naam || "bestand")
+        .normalize("NFD")
+        .replace(/[\\u0300-\\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9._-]/g, "_");
+}
+
 function akPadFoto(id, index, naam){
-    return `aankoopklachten/${id}/foto_${index}_${Date.now()}_${naam}`;
+    return `aankoopklachten/${id}/foto_${index}_${Date.now()}_${akVeiligeBestandsnaam(naam)}`;
 }
 
 function akPadBon(id, naam){
-    return `aankoopklachten/${id}/bon_${Date.now()}_${naam}`;
+    return `aankoopklachten/${id}/bon_${Date.now()}_${akVeiligeBestandsnaam(naam)}`;
 }
 
 function akUrl(pad){
