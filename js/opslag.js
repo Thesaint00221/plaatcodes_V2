@@ -100,7 +100,7 @@ async function controleerOpslagEnToonOngebruikte() {
 
         const { data: klachten, error: klachtenError } = await supabaseClient
             .from("aankoopklachten")
-            .select("fotos, leveranciersbon_url");
+            .select("id, fotos, leveranciersbon_url");
         if(klachtenError) throw klachtenError;
 
         const { data: platen, error: platenError } = await supabaseClient
