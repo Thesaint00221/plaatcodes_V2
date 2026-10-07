@@ -5,7 +5,7 @@
 // bewust NIET onderschept: de catalogus moet altijd actuele data tonen.
 // ============================================
 
-const CACHE_NAAM = "plaatcodes-shell-v7";
+const CACHE_NAAM = "plaatcodes-shell-v8";
 
 const SHELL_BESTANDEN = [
     "./",
