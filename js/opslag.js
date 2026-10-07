@@ -131,12 +131,20 @@ async function controleerOpslagEnToonOngebruikte() {
             return genormaliseerd && !gebruikt.has(genormaliseerd) && !genormaliseerd.endsWith(".emptyFolderPlaceholder");
         });
 
+        let hersteld = [];
+        if(ongebruikt.length){
+            hersteld = await herstelAankoopKlachtBestanden(ongebruikt, klachten);
+            hersteld.forEach(pad => voegGebruiktToe(gebruikt, pad));
+        }
+
+        const nogOngebruikt = ongebruikt.filter(pad => !hersteld.includes(pad));
+
         resultaat.innerHTML = "";
         const samenvatting = document.createElement("p");
-        samenvatting.innerHTML = `<strong>${bestanden.length}</strong> bestanden gevonden · <strong>${gebruikt.size}</strong> gekoppelde paden · <strong>${ongebruikt.length}</strong> mogelijk ongebruikt`;
+        samenvatting.innerHTML = `<strong>${bestanden.length}</strong> bestanden gevonden · <strong>${gebruikt.size}</strong> gekoppelde paden · <strong>${hersteld.length}</strong> opnieuw gekoppeld · <strong>${nogOngebruikt.length}</strong> mogelijk ongebruikt`;
         resultaat.appendChild(samenvatting);
 
-        if(!ongebruikt.length) {
+        if(!nogOngebruikt.length) {
             const ok = document.createElement("p");
             ok.textContent = "Er zijn geen mogelijk ongebruikte bestanden gevonden.";
             resultaat.appendChild(ok);
@@ -150,7 +158,7 @@ async function controleerOpslagEnToonOngebruikte() {
         const lijst = document.createElement("div");
         lijst.className = "opslagOngebruiktLijst";
 
-        ongebruikt.forEach(pad => {
+        nogOngebruikt.forEach(pad => {
             const rij = document.createElement("label");
             rij.className = "opslagOngebruiktItem";
             const checkbox = document.createElement("input");
@@ -185,6 +193,36 @@ async function controleerOpslagEnToonOngebruikte() {
         console.error(error);
         resultaat.textContent = "Opslagcontrole mislukt.";
     }
+}
+
+async function herstelAankoopKlachtBestanden(bestanden, klachten){
+    const klachtenMap = new Map((klachten || []).map(item => [String(item.id), item]));
+    const hersteld = [];
+
+    for(const pad of bestanden){
+        const match = String(pad).match(/^aankoopklachten\/([0-9a-f-]{36})\/(.+)$/i);
+        if(!match) continue;
+
+        const item = klachtenMap.get(match[1]);
+        if(!item) continue;
+
+        if(opslagBestandIsAfbeelding(pad)){
+            const fotos = Array.isArray(item.fotos) ? [...item.fotos] : [];
+            if(!fotos.includes(pad)){
+                fotos.push(pad);
+                const {error} = await supabaseClient.from("aankoopklachten").update({fotos}).eq("id", item.id);
+                if(error) throw error;
+                item.fotos = fotos;
+                hersteld.push(pad);
+            }
+        }else if(opslagBestandIsPdf(pad) && !item.leveranciersbon_url){
+            const {error} = await supabaseClient.from("aankoopklachten").update({leveranciersbon_url: pad}).eq("id", item.id);
+            if(error) throw error;
+            item.leveranciersbon_url = pad;
+            hersteld.push(pad);
+        }
+    }
+    return hersteld;
 }
 
 function initialiseerOpslagbeheer() {
