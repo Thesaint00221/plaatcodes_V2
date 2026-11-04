@@ -390,6 +390,7 @@ async function genereerKlachtenRapport(caseId, knop){
 
         if(knop) knop.innerHTML = "⏳ Rapport opslaan...";
         await slaLeveranciersRapportOp(caseId, eindBytes, bestandsnaam);
+        await toonFotos(plaat); // Vernieuw de status en knoppen na het opslaan van het nieuwe rapport.
 
     }catch(fout){
 
