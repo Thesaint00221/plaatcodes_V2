@@ -320,7 +320,14 @@ const basisFoto =
 // Cases en foto's laden
 // ============================================
 
+let toonFotosAanvraagNummer = 0;
+
 async function toonFotos(plaat){
+
+    const aanvraagNummer = ++toonFotosAanvraagNummer;
+    window.laatstGeladenCases = {};
+
+
 
     const galerij =
         document.getElementById("galerij");
@@ -332,12 +339,16 @@ async function toonFotos(plaat){
     const gebruiker =
         await laadGebruikersRol();
 
+    if(aanvraagNummer !== toonFotosAanvraagNummer) return;
+
     const {data,error} =
         await supabaseClient
             .from("eigen_data")
             .select("id,type,foto,overzicht_foto,fotos,leveranciersbon_url,rapport_url,rapport_verouderd,omschrijving,toegevoegd_door,datum")
             .eq("code",plaat.code)
             .order("datum",{ascending:false});
+
+    if(aanvraagNummer !== toonFotosAanvraagNummer) return;
 
     if(error){
 
@@ -363,6 +374,8 @@ async function toonFotos(plaat){
 
     // Eén query voor alle betrokken gebruikersnamen, i.p.v. één per case
     await laadGebruikersNamen(data.map(item => item.toegevoegd_door));
+
+    if(aanvraagNummer !== toonFotosAanvraagNummer) return;
 
     let html = "";
 
