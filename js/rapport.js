@@ -150,6 +150,7 @@ async function slaLeveranciersRapportOp(caseId, bytes, bestandsnaam){
         .from("eigen_data")
         .update({
             rapport_url: pad,
+            rapport_verouderd: false,
             rapport_aangemaakt_door: gebruiker,
             rapport_aangemaakt_op: new Date().toISOString()
         })
