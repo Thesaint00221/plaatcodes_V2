@@ -1,11 +1,10 @@
 // ============================================
-// service-worker.js
-// Cachet enkel de statische app-shell (HTML/CSS/JS/iconen).
-// Supabase-API-calls en storage-afbeeldingen zijn cross-origin en worden
-// bewust NIET onderschept: de catalogus moet altijd actuele data tonen.
+// Plaatcodes - Service worker
+// App-code: netwerk eerst, cache als offline reserve.
+// Afbeeldingen/iconen: cache eerst, daarna vernieuwen.
 // ============================================
 
-const CACHE_NAAM = "plaatcodes-shell-v8";
+const CACHE_NAAM = "plaatcodes-shell-v9";
 
 const SHELL_BESTANDEN = [
     "./",
@@ -40,6 +39,7 @@ const SHELL_BESTANDEN = [
     "js/gebruikers-beheer.js",
     "js/wachtwoord-beheer.js",
     "js/aankoopklachten.js",
+    "js/aankoopklachten-fotos.js",
     "js/app.js",
     "js/pwa.js",
     "icons/icon-192.png",
@@ -50,41 +50,64 @@ const SHELL_BESTANDEN = [
 ];
 
 self.addEventListener("install", event => {
-    event.waitUntil(
-        caches.open(CACHE_NAAM).then(cache => cache.addAll(SHELL_BESTANDEN))
-    );
-    self.skipWaiting();
+    event.waitUntil((async () => {
+        const cache = await caches.open(CACHE_NAAM);
+        await cache.addAll(SHELL_BESTANDEN);
+        await self.skipWaiting();
+    })());
 });
 
 self.addEventListener("activate", event => {
-    event.waitUntil(
-        caches.keys().then(namen => Promise.all(
+    event.waitUntil((async () => {
+        const namen = await caches.keys();
+        await Promise.all(
             namen
-                .filter(naam => naam !== CACHE_NAAM)
+                .filter(naam => naam.startsWith("plaatcodes-shell-") && naam !== CACHE_NAAM)
                 .map(naam => caches.delete(naam))
-        ))
-    );
-    self.clients.claim();
+        );
+        await self.clients.claim();
+    })());
 });
 
 self.addEventListener("fetch", event => {
-    const url = new URL(event.request.url);
+    const request = event.request;
+    const url = new URL(request.url);
 
-    if(event.request.method !== "GET" || url.origin !== self.location.origin){
+    if(request.method !== "GET" || url.origin !== self.location.origin){
         return;
     }
 
-    event.respondWith(
-        caches.open(CACHE_NAAM).then(async cache => {
-            const cacheMatch = await cache.match(event.request);
-            const netwerkFetch = fetch(event.request)
-                .then(response => {
-                    if(response.ok) cache.put(event.request, response.clone());
-                    return response;
-                })
-                .catch(() => cacheMatch);
+    // HTML, JavaScript en CSS moeten altijd eerst de nieuwste versie proberen.
+    const appCode = request.mode === "navigate" ||
+        /\.(html|js|css|json)$/i.test(url.pathname);
 
-            return cacheMatch || netwerkFetch;
-        })
-    );
+    if(appCode){
+        event.respondWith((async () => {
+            const cache = await caches.open(CACHE_NAAM);
+            try {
+                const response = await fetch(request, {cache:"no-store"});
+                if(response.ok){
+                    await cache.put(request, response.clone());
+                }
+                return response;
+            } catch(error) {
+                const opgeslagen = await cache.match(request);
+                if(opgeslagen) return opgeslagen;
+                throw error;
+            }
+        })());
+        return;
+    }
+
+    // Afbeeldingen en iconen: direct uit cache tonen en op de achtergrond vernieuwen.
+    event.respondWith((async () => {
+        const cache = await caches.open(CACHE_NAAM);
+        const opgeslagen = await cache.match(request);
+        const netwerk = fetch(request).then(response => {
+            if(response.ok) cache.put(request, response.clone());
+            return response;
+        }).catch(() => opgeslagen);
+
+        return opgeslagen || netwerk;
+    })());
 });
