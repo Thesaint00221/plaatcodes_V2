@@ -63,7 +63,7 @@ async function akDownloadRapport(pad, id, knop){
 async function laadAankoopKlachten(){
     const {data, error} = await supabaseClient
         .from("aankoopklachten")
-        .select("*")
+        .select("id, artikel, leverancier, referentie, datum, aantal, bestelnummer, omschrijving, gewenste_oplossing, fotos, laatst_aangepast_door, laatst_aangepast_op, rapport_url, leveranciersbon_url, toegevoegd_door")
         .order("datum", {ascending:false})
         .order("created_at", {ascending:false});
 
