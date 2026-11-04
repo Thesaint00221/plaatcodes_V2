@@ -116,7 +116,8 @@ async function slaBewerkingOp(id, knop){
         await supabaseClient
             .from("eigen_data")
             .update({
-                omschrijving: `${titel}\n${opmerking}`
+                omschrijving: `${titel}\n${opmerking}`,
+                rapport_verouderd: Boolean(window.laatstGeladenCases?.[id]?.rapport_url)
             })
             .eq("id", id);
 
