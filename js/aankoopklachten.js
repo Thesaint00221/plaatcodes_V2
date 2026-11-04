@@ -165,7 +165,7 @@ function openAankoopKlachtBewerken(item){
                 <div id="akeBestaandeFotos" style="display:flex;gap:10px;flex-wrap:wrap;">
                     ${bestaandeFotos.map((pad,index)=>`
                         <div class="akEditFoto" data-pad="${akEsc(pad)}" style="position:relative;">
-                            <img src="${akUrl(pad)}" style="width:120px;height:90px;object-fit:cover;border-radius:6px;">
+                            <img src="${akUrl(pad)}" alt="Bestaande klachtfoto ${index + 1}" loading="lazy" decoding="async" width="120" height="90" style="width:120px;height:90px;object-fit:cover;border-radius:6px;">
                             <button type="button" class="secundaireKnop akFotoVerwijder" data-index="${index}" style="margin-top:5px;width:100%;">Foto verwijderen</button>
                         </div>`).join("") || "<p>Geen foto's.</p>"}
                 </div>
