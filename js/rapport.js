@@ -1,6 +1,6 @@
 // ============================================
 // rapport.js
-// Klachtenrapport-PDF voor leverancier-cases
+// PDF-rapporten voor productie- en leverancierscases
 // jsPDF + pdf-lib worden pas geladen bij het eerste gebruik
 // (niet standaard meegeladen op elke pagina)
 // ============================================
@@ -134,8 +134,9 @@ async function downloadBestaandRapport(pad, naam, knop){
     }
 }
 
-async function slaLeveranciersRapportOp(caseId, bytes, bestandsnaam){
-    const pad = `rapporten/leveranciersklachten/${caseId}.pdf`;
+async function slaCaseRapportOp(caseId, bytes, bestandsnaam, type){
+    const map = type === "leverancier" ? "leveranciersklachten" : "productie";
+    const pad = `rapporten/${map}/${caseId}.pdf`;
     const blob = new Blob([bytes], {type:"application/pdf"});
     const upload = await supabaseClient.storage.from("plaatfotos").upload(pad, blob, {
         upsert:true,
@@ -187,7 +188,8 @@ async function genereerKlachtenRapport(caseId, knop){
 
     try{
 
-        const bonUrl = item.leveranciersbon_url
+        const isLeverancier = item.type === "leverancier";
+        const bonUrl = isLeverancier && item.leveranciersbon_url
             ? haalOpenbareUrl(item.leveranciersbon_url)
             : null;
 
@@ -229,7 +231,7 @@ async function genereerKlachtenRapport(caseId, knop){
         }
 
         doc.setFontSize(18);
-        doc.text("Rapport leveranciersklacht", marge, y);
+        doc.text(isLeverancier ? "Rapport leveranciersklacht" : "Rapport fout in productie", marge, y);
         y += 10;
 
         doc.setFontSize(10);
@@ -243,7 +245,7 @@ async function genereerKlachtenRapport(caseId, knop){
         const info = [
             ["Plaat", plaat.naam],
             ["Referentie", plaat.info?.Referentie || "-"],
-            ["Leverancier", plaat.leverancier],
+            ...(isLeverancier ? [["Leverancier", plaat.leverancier]] : []),
             ["Kleurnummer", plaat.info?.Kleurnummer || "-"],
             ["Kleur", plaat.info?.Kleur || "-"],
             ["Datum case", item.datum ? new Date(item.datum).toLocaleDateString("nl-BE") : "-"],
@@ -309,7 +311,10 @@ async function genereerKlachtenRapport(caseId, knop){
 
         }
 
-        const fotoUrls = (item.fotos || [])
+        const fotoPaden = isLeverancier
+            ? (item.fotos || [])
+            : [item.foto, item.overzicht_foto].filter(Boolean);
+        const fotoUrls = fotoPaden
             .map(pad => haalOpenbareUrl(pad))
             .filter(Boolean);
 
@@ -367,7 +372,9 @@ async function genereerKlachtenRapport(caseId, knop){
 
         }
 
-        const bestandsnaam = `Rapport-leveranciersklacht_${plaat.code}.pdf`;
+        const bestandsnaam = isLeverancier
+            ? `Rapport-leveranciersklacht_${plaat.code}.pdf`
+            : `Rapport-productiefout_${plaat.code}.pdf`;
         let eindBytes = doc.output("arraybuffer");
 
         if(bonBytes){
@@ -389,7 +396,7 @@ async function genereerKlachtenRapport(caseId, knop){
         }
 
         if(knop) knop.innerHTML = "⏳ Rapport opslaan...";
-        await slaLeveranciersRapportOp(caseId, eindBytes, bestandsnaam);
+        await slaCaseRapportOp(caseId, eindBytes, bestandsnaam, item.type);
         await toonFotos(plaat); // Vernieuw de status en knoppen na het opslaan van het nieuwe rapport.
 
     }catch(fout){
