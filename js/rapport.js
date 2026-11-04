@@ -134,10 +134,23 @@ async function downloadBestaandRapport(pad, naam, knop){
     }
 }
 
-async function slaCaseRapportOp(caseId, bytes, bestandsnaam, type){
+function rapportOpslagPad(pad){
+    if(!pad) return null;
+    if(pad.startsWith("http")){
+        const marker = "/plaatfotos/";
+        const positie = pad.indexOf(marker);
+        return positie !== -1 ? pad.substring(positie + marker.length) : null;
+    }
+    return pad;
+}
+
+async function slaCaseRapportOp(caseId, bytes, bestandsnaam, type, oudRapportPad){
     const map = type === "leverancier" ? "leveranciersklachten" : "productie";
     const pad = `rapporten/${map}/${caseId}.pdf`;
     const blob = new Blob([bytes], {type:"application/pdf"});
+
+    // Hetzelfde opslagpad wordt overschreven; het oude rapport blijft bestaan
+    // tot de nieuwe upload én de databankupdate succesvol zijn.
     const upload = await supabaseClient.storage.from("plaatfotos").upload(pad, blob, {
         upsert:true,
         contentType:"application/pdf"
@@ -158,6 +171,17 @@ async function slaCaseRapportOp(caseId, bytes, bestandsnaam, type){
         .eq("id", caseId);
 
     if(error) throw error;
+
+    // Verwijder een eventueel oud bestand op een afwijkend opslagpad pas
+    // nadat de databank naar het nieuwe rapport verwijst.
+    const oudPad = rapportOpslagPad(oudRapportPad);
+    if(oudPad && oudPad !== pad){
+        const {error:verwijderFout} = await supabaseClient
+            .storage.from("plaatfotos").remove([oudPad]);
+        if(verwijderFout){
+            console.warn("Oud rapport kon niet worden opgeruimd:", verwijderFout);
+        }
+    }
 
     const downloadUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -396,7 +420,7 @@ async function genereerKlachtenRapport(caseId, knop){
         }
 
         if(knop) knop.innerHTML = "⏳ Rapport opslaan...";
-        await slaCaseRapportOp(caseId, eindBytes, bestandsnaam, item.type);
+        await slaCaseRapportOp(caseId, eindBytes, bestandsnaam, item.type, item.rapport_url);
         await toonFotos(plaat); // Vernieuw de status en knoppen na het opslaan van het nieuwe rapport.
 
     }catch(fout){
