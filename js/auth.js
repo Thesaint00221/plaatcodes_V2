@@ -425,64 +425,69 @@ window.huidigeGebruiker = null;
 
 
 
+let gebruikersRolCacheGeldig = false;
+let gebruikersRolPromise = null;
+
 async function laadGebruikersRol(){
 
-
-    const {data:userData} =
-        await supabaseClient
-        .auth
-        .getUser();
-
-
-
-    if(!userData.user){
-
-        return null;
-
+    if(gebruikersRolCacheGeldig){
+        return window.huidigeGebruiker;
     }
 
-
-
-    const email =
-        userData.user.email;
-
-
-
-    const {data,error} =
-        await supabaseClient
-        .from("gebruikers")
-        .select("*")
-        .eq(
-            "email",
-            email
-        )
-        .single();
-
-
-
-    if(error){
-
-        console.error(
-            "Rol ophalen mislukt:",
-            error
-        );
-
-        return null;
-
+    if(gebruikersRolPromise){
+        return gebruikersRolPromise;
     }
 
+    gebruikersRolPromise = (async () => {
 
+        const {data:userData, error:userError} =
+            await supabaseClient.auth.getUser();
 
-    window.huidigeGebruiker =
-        data;
+        if(userError){
+            console.error("Ingelogde gebruiker ophalen mislukt:", userError);
+            return null;
+        }
 
+        if(!userData.user){
+            window.huidigeGebruiker = null;
+            gebruikersRolCacheGeldig = true;
+            return null;
+        }
 
+        const {data, error} =
+            await supabaseClient
+                .from("gebruikers")
+                .select("email,naam,rol")
+                .eq("email", userData.user.email)
+                .single();
 
-    return data;
+        if(error){
+            console.error("Rol ophalen mislukt:", error);
+            return null;
+        }
 
+        window.huidigeGebruiker = data;
+        gebruikersRolCacheGeldig = true;
+        return data;
+
+    })();
+
+    try{
+        return await gebruikersRolPromise;
+    }finally{
+        gebruikersRolPromise = null;
+    }
 
 }
 
+// Houd de cache correct wanneer iemand aan- of afmeldt.
+supabaseClient.auth.onAuthStateChange((event) => {
+    if(["SIGNED_IN", "SIGNED_OUT", "USER_UPDATED"].includes(event)){
+        gebruikersRolCacheGeldig = false;
+        gebruikersRolPromise = null;
+        window.huidigeGebruiker = null;
+    }
+});
 
 
 
