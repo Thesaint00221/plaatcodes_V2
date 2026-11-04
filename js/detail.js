@@ -485,10 +485,10 @@ async function toonFotos(plaat){
         <button type="button" class="rapportKnop" id="rapport-${item.id}">
             ${icoon("document")} Rapport downloaden
         </button>
+        <button type="button" class="updateRapportKnop" id="update-rapport-${item.id}">
+            ${icoon("rapport")} ${item.rapport_verouderd ? "Update rapport maken" : "Rapport opnieuw genereren"}
+        </button>
         ${item.rapport_verouderd ? `
-            <button type="button" class="updateRapportKnop" id="update-rapport-${item.id}">
-                ${icoon("rapport")} Update rapport maken
-            </button>
             <small class="rapportWaarschuwing">De case is aangepast. Het bestaande rapport bevat nog de vorige gegevens.</small>
         ` : ""}
     ` : `
