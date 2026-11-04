@@ -466,28 +466,22 @@ async function toonFotos(plaat){
     ${
         isLeverancier
         ?
-        item.rapport_url
-        ?
         `
-        <button
-            type="button"
-            class="rapportKnop"
-            id="rapport-${item.id}">
-
-            ${icoon("document")} Rapport downloaden
-
-        </button>
-        `
-        :
-        `
-        <button
-            type="button"
-            class="rapportKnop"
-            id="rapport-${item.id}">
-
-            ${icoon("rapport")} Rapport leveranciersklacht genereren
-
-        </button>
+        ${item.rapport_url ? `
+            <button type="button" class="rapportKnop" id="rapport-${item.id}">
+                ${icoon("document")} Rapport downloaden
+            </button>
+            ${item.rapport_verouderd ? `
+                <button type="button" class="updateRapportKnop" id="update-rapport-${item.id}">
+                    ${icoon("rapport")} Update rapport maken
+                </button>
+                <small class="rapportWaarschuwing">De case is aangepast. Het bestaande rapport bevat nog de vorige gegevens.</small>
+            ` : ""}
+        ` : `
+            <button type="button" class="rapportKnop" id="rapport-${item.id}">
+                ${icoon("rapport")} Rapport leveranciersklacht genereren
+            </button>
+        `}
         `
         :
         ""
@@ -564,6 +558,11 @@ async function toonFotos(plaat){
                 genereerKlachtenRapport(caseId, btn);
             }
         });
+    });
+
+    galerij.querySelectorAll(".updateRapportKnop").forEach(btn => {
+        const caseId = btn.id.replace("update-rapport-", "");
+        btn.addEventListener("click", () => genereerKlachtenRapport(caseId, btn));
     });
 
     galerij.querySelectorAll(".bewerkFoto").forEach(btn => {
