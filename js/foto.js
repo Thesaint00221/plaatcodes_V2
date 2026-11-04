@@ -1,71 +1,88 @@
 // ============================================
 // foto.js
-// Gedeelde fotoverkleiner
-// Gebruikt door: upload.js (cases) en platen-beheer.js (nieuwe platen)
+// Gedeelde fotoverkleiner voor alle foto-uploads.
+// Gebruikt door: upload.js, platen-beheer.js en aankoopklachten.js
 // ============================================
 
 const FOTO_MAX_AFMETING = 2000;
-const FOTO_KWALITEIT = 0.8;
+const FOTO_KWALITEIT = 0.82;
 
-function verkleinFoto(bestand) {
+async function verkleinFoto(bestand){
 
-    return new Promise((resolve, reject) => {
+    if(!bestand || !bestand.type?.startsWith("image/")){
+        throw new Error("Selecteer een geldig afbeeldingsbestand.");
+    }
 
-        const reader = new FileReader();
+    let afbeelding = null;
+    let tijdelijkeUrl = null;
 
-        reader.onerror = () => {
-            reject(new Error("Bestand kon niet gelezen worden."));
-        };
+    try{
+        // Moderne browsers verwerken hiermee ook de foto-oriëntatie.
+        if("createImageBitmap" in window){
+            try{
+                afbeelding = await createImageBitmap(bestand, {
+                    imageOrientation: "from-image"
+                });
+            }catch(error){
+                afbeelding = null;
+            }
+        }
 
-        reader.onload = (e) => {
+        // Terugval voor browsers zonder createImageBitmap.
+        if(!afbeelding){
+            tijdelijkeUrl = URL.createObjectURL(bestand);
+            afbeelding = await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error("Afbeelding kon niet geladen worden."));
+                img.src = tijdelijkeUrl;
+            });
+        }
 
-            const img = new Image();
+        let breedte = afbeelding.width;
+        let hoogte = afbeelding.height;
 
-            img.onerror = () => {
-                reject(new Error("Afbeelding kon niet geladen worden."));
-            };
+        if(!breedte || !hoogte){
+            throw new Error("De afmetingen van de afbeelding zijn ongeldig.");
+        }
 
-            img.onload = () => {
+        const schaal = Math.min(1, FOTO_MAX_AFMETING / Math.max(breedte, hoogte));
+        breedte = Math.max(1, Math.round(breedte * schaal));
+        hoogte = Math.max(1, Math.round(hoogte * schaal));
 
-                let breedte = img.width;
-                let hoogte = img.height;
+        const canvas = document.createElement("canvas");
+        canvas.width = breedte;
+        canvas.height = hoogte;
 
-                if (breedte > FOTO_MAX_AFMETING || hoogte > FOTO_MAX_AFMETING) {
+        const context = canvas.getContext("2d");
+        if(!context){
+            throw new Error("Fotoverwerking wordt niet ondersteund door deze browser.");
+        }
 
-                    if (breedte > hoogte) {
-                        hoogte = hoogte * (FOTO_MAX_AFMETING / breedte);
-                        breedte = FOTO_MAX_AFMETING;
-                    } else {
-                        breedte = breedte * (FOTO_MAX_AFMETING / hoogte);
-                        hoogte = FOTO_MAX_AFMETING;
-                    }
+        // Witte achtergrond voorkomt zwarte vlakken bij transparante afbeeldingen.
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, breedte, hoogte);
+        context.drawImage(afbeelding, 0, 0, breedte, hoogte);
 
-                }
+        const blob = await new Promise((resolve, reject) => {
+            canvas.toBlob(resultaat => {
+                if(resultaat) resolve(resultaat);
+                else reject(new Error("Foto kon niet gecomprimeerd worden."));
+            }, "image/jpeg", FOTO_KWALITEIT);
+        });
 
-                const canvas = document.createElement("canvas");
-                canvas.width = breedte;
-                canvas.height = hoogte;
+        const basisnaam = bestand.name.replace(/\.[^/.]+$/, "") || "foto";
+        return new File([blob], basisnaam + ".jpg", {
+            type: "image/jpeg",
+            lastModified: Date.now()
+        });
 
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, breedte, hoogte);
-
-                canvas.toBlob((blob) => {
-
-                    const naam =
-                        bestand.name.replace(/\.[^/.]+$/, "") + ".jpg";
-
-                    resolve(new File([blob], naam, { type: "image/jpeg" }));
-
-                }, "image/jpeg", FOTO_KWALITEIT);
-
-            };
-
-            img.src = e.target.result;
-
-        };
-
-        reader.readAsDataURL(bestand);
-
-    });
-
+    }finally{
+        if(afbeelding && typeof afbeelding.close === "function"){
+            afbeelding.close();
+        }
+        if(tijdelijkeUrl){
+            URL.revokeObjectURL(tijdelijkeUrl);
+        }
+    }
 }
