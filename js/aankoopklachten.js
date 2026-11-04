@@ -419,7 +419,7 @@ async function slaAankoopRapportOp(id, bytes, bestandsnaam){
 async function genereerAankoopKlachtRapport(id, knop){
     const {data:item, error} = await supabaseClient
         .from("aankoopklachten")
-        .select("*")
+        .select("id, leveranciersbon_url, artikel, leverancier, referentie, datum, aantal, bestelnummer, toegevoegd_door, omschrijving, gewenste_oplossing, fotos")
         .eq("id", id)
         .single();
 
