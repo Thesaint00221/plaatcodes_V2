@@ -95,7 +95,7 @@ async function laadAankoopKlachten(){
                     <div class="plaatFormActies">
                         <button type="button" class="primary akBewerk" data-id="${item.id}"><span class="icoon" data-icon="tools"></span> Aanpassen</button>
                         <button type="button" class="secundaireKnop akRapport" data-id="${item.id}">
-                            ${item.rapport_url ? '<span class="icoon" data-icon="download"></span> Rapport downloaden' : '<span class="icoon" data-icon="document"></span> Leveranciersrapport'}
+                            ${item.rapport_url ? '<span class="icoon" data-icon="download"></span> Rapport downloaden' : '<span class="icoon" data-icon="document"></span> Rapport leveranciersklacht genereren'}
                         </button>
                         <button type="button" class="secundaireKnop akVerwijder" data-id="${item.id}"><span class="icoon" data-icon="vuilbak"></span> Verwijderen</button>
                     </div>
@@ -568,6 +568,9 @@ async function genereerAankoopKlachtRapport(id, knop){
 
         knop.innerHTML = "⏳ Rapport opslaan...";
         await slaAankoopRapportOp(item.id, eindBytes, bestandsnaam);
+
+        // Ververs de lijst zodat de knop meteen verandert naar "Rapport downloaden".
+        await laadAankoopKlachten();
     }catch(fout){
         console.error(fout);
         alert("Rapport maken is mislukt.");
