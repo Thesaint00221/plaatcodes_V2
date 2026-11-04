@@ -335,7 +335,7 @@ async function toonFotos(plaat){
     const {data,error} =
         await supabaseClient
             .from("eigen_data")
-            .select("*")
+            .select("id,type,foto,overzicht_foto,fotos,leveranciersbon_url,rapport_url,rapport_verouderd,omschrijving,toegevoegd_door,datum")
             .eq("code",plaat.code)
             .order("datum",{ascending:false});
 
