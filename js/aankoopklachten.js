@@ -161,7 +161,7 @@ function openAankoopKlachtBewerken(item){
             <div class="uploadVeld"><label for="akeOplossing">Gewenste oplossing</label><textarea id="akeOplossing" rows="4" maxlength="1000">${akEsc(item.gewenste_oplossing || "")}</textarea></div>
 
             <div class="uploadVeld">
-                <label>Bestaande foto's</label>
+                <p><strong>Bestaande foto's</strong></p>
                 <div id="akeBestaandeFotos" style="display:flex;gap:10px;flex-wrap:wrap;">
                     ${bestaandeFotos.map((pad,index)=>`
                         <div class="akEditFoto" data-pad="${akEsc(pad)}" style="position:relative;">
