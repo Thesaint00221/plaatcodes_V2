@@ -145,6 +145,11 @@ const terug =
 
 function toonDetail(plaat){
 
+    // De galerij wordt door app.js naar de tab "Bestaande cases" verplaatst.
+    // Verwijder die vorige galerij vóór we een nieuwe detailpagina opbouwen.
+    document.getElementById("galerij")?.remove();
+    window.laatstGeladenCases = {};
+
     window.geselecteerdePlaat = plaat;
 
     document.getElementById("resultaten").style.display = "none";
@@ -837,6 +842,11 @@ async function archiveerPlaat(code, knop){
 if(terug){
 
     terug.addEventListener("click",function(){
+
+        // Stop eventuele lopende case-aanvraag en wis de vorige casegegevens.
+        toonFotosAanvraagNummer++;
+        window.laatstGeladenCases = {};
+        document.getElementById("galerij")?.remove();
 
         detail.classList.add("hidden");
 
