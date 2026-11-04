@@ -463,29 +463,21 @@ async function toonFotos(plaat){
         ""
     }
 
-    ${
-        isLeverancier
-        ?
-        `
-        ${item.rapport_url ? `
-            <button type="button" class="rapportKnop" id="rapport-${item.id}">
-                ${icoon("document")} Rapport downloaden
+    ${item.rapport_url ? `
+        <button type="button" class="rapportKnop" id="rapport-${item.id}">
+            ${icoon("document")} Rapport downloaden
+        </button>
+        ${item.rapport_verouderd ? `
+            <button type="button" class="updateRapportKnop" id="update-rapport-${item.id}">
+                ${icoon("rapport")} Update rapport maken
             </button>
-            ${item.rapport_verouderd ? `
-                <button type="button" class="updateRapportKnop" id="update-rapport-${item.id}">
-                    ${icoon("rapport")} Update rapport maken
-                </button>
-                <small class="rapportWaarschuwing">De case is aangepast. Het bestaande rapport bevat nog de vorige gegevens.</small>
-            ` : ""}
-        ` : `
-            <button type="button" class="rapportKnop" id="rapport-${item.id}">
-                ${icoon("rapport")} Rapport leveranciersklacht genereren
-            </button>
-        `}
-        `
-        :
-        ""
-    }
+            <small class="rapportWaarschuwing">De case is aangepast. Het bestaande rapport bevat nog de vorige gegevens.</small>
+        ` : ""}
+    ` : `
+        <button type="button" class="rapportKnop" id="rapport-${item.id}">
+            ${icoon("rapport")} ${isLeverancier ? "Rapport leveranciersklacht genereren" : "Rapport fout in productie genereren"}
+        </button>
+    `}
 
     <small class="fotoInfo">
 
@@ -553,7 +545,7 @@ async function toonFotos(plaat){
         const item = window.laatstGeladenCases?.[caseId];
         btn.addEventListener("click", () => {
             if(item?.rapport_url){
-                downloadBestaandRapport(item.rapport_url, `Rapport-leveranciersklacht_${plaat.code}.pdf`, btn);
+                downloadBestaandRapport(item.rapport_url, item.type === "leverancier" ? `Rapport-leveranciersklacht_${plaat.code}.pdf` : `Rapport-productiefout_${plaat.code}.pdf`, btn);
             }else{
                 genereerKlachtenRapport(caseId, btn);
             }
